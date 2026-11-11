@@ -1,0 +1,96 @@
+{
+  "normal_season": {
+    "Background/Clean": {
+      "min": 6.79,
+      "q1": 11.85,
+      "median": 19.77,
+      "q3": 27.71,
+      "max": 59.46,
+      "mean": 21.65,
+      "count": 6895
+    },
+    "Coastal": {
+      "min": 15.83,
+      "q1": 15.83,
+      "median": 15.83,
+      "q3": 15.83,
+      "max": 15.83,
+      "mean": 15.83,
+      "count": 1
+    },
+    "Industrial": {
+      "min": 24.85,
+      "q1": 30.82,
+      "median": 39.6,
+      "q3": 55.4,
+      "max": 59.82,
+      "mean": 41.31,
+      "count": 2664
+    },
+    "Peatland": {
+      "min": 14.92,
+      "q1": 21.49,
+      "median": 25.26,
+      "q3": 33.6,
+      "max": 52.19,
+      "mean": 27.06,
+      "count": 4180
+    },
+    "Traffic/Roadside": {
+      "min": 18.23,
+      "q1": 19.48,
+      "median": 34.54,
+      "q3": 51.48,
+      "max": 54.84,
+      "mean": 36.28,
+      "count": 1998
+    }
+  },
+  "fire_season": {
+    "Background/Clean": {
+      "min": 7.4,
+      "q1": 14.27,
+      "median": 32.76,
+      "q3": 51.34,
+      "max": 1127.57,
+      "mean": 40.64,
+      "count": 3656
+    },
+    "Coastal": {
+      "min": 14.97,
+      "q1": 14.97,
+      "median": 14.97,
+      "q3": 14.97,
+      "max": 14.97,
+      "mean": 14.97,
+      "count": 1
+    },
+    "Industrial": {
+      "min": 43.08,
+      "q1": 47.53,
+      "median": 63.96,
+      "q3": 90.85,
+      "max": 310.77,
+      "mean": 82.95,
+      "count": 1267
+    },
+    "Peatland": {
+      "min": 26.27,
+      "q1": 53.96,
+      "median": 79.22,
+      "q3": 112.63,
+      "max": 1119.55,
+      "mean": 91.36,
+      "count": 2318
+    },
+    "Traffic/Roadside": {
+      "min": 18.2,
+      "q1": 19.49,
+      "median": 57.44,
+      "q3": 59.54,
+      "max": 102.8,
+      "mean": 50.9,
+      "count": 1056
+    }
+  }
+}

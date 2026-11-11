@@ -1,0 +1,236 @@
+[
+  {
+    "station": "BGL-01_Bengkulu",
+    "distance_to_road_m": 60.0,
+    "traffic_intensity": 950.0,
+    "pm25_avg": 25.57,
+    "site_type": "Urban Coastal Background",
+    "island": "Sumatera",
+    "is_logger": false
+  },
+  {
+    "station": "BGR-01_Cisarua",
+    "distance_to_road_m": 120.0,
+    "traffic_intensity": 350.0,
+    "pm25_avg": 13.23,
+    "site_type": "Regional / Clean Background",
+    "island": "Jawa",
+    "is_logger": false
+  },
+  {
+    "station": "BGR-02_Baranangsiang",
+    "distance_to_road_m": 10.0,
+    "traffic_intensity": 2400.0,
+    "pm25_avg": 19.24,
+    "site_type": "Traffic / Roadside",
+    "island": "Jawa",
+    "is_logger": false
+  },
+  {
+    "station": "BJB-01_Banjarbaru",
+    "distance_to_road_m": 45.0,
+    "traffic_intensity": 1400.0,
+    "pm25_avg": 49.22,
+    "site_type": "Airport & Peatland Buffer",
+    "island": "Kalimantan",
+    "is_logger": true
+  },
+  {
+    "station": "BTM-01_Batam",
+    "distance_to_road_m": 25.0,
+    "traffic_intensity": 2200.0,
+    "pm25_avg": 47.57,
+    "site_type": "Industrial Perimeter / Maritime",
+    "island": "Sumatera",
+    "is_logger": false
+  },
+  {
+    "station": "IDP-01_Indrapuri",
+    "distance_to_road_m": 150.0,
+    "traffic_intensity": 200.0,
+    "pm25_avg": 9.34,
+    "site_type": "Regional / Clean Background",
+    "island": "Sumatera",
+    "is_logger": false
+  },
+  {
+    "station": "JKT-01_Gambir",
+    "distance_to_road_m": 45.0,
+    "traffic_intensity": 1850.0,
+    "pm25_avg": 48.09,
+    "site_type": "Urban Background",
+    "island": "Jawa",
+    "is_logger": false
+  },
+  {
+    "station": "JKT-02_Marunda",
+    "distance_to_road_m": 25.0,
+    "traffic_intensity": 1400.0,
+    "pm25_avg": 60.06,
+    "site_type": "Industrial Perimeter",
+    "island": "Jawa",
+    "is_logger": false
+  },
+  {
+    "station": "JKT-03_Cengkareng",
+    "distance_to_road_m": 6.0,
+    "traffic_intensity": 3200.0,
+    "pm25_avg": 54.06,
+    "site_type": "Traffic / Roadside",
+    "island": "Jawa",
+    "is_logger": false
+  },
+  {
+    "station": "JMB-01_KotaJambi",
+    "distance_to_road_m": 40.0,
+    "traffic_intensity": 1600.0,
+    "pm25_avg": 44.46,
+    "site_type": "Peatland Buffer / Urban",
+    "island": "Sumatera",
+    "is_logger": false
+  },
+  {
+    "station": "KTB-01_Kototabang",
+    "distance_to_road_m": 200.0,
+    "traffic_intensity": 150.0,
+    "pm25_avg": 18.65,
+    "site_type": "Regional / Clean Background",
+    "island": "Sumatera",
+    "is_logger": false
+  },
+  {
+    "station": "KTG-01_PalangkaRaya",
+    "distance_to_road_m": 60.0,
+    "traffic_intensity": 450.0,
+    "pm25_avg": 60.99,
+    "site_type": "Urban Background",
+    "island": "Kalimantan",
+    "is_logger": false
+  },
+  {
+    "station": "KTG-02_Sampit",
+    "distance_to_road_m": 30.0,
+    "traffic_intensity": 850.0,
+    "pm25_avg": 61.06,
+    "site_type": "Peatland Boundary",
+    "island": "Kalimantan",
+    "is_logger": false
+  },
+  {
+    "station": "MDN-01_Medan",
+    "distance_to_road_m": 35.0,
+    "traffic_intensity": 2850.0,
+    "pm25_avg": 45.66,
+    "site_type": "Urban Background",
+    "island": "Sumatera",
+    "is_logger": true
+  },
+  {
+    "station": "MER-01_Merauke",
+    "distance_to_road_m": 60.0,
+    "traffic_intensity": 500.0,
+    "pm25_avg": 15.4,
+    "site_type": "Coastal / Remote Savanna",
+    "island": "Papua",
+    "is_logger": false
+  },
+  {
+    "station": "MLG-01_Malang",
+    "distance_to_road_m": 45.0,
+    "traffic_intensity": 1400.0,
+    "pm25_avg": 30.69,
+    "site_type": "Urban Background / Valley",
+    "island": "Jawa",
+    "is_logger": false
+  },
+  {
+    "station": "MRS-01_Maros",
+    "distance_to_road_m": 30.0,
+    "traffic_intensity": 1900.0,
+    "pm25_avg": 36.83,
+    "site_type": "Industrial / Karst Perimeter",
+    "island": "Sulawesi",
+    "is_logger": false
+  },
+  {
+    "station": "PKN-01_PangkalanBun",
+    "distance_to_road_m": 35.0,
+    "traffic_intensity": 700.0,
+    "pm25_avg": 45.28,
+    "site_type": "Peatland Boundary / Airport",
+    "island": "Kalimantan",
+    "is_logger": false
+  },
+  {
+    "station": "PKU-01_Pekanbaru",
+    "distance_to_road_m": 35.0,
+    "traffic_intensity": 1800.0,
+    "pm25_avg": 47.09,
+    "site_type": "Peatland Buffer / Urban",
+    "island": "Sumatera",
+    "is_logger": false
+  },
+  {
+    "station": "PLB-01_TalangBetutu",
+    "distance_to_road_m": 30.0,
+    "traffic_intensity": 1950.0,
+    "pm25_avg": 71.03,
+    "site_type": "Peatland Buffer / Urban Artery",
+    "island": "Sumatera",
+    "is_logger": false
+  },
+  {
+    "station": "PLU-01_LoreLindu",
+    "distance_to_road_m": 250.0,
+    "traffic_intensity": 50.0,
+    "pm25_avg": 11.26,
+    "site_type": "Regional / Clean Background",
+    "island": "Sulawesi",
+    "is_logger": false
+  },
+  {
+    "station": "PSW-01_Pesawaran",
+    "distance_to_road_m": 35.0,
+    "traffic_intensity": 1850.0,
+    "pm25_avg": 50.72,
+    "site_type": "Urban Background / Highway Corridor",
+    "island": "Sumatera",
+    "is_logger": true
+  },
+  {
+    "station": "SM2-01_Samarinda",
+    "distance_to_road_m": 40.0,
+    "traffic_intensity": 1650.0,
+    "pm25_avg": 77.63,
+    "site_type": "Industrial & Deforestation Buffer",
+    "island": "Kalimantan",
+    "is_logger": false
+  },
+  {
+    "station": "SRG-01_Sorong",
+    "distance_to_road_m": 80.0,
+    "traffic_intensity": 600.0,
+    "pm25_avg": 18.38,
+    "site_type": "Coastal / Regional Background",
+    "island": "Papua",
+    "is_logger": false
+  },
+  {
+    "station": "STG-01_Sintang",
+    "distance_to_road_m": 50.0,
+    "traffic_intensity": 450.0,
+    "pm25_avg": 38.24,
+    "site_type": "Peatland Boundary / Inland",
+    "island": "Kalimantan",
+    "is_logger": false
+  },
+  {
+    "station": "YKY-01_Sleman",
+    "distance_to_road_m": 40.0,
+    "traffic_intensity": 1600.0,
+    "pm25_avg": 39.74,
+    "site_type": "Urban Background",
+    "island": "Jawa",
+    "is_logger": false
+  }
+]

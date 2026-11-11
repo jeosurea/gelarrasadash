@@ -1,0 +1,110 @@
+{
+  "BJB-01_Banjarbaru": {
+    "baseline_pm25": 35.0,
+    "current_avg": 49.22,
+    "factors": {
+      "800x": {
+        "pm25_avg": 39.38,
+        "exceeds_pp22": "False",
+        "exceeds_who": "True",
+        "ratio_to_baseline": 1.13
+      },
+      "900x": {
+        "pm25_avg": 44.3,
+        "exceeds_pp22": "False",
+        "exceeds_who": "True",
+        "ratio_to_baseline": 1.27
+      },
+      "1000x": {
+        "pm25_avg": 49.22,
+        "exceeds_pp22": "False",
+        "exceeds_who": "True",
+        "ratio_to_baseline": 1.41
+      },
+      "1100x": {
+        "pm25_avg": 54.14,
+        "exceeds_pp22": "False",
+        "exceeds_who": "True",
+        "ratio_to_baseline": 1.55
+      },
+      "1200x": {
+        "pm25_avg": 59.07,
+        "exceeds_pp22": "True",
+        "exceeds_who": "True",
+        "ratio_to_baseline": 1.69
+      }
+    }
+  },
+  "MDN-01_Medan": {
+    "baseline_pm25": 42.8,
+    "current_avg": 45.66,
+    "factors": {
+      "800x": {
+        "pm25_avg": 36.53,
+        "exceeds_pp22": "False",
+        "exceeds_who": "True",
+        "ratio_to_baseline": 0.85
+      },
+      "900x": {
+        "pm25_avg": 41.09,
+        "exceeds_pp22": "False",
+        "exceeds_who": "True",
+        "ratio_to_baseline": 0.96
+      },
+      "1000x": {
+        "pm25_avg": 45.66,
+        "exceeds_pp22": "False",
+        "exceeds_who": "True",
+        "ratio_to_baseline": 1.07
+      },
+      "1100x": {
+        "pm25_avg": 50.23,
+        "exceeds_pp22": "False",
+        "exceeds_who": "True",
+        "ratio_to_baseline": 1.17
+      },
+      "1200x": {
+        "pm25_avg": 54.79,
+        "exceeds_pp22": "False",
+        "exceeds_who": "True",
+        "ratio_to_baseline": 1.28
+      }
+    }
+  },
+  "PSW-01_Pesawaran": {
+    "baseline_pm25": 54.3,
+    "current_avg": 50.72,
+    "factors": {
+      "800x": {
+        "pm25_avg": 40.57,
+        "exceeds_pp22": "False",
+        "exceeds_who": "True",
+        "ratio_to_baseline": 0.75
+      },
+      "900x": {
+        "pm25_avg": 45.64,
+        "exceeds_pp22": "False",
+        "exceeds_who": "True",
+        "ratio_to_baseline": 0.84
+      },
+      "1000x": {
+        "pm25_avg": 50.72,
+        "exceeds_pp22": "False",
+        "exceeds_who": "True",
+        "ratio_to_baseline": 0.93
+      },
+      "1100x": {
+        "pm25_avg": 55.79,
+        "exceeds_pp22": "True",
+        "exceeds_who": "True",
+        "ratio_to_baseline": 1.03
+      },
+      "1200x": {
+        "pm25_avg": 60.86,
+        "exceeds_pp22": "True",
+        "exceeds_who": "True",
+        "ratio_to_baseline": 1.12
+      }
+    }
+  }
+}
