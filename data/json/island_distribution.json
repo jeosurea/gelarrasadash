@@ -1,0 +1,99 @@
+{
+  "islands": [
+    {
+      "island": "Jawa",
+      "n_stations": 7,
+      "stations": [
+        "BGR-01_Cisarua",
+        "BGR-02_Baranangsiang",
+        "JKT-01_Gambir",
+        "JKT-02_Marunda",
+        "JKT-03_Cengkareng",
+        "MLG-01_Malang",
+        "YKY-01_Sleman"
+      ],
+      "status_ok": 7,
+      "status_caution": 0,
+      "status_excluded": 0,
+      "pct_of_total": 25.9
+    },
+    {
+      "island": "Kalimantan",
+      "n_stations": 6,
+      "stations": [
+        "BJB-01_Banjarbaru",
+        "KTG-01_PalangkaRaya",
+        "KTG-02_Sampit",
+        "PKN-01_PangkalanBun",
+        "SM2-01_Samarinda",
+        "STG-01_Sintang"
+      ],
+      "status_ok": 5,
+      "status_caution": 1,
+      "status_excluded": 0,
+      "pct_of_total": 22.2
+    },
+    {
+      "island": "Papua",
+      "n_stations": 2,
+      "stations": [
+        "MER-01_Merauke",
+        "SRG-01_Sorong"
+      ],
+      "status_ok": 1,
+      "status_caution": 1,
+      "status_excluded": 0,
+      "pct_of_total": 7.4
+    },
+    {
+      "island": "Sulawesi",
+      "n_stations": 2,
+      "stations": [
+        "MRS-01_Maros",
+        "PLU-01_LoreLindu"
+      ],
+      "status_ok": 2,
+      "status_caution": 0,
+      "status_excluded": 0,
+      "pct_of_total": 7.4
+    },
+    {
+      "island": "Sumatera",
+      "n_stations": 10,
+      "stations": [
+        "BGL-01_Bengkulu",
+        "BTM-01_Batam",
+        "IDP-01_Indrapuri",
+        "JMB-01_KotaJambi",
+        "JMB-02_MuaroJambi",
+        "KTB-01_Kototabang",
+        "MDN-01_Medan",
+        "PKU-01_Pekanbaru",
+        "PLB-01_TalangBetutu",
+        "PSW-01_Pesawaran"
+      ],
+      "status_ok": 7,
+      "status_caution": 2,
+      "status_excluded": 1,
+      "pct_of_total": 37.0
+    }
+  ],
+  "total_stations": 27,
+  "coverage_gaps": [
+    {
+      "region": "Maluku",
+      "stations": 0,
+      "recommendation": "Ekspansi - tidak ada stasiun pemantau"
+    },
+    {
+      "region": "Nusa Tenggara",
+      "stations": 0,
+      "recommendation": "Ekspansi - tidak ada stasiun pemantau"
+    },
+    {
+      "region": "Papua (Selatan)",
+      "stations": 0,
+      "recommendation": "Merauke tidak aktif - perlu reaktivasi"
+    }
+  ]
+}

@@ -1,0 +1,412 @@
+{
+  "SM2-01_Samarinda": [
+    {
+      "direction": "N",
+      "pm25_avg": 109.73,
+      "frequency": 4
+    },
+    {
+      "direction": "NNE",
+      "pm25_avg": 91.72,
+      "frequency": 6
+    },
+    {
+      "direction": "NE",
+      "pm25_avg": 40.52,
+      "frequency": 5
+    },
+    {
+      "direction": "ENE",
+      "pm25_avg": 70.51,
+      "frequency": 24
+    },
+    {
+      "direction": "E",
+      "pm25_avg": 90.62,
+      "frequency": 101
+    },
+    {
+      "direction": "ESE",
+      "pm25_avg": 70.77,
+      "frequency": 195
+    },
+    {
+      "direction": "SE",
+      "pm25_avg": 74.76,
+      "frequency": 216
+    },
+    {
+      "direction": "SSE",
+      "pm25_avg": 76.57,
+      "frequency": 147
+    },
+    {
+      "direction": "S",
+      "pm25_avg": 80.18,
+      "frequency": 84
+    },
+    {
+      "direction": "SSW",
+      "pm25_avg": 77.46,
+      "frequency": 40
+    },
+    {
+      "direction": "SW",
+      "pm25_avg": 77.34,
+      "frequency": 26
+    },
+    {
+      "direction": "WSW",
+      "pm25_avg": 104.33,
+      "frequency": 16
+    },
+    {
+      "direction": "W",
+      "pm25_avg": 116.97,
+      "frequency": 7
+    },
+    {
+      "direction": "WNW",
+      "pm25_avg": 169.11,
+      "frequency": 2
+    },
+    {
+      "direction": "NW",
+      "pm25_avg": 32.87,
+      "frequency": 1
+    },
+    {
+      "direction": "NNW",
+      "pm25_avg": 45.73,
+      "frequency": 3
+    }
+  ],
+  "JKT-02_Marunda": [
+    {
+      "direction": "N",
+      "pm25_avg": 60.12,
+      "frequency": 168
+    },
+    {
+      "direction": "NNE",
+      "pm25_avg": 59.88,
+      "frequency": 256
+    },
+    {
+      "direction": "NE",
+      "pm25_avg": 60.25,
+      "frequency": 240
+    },
+    {
+      "direction": "ENE",
+      "pm25_avg": 60.14,
+      "frequency": 94
+    },
+    {
+      "direction": "E",
+      "pm25_avg": 59.84,
+      "frequency": 33
+    },
+    {
+      "direction": "ESE",
+      "pm25_avg": 59.49,
+      "frequency": 11
+    },
+    {
+      "direction": "SE",
+      "pm25_avg": 59.37,
+      "frequency": 4
+    },
+    {
+      "direction": "SSE",
+      "pm25_avg": 60.27,
+      "frequency": 3
+    },
+    {
+      "direction": "S",
+      "pm25_avg": 60.0,
+      "frequency": 8
+    },
+    {
+      "direction": "SSW",
+      "pm25_avg": 63.08,
+      "frequency": 5
+    },
+    {
+      "direction": "SW",
+      "pm25_avg": 61.09,
+      "frequency": 8
+    },
+    {
+      "direction": "WSW",
+      "pm25_avg": 59.54,
+      "frequency": 7
+    },
+    {
+      "direction": "W",
+      "pm25_avg": 59.24,
+      "frequency": 10
+    },
+    {
+      "direction": "WNW",
+      "pm25_avg": 59.45,
+      "frequency": 21
+    },
+    {
+      "direction": "NW",
+      "pm25_avg": 59.94,
+      "frequency": 50
+    },
+    {
+      "direction": "NNW",
+      "pm25_avg": 60.18,
+      "frequency": 100
+    }
+  ],
+  "KTG-01_PalangkaRaya": [
+    {
+      "direction": "N",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NNE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "ENE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "E",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "ESE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "SE",
+      "pm25_avg": 28.25,
+      "frequency": 12
+    },
+    {
+      "direction": "SSE",
+      "pm25_avg": 61.24,
+      "frequency": 935
+    },
+    {
+      "direction": "S",
+      "pm25_avg": 63.15,
+      "frequency": 71
+    },
+    {
+      "direction": "SSW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "SW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "WSW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "W",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "WNW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NNW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    }
+  ],
+  "BGR-01_Cisarua": [
+    {
+      "direction": "N",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NNE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "ENE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "E",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "ESE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "SE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "SSE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "S",
+      "pm25_avg": 13.23,
+      "frequency": 51
+    },
+    {
+      "direction": "SSW",
+      "pm25_avg": 13.23,
+      "frequency": 955
+    },
+    {
+      "direction": "SW",
+      "pm25_avg": 13.35,
+      "frequency": 12
+    },
+    {
+      "direction": "WSW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "W",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "WNW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NNW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    }
+  ],
+  "PKU-01_Pekanbaru": [
+    {
+      "direction": "N",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NNE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "ENE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "E",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "ESE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "SE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "SSE",
+      "pm25_avg": 48.34,
+      "frequency": 116
+    },
+    {
+      "direction": "S",
+      "pm25_avg": 46.89,
+      "frequency": 822
+    },
+    {
+      "direction": "SSW",
+      "pm25_avg": 47.32,
+      "frequency": 80
+    },
+    {
+      "direction": "SW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "WSW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "W",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "WNW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NNW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    }
+  ]
+}
