@@ -63,12 +63,10 @@
     </button>
     <button class="tab-btn" data-tab="tab2">
       <span class="tab-number">2</span>
-      <span class="tab-icon">🩺</span>
       <span>Tab 2: Faktor Pendorong & Dampak Kesehatan</span>
     </button>
     <button class="tab-btn" data-tab="tab3">
       <span class="tab-number">3</span>
-      <span class="tab-icon">📊</span>
       <span>Tab 3: Audit Jaringan & Rekomendasi Titik Baru</span>
     </button>
   </nav>
@@ -85,7 +83,6 @@
       <div class="kpi-grid">
         <div class="kpi-card">
           <div class="kpi-card-header">
-            <div class="kpi-icon blue">💨</div>
             <div class="kpi-trend up">Konsentrasi PM2.5</div>
           </div>
           <div id="kpiNationalPm25" class="kpi-value" data-animate>0 <span class="unit">µg/m³</span></div>
@@ -94,7 +91,6 @@
 
         <div class="kpi-card">
           <div class="kpi-card-header">
-            <div class="kpi-icon green">🌿</div>
             <div class="kpi-trend down">Indeks Kualitas Udara</div>
           </div>
           <div id="kpiIkuAvg" class="kpi-value" data-animate>0 <span class="unit">IKU</span></div>
@@ -103,7 +99,6 @@
 
         <div class="kpi-card">
           <div class="kpi-card-header">
-            <div class="kpi-icon orange">⚖️</div>
             <div class="kpi-trend down">Standar Baku Mutu</div>
           </div>
           <div id="kpiPp22Compliance" class="kpi-value" data-animate>0%</div>
@@ -112,7 +107,6 @@
 
         <div class="kpi-card">
           <div class="kpi-card-header">
-            <div class="kpi-icon purple">🌐</div>
             <div class="kpi-trend down">WHO Guideline</div>
           </div>
           <div id="kpiWhoCompliance" class="kpi-value" data-animate>0%</div>
@@ -122,7 +116,6 @@
 
       <!-- Info Alert Box -->
       <div class="info-box mb-lg">
-        <div class="info-icon">ℹ️</div>
         <div>
           <strong>Metodologi Spatiotemporal:</strong> Data mencakup 27 stasiun pemantau AQMS di 5 kepulauan besar Indonesia. Stasiun <strong>Medan (MDN-01)</strong>, <strong>Banjarbaru (BJB-01)</strong>, dan <strong>Pesawaran (PSW-01)</strong> menggunakan penanda khusus <span class="badge badge-logger">[Konversi Logger]</span> karena data mentah ppm dikonversikan ke µg/m³ dengan rasio kalibrasi empiris 1000×.
         </div>
@@ -187,7 +180,7 @@
               <div class="chart-subtitle">Konsentrasi PM2.5 bulanan per pulau dibandingkan rata-rata nasional</div>
             </div>
             <div style="font-size:0.75rem; color:#ef4444; font-weight:600; background:rgba(239,68,68,0.1); padding:4px 10px; border-radius:4px;">
-              🔥 Puncak Lonjakan Polusi: Kemarau & Asap Gambut (Jul - Okt)
+               Puncak Lonjakan Polusi: Kemarau & Asap Gambut (Jul - Okt)
             </div>
           </div>
           <div class="chart-container" style="height:320px;">
@@ -236,7 +229,6 @@
       
       <!-- Narrative Stage 1: The Drivers (Sebab) -->
       <div class="section-header">
-        <div class="section-icon">🌦️</div>
         <div>
           <h2>BAGIAN 1: Pendorong Lingkungan, Meteorologi, & Emisi Transportasi</h2>
           <div class="text-muted" style="font-size:0.75rem;">Menganalisis hubungan faktor cuaca dan lalu lintas terhadap pembentukan konsentrasi partikulat</div>
@@ -294,7 +286,6 @@
 
       <!-- Narrative Stage 2: The Impact (Akibat) -->
       <div class="section-header">
-        <div class="section-icon">🏥</div>
         <div>
           <h2>BAGIAN 2: Dampak Nyata Kesehatan Masyarakat & Kelompok Rentan</h2>
           <div class="text-muted" style="font-size:0.75rem;">Membuktikan hubungan kausalitas jeda waktu (lag effect) dan kerentanan Balita (<5 thn) vs Lansia (>60 thn)</div>
@@ -311,7 +302,7 @@
               <div class="chart-subtitle">Korelasi lonjakan pasien rumah sakit pasca peningkatan polusi PM2.5</div>
             </div>
             <div style="font-size:0.75rem; color:#f59e0b; font-weight:600; background:rgba(245,158,11,0.1); padding:4px 10px; border-radius:4px;">
-              ⚡ Puncak Risiko: Hari ke 1 - 3 (Lag 1-3)
+               Puncak Risiko: Hari ke 1 - 3 (Lag 1-3)
             </div>
           </div>
           <div class="chart-container" style="height:300px;">
@@ -354,7 +345,6 @@
     <div id="tab3" class="tab-panel">
       
       <div class="section-header">
-        <div class="section-icon">🔍</div>
         <div>
           <h2>Audit Integritas Jaringan Pemantauan AQMS Nasional</h2>
           <div class="text-muted" style="font-size:0.75rem;">Evaluasi kepatuhan teknis, kegagalan sensor, dan ketimpangan spasial antar kepulauan</div>
@@ -487,7 +477,6 @@
         <div class="sensitivity-header">
           <div>
             <h3 style="font-size:1rem; font-weight:700; color:#f1f5f9; display:flex; align-items:center; gap:8px;">
-              <span>🎛️</span>
               <span>Uji Sensitivitas Interaktif: Rentang Ketidakpastian Faktor Konversi Logger (800× — 1200×)</span>
             </h3>
             <div style="font-size:0.78rem; color:#94a3b8; margin-top:4px;">
@@ -510,7 +499,7 @@
       <div class="chart-card full-width mb-lg">
         <div class="chart-card-header">
           <div>
-            <div class="chart-title">🎯 Matriks Rekomendasi Preskriptif: Prioritas Penambahan & Perbaikan Stasiun Baru</div>
+            <div class="chart-title">Matriks Rekomendasi Preskriptif: Prioritas Penambahan & Perbaikan Stasiun Baru</div>
             <div class="chart-subtitle">Rekomendasi kebijakan berbasis data komposit beban penyakit, integritas sensor, dan blind spot wilayah</div>
           </div>
         </div>
