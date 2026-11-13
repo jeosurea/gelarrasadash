@@ -509,7 +509,7 @@ body::before {
 .section-header:first-child { margin-top: 0; }
 
 .section-header h2 {
-  font-size: 1.1rem;
+  font-size: 1.9rem;
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: -0.3px;
