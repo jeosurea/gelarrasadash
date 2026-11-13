@@ -799,7 +799,7 @@ body::before {
 }
 
 .chart-title {
-  font-size: 1.15rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #0f172a !important;
   letter-spacing: -0.3px;
@@ -1582,7 +1582,7 @@ body::before {
 }
 
 .chart-title-group .chart-title {
-  font-size: 1.15rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #0f172a !important;
   white-space: normal;
