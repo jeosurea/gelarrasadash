@@ -258,10 +258,9 @@
       <!-- Narrative Stage 1: The Drivers (Sebab) -->
       <div class="section-header">
         <div>
-          <h2>BAGIAN 1: Pendorong Lingkungan, Meteorologi, & Emisi Transportasi</h2>
+          <h2>Pendorong Lingkungan, Meteorologi, & Emisi Transportasi</h2>
           <div class="text-muted" style="font-size:0.75rem;">Menganalisis hubungan faktor cuaca dan lalu lintas terhadap pembentukan konsentrasi partikulat</div>
         </div>
-        <span class="section-badge info">Zona Driver / Penyebab</span>
       </div>
 
       <div class="chart-grid mb-md">
@@ -370,10 +369,9 @@
       <!-- Narrative Stage 2: The Impact (Akibat) -->
       <div class="section-header">
         <div>
-          <h2>BAGIAN 2: Dampak Nyata Kesehatan Masyarakat & Kelompok Rentan</h2>
-          <div class="text-muted" style="font-size:0.75rem;">Membuktikan hubungan kausalitas jeda waktu (lag effect) dan kerentanan Balita (<5 thn) vs Lansia (>60 thn)</div>
+          <h2>Dampak Nyata Kesehatan Masyarakat & Kelompok Rentan</h2>
+          <div class="text-muted" style="font-size:0.75rem;">Membuktikan hubungan kausalitas jeda waktu (lag effect) dan kerentanan Balita (&lt;5 thn) vs Lansia (&gt;60 thn)</div>
         </div>
-        <span class="section-badge warning">Zona Dampak / Epidemiologi</span>
       </div>
 
       <div class="chart-grid mb-lg">
@@ -429,13 +427,13 @@
       
       <div class="section-header">
         <div>
-          <h2>Audit Integritas Jaringan Pemantauan AQMS Nasional</h2>
-          <div class="text-muted" style="font-size:0.75rem;">Evaluasi kepatuhan teknis, kegagalan sensor, dan ketimpangan spasial antar kepulauan</div>
+          <h2 style="font-size: 1.35rem; font-weight: 800; color: #0f172a;">Audit Integritas Jaringan Pemantauan AQMS Nasional</h2>
+          <div class="text-muted" style="font-size:0.78rem; margin-top:2px;">Evaluasi kepatuhan teknis, kegagalan sensor, dan ketimpangan spasial antar kepulauan</div>
         </div>
-        <span class="section-badge info">Data Integrity & QA/QC</span>
       </div>
 
-      <div class="chart-grid three-col mb-lg">
+      <!-- Baris 1: Status Kelayakan & Ketimpangan Spasial (2 Kolom) -->
+      <div class="chart-grid mb-lg">
         <!-- Status Donut Chart -->
         <div class="chart-card">
           <div class="chart-card-header">
@@ -444,7 +442,7 @@
               <div class="chart-subtitle">22 OK (81%), 4 CAUTION (15%), 1 EXCLUDED (4%)</div>
             </div>
           </div>
-          <div class="chart-container" style="height:250px;">
+          <div class="chart-container" style="height:260px;">
             <canvas id="auditStatusDonutChart"></canvas>
           </div>
         </div>
@@ -454,25 +452,25 @@
           <div class="chart-card-header">
             <div>
               <div class="chart-title">Ketimpangan Sebaran Spasial Pulau</div>
-              <div class="chart-subtitle">Dominasi Sumatera (10) & Jawa (7) vs Minimnya Indonesia Timur</div>
+              <div class="chart-subtitle">Dominasi Sumatera (10) &amp; Jawa (7) vs Minimnya Indonesia Timur</div>
             </div>
           </div>
-          <div class="chart-container" style="height:250px;">
+          <div class="chart-container" style="height:260px;">
             <canvas id="islandBarChart"></canvas>
           </div>
         </div>
+      </div>
 
-        <!-- Gap Analysis Health vs Sensor -->
-        <div class="chart-card">
-          <div class="chart-card-header">
-            <div>
-              <div class="chart-title">Gap Analysis: Beban Kasus RS vs Ketersediaan Sensor</div>
-              <div class="chart-subtitle">Deteksi wilayah anomali (beban penyakit tinggi namun sensor macet)</div>
-            </div>
+      <!-- Baris 2: Gap Analysis (Dipindahkan ke bawah Status Kelayakan & Ketimpangan Spasial) -->
+      <div class="chart-card full-width mb-lg">
+        <div class="chart-card-header">
+          <div>
+            <div class="chart-title">Gap Analysis: Beban Kasus RS vs Ketersediaan Sensor</div>
+            <div class="chart-subtitle">Deteksi wilayah anomali (beban penyakit tinggi namun sensor macet)</div>
           </div>
-          <div class="chart-container" style="height:250px;">
-            <canvas id="gapScatterChart"></canvas>
-          </div>
+        </div>
+        <div class="chart-container" style="height:290px;">
+          <canvas id="gapScatterChart"></canvas>
         </div>
       </div>
 
@@ -509,10 +507,10 @@
           </div>
         </div>
 
-        <!-- Edukasi / Konteks Metrik -->
+        <!-- Edukasi / Konteks Metrik (Diringkas) -->
         <div class="reliability-disclaimer-banner">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; color:#0284c7;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-          <span><strong>Catatan Metodologis:</strong> Metrik ini mengukur <strong>ketersediaan data</strong> (rasio jam pengamatan PM2.5 valid terhadap jam kalender yang diharapkan, dengan penyesuaian penyebut pada bulan parsial Oktober 2026 sebanyak 14 hari = 336 jam), <strong>bukan diagnosis kerusakan fisik sensor</strong>. Penurunan nilai dapat disebabkan oleh pemeliharaan berkala, siklus kalibrasi berkala, transmisi telemetri GSM, atau gangguan daya lokal.</span>
+          <span><strong>Catatan Metodologis:</strong> Mengukur <strong>ketersediaan data</strong> (rasio jam PM2.5 valid vs jam kalender), <strong>bukan kerusakan fisik sensor</strong>. Penurunan nilai dapat disebabkan oleh siklus kalibrasi, pemeliharaan berkala, atau transmisi telemetri GSM.</span>
         </div>
 
         <!-- Heatmap Grid / Table Container -->
@@ -534,7 +532,7 @@
         </div>
       </div>
       
-            <!-- Catatan Metodologi & Temuan Audit (menggantikan uji sensitivitas interaktif) -->
+      <!-- Temuan Audit (Dipersingkat & Diefisienkan) -->
       <div class="audit-methodology-callout">
         <div class="callout-icon-wrap">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -542,8 +540,8 @@
           </svg>
         </div>
         <div class="callout-body">
-          <strong>Catatan Metodologi &amp; Temuan Audit:</strong>
-          <p>3 stasiun konversi logger (Medan, Banjarbaru, Pesawaran) telah melalui uji sensitivitas pada rentang ketidakpastian &plusmn;20% (faktor 800&times; hingga 1200&times;). <strong>Temuan:</strong> konsentrasi PM2.5 tetap konsisten melampaui Baku Mutu Nasional PP 22/2021 (55 &micro;g/m&sup3;) dan Pedoman Kualitas Udara WHO (15 &micro;g/m&sup3;) di seluruh skenario kalibrasi yang diuji. Metrik keandalan sensor mengukur ketersediaan data, bukan diagnosis kerusakan perangkat secara langsung.</p>
+          <strong>Temuan Audit &amp; Uji Sensitivitas:</strong>
+          <p>Uji sensitivitas &plusmn;20% pada 3 stasiun konversi logger (Medan, Banjarbaru, Pesawaran) membuktikan konsentrasi PM2.5 tetap konsisten melampaui Baku Mutu PP 22/2021 (55 &micro;g/m&sup3;) dan WHO (15 &micro;g/m&sup3;) di seluruh skenario kalibrasi.</p>
         </div>
       </div>
 
@@ -556,17 +554,6 @@
           </div>
         </div>
         <div id="priorityMatrixContainer"></div>
-      </div>
-
-      <!-- Detailed Station Audit Table -->
-      <div class="chart-card full-width">
-        <div class="chart-card-header">
-          <div>
-            <div class="chart-title">Tabel Lengkap Audit Integritas & QA/QC Seluruh 27 Stasiun AQMS</div>
-            <div class="chart-subtitle">Data rekaman sensor, jam beku (frozen hours), overrange, persentase validitas, dan catatan lapangan</div>
-          </div>
-        </div>
-        <div id="auditTableContainer"></div>
       </div>
 
     </div>

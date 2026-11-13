@@ -1307,7 +1307,7 @@ function renderLagEffectChart() {
       label: 'Balita (<5 thn)',
       data: lags.map(l => data.resp_admissions_under5[l]?.correlation ?? 0),
       borderColor: '#ef4444',
-      backgroundColor: '#ef4444',
+      backgroundColor: 'transparent',
       tension: 0.3,
       borderWidth: 2.5
     },
@@ -1315,7 +1315,7 @@ function renderLagEffectChart() {
       label: 'Lansia (>60 thn)',
       data: lags.map(l => data.resp_admissions_over60[l]?.correlation ?? 0),
       borderColor: '#f59e0b',
-      backgroundColor: '#f59e0b',
+      backgroundColor: 'transparent',
       tension: 0.3,
       borderWidth: 2.5
     },
@@ -1323,6 +1323,7 @@ function renderLagEffectChart() {
       label: 'Kunjungan Asma IGD',
       data: lags.map(l => data.asthma_emergency_cases[l]?.correlation ?? 0),
       borderColor: '#3b82f6',
+      backgroundColor: 'transparent',
       borderDash: [5, 5],
       tension: 0.3,
       borderWidth: 2
@@ -1331,6 +1332,7 @@ function renderLagEffectChart() {
       label: 'PPOK (COPD)',
       data: lags.map(l => data.copd_admissions[l]?.correlation ?? 0),
       borderColor: '#10b981',
+      backgroundColor: 'transparent',
       borderDash: [3, 3],
       tension: 0.3,
       borderWidth: 2
@@ -1349,7 +1351,29 @@ function renderLagEffectChart() {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: { labels: { color: '#64748b' } },
+        legend: {
+          position: 'top',
+          labels: {
+            usePointStyle: true,
+            boxWidth: 26,
+            color: '#475569',
+            padding: 12,
+            font: { size: 11, weight: '500' },
+            generateLabels: (chart) => {
+              const original = Chart.defaults.plugins.legend.labels.generateLabels(chart);
+              return original.map(item => {
+                item.pointStyle = 'line';
+                const ds = chart.data.datasets[item.datasetIndex];
+                if (ds) {
+                  item.lineDash = ds.borderDash || [];
+                  item.lineWidth = ds.borderWidth || 2;
+                  item.strokeStyle = ds.borderColor;
+                }
+                return item;
+              });
+            }
+          }
+        },
         tooltip: {
           callbacks: {
             afterBody: (items) => {
@@ -1485,7 +1509,7 @@ function renderDiseaseChart() {
           label: 'PM2.5 Rata-rata (Sumbu Kiri)',
           data: trend.asthma_emergency_cases?.pm25 || [],
           borderColor: '#ef4444',
-          backgroundColor: 'rgba(239, 68, 68, 0.1)',
+          backgroundColor: 'transparent',
           yAxisID: 'y1',
           borderWidth: 2.5,
           tension: 0.3
@@ -1494,6 +1518,7 @@ function renderDiseaseChart() {
           label: 'Kasus IGD Asma (Sumbu Kanan)',
           data: trend.asthma_emergency_cases?.outcome || [],
           borderColor: '#3b82f6',
+          backgroundColor: 'transparent',
           yAxisID: 'y2',
           borderWidth: 2,
           tension: 0.3
@@ -1502,6 +1527,7 @@ function renderDiseaseChart() {
           label: 'Admisi PPOK (Sumbu Kanan)',
           data: trend.copd_admissions?.outcome || [],
           borderColor: '#10b981',
+          backgroundColor: 'transparent',
           yAxisID: 'y2',
           borderWidth: 2,
           tension: 0.3
@@ -1510,6 +1536,7 @@ function renderDiseaseChart() {
           label: 'Kardiovaskular (CVD)',
           data: trend.cvd?.outcome || [],
           borderColor: '#8b5cf6',
+          backgroundColor: 'transparent',
           yAxisID: 'y2',
           borderWidth: 2,
           borderDash: [4, 4],
@@ -1521,7 +1548,29 @@ function renderDiseaseChart() {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: { labels: { color: '#64748b' } }
+        legend: {
+          position: 'top',
+          labels: {
+            usePointStyle: true,
+            boxWidth: 26,
+            color: '#475569',
+            padding: 12,
+            font: { size: 11, weight: '500' },
+            generateLabels: (chart) => {
+              const original = Chart.defaults.plugins.legend.labels.generateLabels(chart);
+              return original.map(item => {
+                item.pointStyle = 'line';
+                const ds = chart.data.datasets[item.datasetIndex];
+                if (ds) {
+                  item.lineDash = ds.borderDash || [];
+                  item.lineWidth = ds.borderWidth || 2;
+                  item.strokeStyle = ds.borderColor;
+                }
+                return item;
+              });
+            }
+          }
+        }
       },
       scales: {
         x: { grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#64748b' } },
@@ -1764,11 +1813,11 @@ function renderPriorityMatrix() {
       <table class="data-table">
         <thead>
           <tr>
-            <th>Tingkat Prioritas</th>
-            <th>Lokasi / Wilayah Target</th>
-            <th>Wilayah / Pulau</th>
-            <th>Masalah Utama</th>
-            <th>Rekomendasi Kebijakan Tindakan</th>
+            <th style="font-size:0.75rem; font-weight:700; color:#1e293b;">Tingkat Prioritas</th>
+            <th style="font-size:0.75rem; font-weight:700; color:#1e293b;">Lokasi / Wilayah Target</th>
+            <th style="font-size:0.75rem; font-weight:700; color:#1e293b;">Wilayah / Pulau</th>
+            <th style="font-size:0.75rem; font-weight:700; color:#1e293b;">Masalah Utama</th>
+            <th style="font-size:0.75rem; font-weight:700; color:#1e293b;">Rekomendasi Kebijakan Tindakan</th>
           </tr>
         </thead>
         <tbody>
@@ -1779,10 +1828,10 @@ function renderPriorityMatrix() {
     html += `
       <tr>
         <td><span class="priority-badge ${pClass}">Prioritas ${item.priority}: ${item.priority_label}</span></td>
-        <td style="font-weight:600; color:#f1f5f9;">${item.label}</td>
-        <td>${item.island || '-'}</td>
-        <td style="color:#f59e0b;">${item.issue}</td>
-        <td style="color:#cbd5e1; font-weight:500;">${item.recommendation}</td>
+        <td style="font-weight:700; color:#0f172a; font-size:0.88rem; letter-spacing:-0.2px;">${item.label}</td>
+        <td style="color:#334155; font-weight:600; font-size:0.82rem;">${item.island || '-'}</td>
+        <td style="color:#b45309; font-weight:600; font-size:0.82rem;">${item.issue}</td>
+        <td style="color:#1d4ed8; font-weight:600; font-size:0.84rem; white-space:normal; line-height:1.45;">${item.recommendation}</td>
       </tr>
     `;
   });
