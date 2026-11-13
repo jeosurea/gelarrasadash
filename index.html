@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   
   <!-- Custom Stylesheet -->
-  <link rel="stylesheet" href="assets/css/style.css?v=4.0">
+  <link rel="stylesheet" href="assets/css/style.css?v=5.12">
 </head>
 <body>
 
@@ -33,16 +33,8 @@
       </div>
     </div>
 
-    <!-- Filter & Standardized Toggle Controls -->
+    <!-- Filter Controls & Partner Brand -->
     <div class="navbar-controls">
-      <div class="filter-group">
-        <span class="filter-label">Filter Unit:</span>
-        <div class="toggle-group">
-          <button id="toggleAllStations" class="toggle-btn active" title="Tampilkan seluruh 27 stasiun termasuk estimasi logger">Semua Stasiun</button>
-          <button id="toggleStdOnly" class="toggle-btn" title="Hanya stasiun terstandardisasi (µg/m³ asli tanpa konversi logger)">Standardisasi Saja</button>
-        </div>
-      </div>
-
       <div class="filter-group">
         <span class="filter-label">Status Audit:</span>
         <select id="statusFilterSelect" class="filter-select">
@@ -51,6 +43,10 @@
           <option value="CAUTION">CAUTION</option>
           <option value="EXCLUDED">EXCLUDED</option>
         </select>
+      </div>
+      <div class="navbar-divider"></div>
+      <div class="navbar-partner-wrap" title="Gelar Rasa 2026">
+        <img src="assets/img/logo-gelar-rasa.png" alt="Logo Gelar Rasa 2026" class="navbar-partner-logo">
       </div>
     </div>
   </header>
@@ -65,22 +61,20 @@
         <button class="tab-btn active" data-tab="tab1">
           <span class="tab-number">1</span>
           <div class="tab-btn-text">
-            <span class="tab-title">Panorama Spatiotemporal & Episode Kritis</span>
-            <span class="tab-desc">Sebaran Spasial & Siklus Musiman</span>
+            <span class="tab-title">KONDISI POLUSI INDONESIA</span>
           </div>
         </button>
         <button class="tab-btn" data-tab="tab2">
           <span class="tab-number">2</span>
           <div class="tab-btn-text">
-            <span class="tab-title">Pendorong Lingkungan, Meteorologi, & Emisi Transportasi</span>
-            <span class="tab-desc">Mawar Polusi & Dampak Kesehatan</span>
+            <span class="tab-title">FAKTOR PENDORONG & DAMPAK</span>
           </div>
         </button>
         <button class="tab-btn" data-tab="tab3">
           <span class="tab-number">3</span>
           <div class="tab-btn-text">
-            <span class="tab-title">Audit Integritas Jaringan Pemantauan AQMS Nasional</span>
-            <span class="tab-desc">QA/QC, Keandalan Sensor & Rekomendasi Preskriptif</span>
+            <span class="tab-title">EVALUASI STASIUN PEMANTAUAN</span>
+
           </div>
         </button>
       </nav>
@@ -157,7 +151,7 @@
       </div>
 
       <!-- Map & Leaderboard Section -->
-      <div class="chart-grid span-2 mb-lg" style="grid-template-columns: 2fr 1fr;">
+      <div class="chart-grid span-2 mb-lg map-leaderboard-grid">
         <!-- Spatial Interactive Map -->
         <div class="chart-card">
           <div class="chart-card-header">
@@ -195,7 +189,7 @@
         </div>
 
         <!-- City Leaderboard Ranking -->
-        <div class="chart-card">
+        <div class="chart-card map-leaderboard-card">
           <div class="chart-card-header">
             <div>
               <div class="chart-title">Peringkat Kualitas Udara Stasiun</div>
@@ -395,7 +389,7 @@
               Puncak Risiko: Hari ke 1 - 3 (Lag 1-3)
             </div>
           </div>
-          <div class="chart-container" style="height:300px;">
+          <div class="chart-container" style="height:360px;">
             <canvas id="lagEffectChart"></canvas>
           </div>
         </div>
@@ -408,7 +402,7 @@
               <div class="chart-subtitle">Admisi respiratorik RS pada kuartil polusi rendah vs ekstrem</div>
             </div>
           </div>
-          <div class="chart-container" style="height:300px;">
+          <div class="chart-container" style="height:360px;">
             <canvas id="vulnerableGroupsChart"></canvas>
           </div>
         </div>
@@ -490,15 +484,6 @@
             <div class="chart-title">Keandalan Sensor dari Waktu ke Waktu</div>
             <div class="chart-subtitle">Distribusi kelengkapan data per jam (data completeness) bulanan seluruh stasiun AQMS (Januari 2024 &ndash; Oktober 2026)</div>
           </div>
-          <div class="chart-filter-row">
-            <span class="filter-label">Filter Status:</span>
-            <select id="reliabilityStatusFilter" class="filter-select select-wide" aria-label="Filter Status Keandalan Stasiun">
-              <option value="ALL" selected>Semua Status (27 Stasiun Lengkap)</option>
-              <option value="OK">Status OK (21 Stasiun Kualitas Baik)</option>
-              <option value="CAUTION">Status CAUTION (5 Stasiun Dalam Perhatian)</option>
-              <option value="EXCLUDED">Status EXCLUDED (1 Stasiun Non-aktif / Out-of-Period)</option>
-            </select>
-          </div>
         </div>
 
         <!-- Ringkasan Kelengkapan Keseluruhan & Titik Terendah -->
@@ -527,7 +512,7 @@
 
         <!-- Edukasi / Konteks Metrik -->
         <div class="reliability-disclaimer-banner">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; color:#38bdf8;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; color:#0284c7;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
           <span><strong>Catatan Metodologis:</strong> Metrik ini mengukur <strong>ketersediaan data</strong> (rasio jam pengamatan PM2.5 valid terhadap jam kalender yang diharapkan, dengan penyesuaian penyebut pada bulan parsial Oktober 2026 sebanyak 14 hari = 336 jam), <strong>bukan diagnosis kerusakan fisik sensor</strong>. Penurunan nilai dapat disebabkan oleh pemeliharaan berkala, siklus kalibrasi berkala, transmisi telemetri GSM, atau gangguan daya lokal.</span>
         </div>
 
@@ -550,27 +535,17 @@
         </div>
       </div>
       
-      <!-- Sensitivity Test Interactive Slider (Error Bar / Uncertainty Band) -->
-      <div class="sensitivity-control">
-        <div class="sensitivity-header">
-          <div>
-            <h3 style="font-size:1rem; font-weight:700; color:#f1f5f9; display:flex; align-items:center; gap:8px;">
-              <span>Uji Sensitivitas Interaktif: Rentang Ketidakpastian Faktor Konversi Logger (800× — 1200×)</span>
-            </h3>
-            <div style="font-size:0.78rem; color:#94a3b8; margin-top:4px;">
-              Menguji ketahanan metodologis untuk stasiun <strong>Medan, Banjarbaru, dan Pesawaran</strong>: Tunjukkan kepada juri bahwa meskipun faktor kalibrasi digeser &plusmn;20%, kualitas udara tetap melampaui baku mutu PP 22/2021 & WHO.
-            </div>
-          </div>
-          <div class="sensitivity-value" id="sensitivityFactorVal">1000×</div>
+            <!-- Catatan Metodologi & Temuan Audit (menggantikan uji sensitivitas interaktif) -->
+      <div class="audit-methodology-callout">
+        <div class="callout-icon-wrap">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
         </div>
-
-        <div class="sensitivity-slider-container">
-          <span style="font-size:0.75rem; color:#94a3b8;">800× (-20%)</span>
-          <input type="range" id="sensitivitySlider" class="sensitivity-slider" min="800" max="1200" step="50" value="1000">
-          <span style="font-size:0.75rem; color:#94a3b8;">1200× (+20%)</span>
+        <div class="callout-body">
+          <strong>Catatan Metodologi &amp; Temuan Audit:</strong>
+          <p>3 stasiun konversi logger (Medan, Banjarbaru, Pesawaran) telah melalui uji sensitivitas pada rentang ketidakpastian &plusmn;20% (faktor 800&times; hingga 1200&times;). <strong>Temuan:</strong> konsentrasi PM2.5 tetap konsisten melampaui Baku Mutu Nasional PP 22/2021 (55 &micro;g/m&sup3;) dan Pedoman Kualitas Udara WHO (15 &micro;g/m&sup3;) di seluruh skenario kalibrasi yang diuji. Metrik keandalan sensor mengukur ketersediaan data, bukan diagnosis kerusakan perangkat secara langsung.</p>
         </div>
-
-        <div class="sensitivity-results" id="sensitivityResultsContainer"></div>
       </div>
 
       <!-- Priority Matrix for Decision Support -->
@@ -605,6 +580,6 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   
   <!-- Dashboard Main Logic -->
-  <script src="assets/js/dashboard.js?v=4.0"></script>
+  <script src="assets/js/dashboard.js?v=5.12"></script>
 </body>
 </html>

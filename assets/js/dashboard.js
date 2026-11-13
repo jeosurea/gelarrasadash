@@ -6,9 +6,7 @@
 // Global State
 const state = {
   currentTab: 'tab1',
-  filterStandardizedOnly: false,
   statusFilter: 'ALL', // 'ALL', 'OK', 'CAUTION', 'EXCLUDED'
-  sensitivityFactor: 1.0,
   data: {},
   charts: {},
   map: null,
@@ -37,7 +35,6 @@ const DATA_PATHS = {
   islands: 'data/json/island_distribution.json',
   priority: 'data/json/priority_matrix.json',
   gap: 'data/json/gap_analysis.json',
-  sensitivity: 'data/json/sensitivity_data.json'
 };
 
 // Color Utilities
@@ -70,10 +67,24 @@ function getStationRepresentativenessRadius(siteType) {
 }
 
 // Initialization
+// Chart.js Light Mode Defaults
+if (typeof Chart !== 'undefined') {
+  Chart.defaults.color = '#64748b';
+  Chart.defaults.font.family = "'Inter', sans-serif";
+  Chart.defaults.plugins.tooltip.backgroundColor = '#0f172a';
+  Chart.defaults.plugins.tooltip.titleColor = '#ffffff';
+  Chart.defaults.plugins.tooltip.bodyColor = '#e2e8f0';
+  Chart.defaults.plugins.tooltip.borderColor = '#334155';
+  Chart.defaults.plugins.tooltip.borderWidth = 1;
+  Chart.defaults.plugins.tooltip.cornerRadius = 8;
+  Chart.defaults.plugins.tooltip.padding = 10;
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   setupSidebarToggle();
   setupTabEvents();
   setupFilterEvents();
+  setupBufferEvents();
   setupReliabilityEvents();
   await loadAllData();
   document.getElementById('loadingOverlay').classList.add('hidden');
@@ -175,52 +186,39 @@ function setupTabEvents() {
 
 // Setup Filters
 function setupFilterEvents() {
-  const toggleAll = document.getElementById('toggleAllStations');
-  const toggleStd = document.getElementById('toggleStdOnly');
   const auditSelect = document.getElementById('statusFilterSelect');
-  const slider = document.getElementById('sensitivitySlider');
-
-  if (toggleAll && toggleStd) {
-    toggleAll.addEventListener('click', () => {
-      toggleAll.classList.add('active');
-      toggleStd.classList.remove('active');
-      state.filterStandardizedOnly = false;
-      applyFilters();
-    });
-
-    toggleStd.addEventListener('click', () => {
-      toggleStd.classList.add('active');
-      toggleAll.classList.remove('active');
-      state.filterStandardizedOnly = true;
-      applyFilters();
-    });
-  }
-
   if (auditSelect) {
     auditSelect.addEventListener('change', (e) => {
       state.statusFilter = e.target.value;
       applyFilters();
     });
   }
+}
 
-  if (slider) {
-    slider.addEventListener('input', (e) => {
-      const val = parseInt(e.target.value);
-      state.sensitivityFactor = val / 1000;
-      document.getElementById('sensitivityFactorVal').innerText = val + '×';
-      updateSensitivityUI(val);
+function setupBufferEvents() {
+  const bufferOn = document.getElementById('bufferOnButton');
+  const bufferOff = document.getElementById('bufferOffButton');
+  const bufferRadius = document.getElementById('bufferRadiusSelect');
+
+  if (bufferOn) {
+    bufferOn.addEventListener('click', () => setBufferEnabled(true));
+  }
+  if (bufferOff) {
+    bufferOff.addEventListener('click', () => setBufferEnabled(false));
+  }
+  if (bufferRadius) {
+    bufferRadius.addEventListener('change', (e) => {
+      state.bufferRadius = e.target.value;
+      updateBufferControls();
+      if (state.bufferEnabled) {
+        renderMap();
+      }
     });
   }
+  updateBufferControls();
 }
 
 function setupReliabilityEvents() {
-  const statusFilter = document.getElementById('reliabilityStatusFilter');
-  if (statusFilter) {
-    statusFilter.addEventListener('change', () => {
-      renderSensorReliabilityHeatmap();
-    });
-  }
-
   // Setup floating tooltip for reliability heatmap
   let tooltip = document.getElementById('reliabilityTooltip');
   if (!tooltip) {
@@ -328,6 +326,7 @@ function applyFilters() {
   renderSiteTypeChart();
   renderTrafficScatter();
   renderAuditTable();
+  renderSensorReliabilityHeatmap();
 }
 
 function renderDashboard() {
@@ -352,9 +351,6 @@ function renderDashboard() {
   renderGapAnalysisChart();
   renderPriorityMatrix();
   renderSensorReliabilityHeatmap();
-
-  // Sensitivity
-  initSensitivity();
 }
 
 // ==============================================================
@@ -372,9 +368,8 @@ function renderKPIs() {
   let whoVal = kpi.compliance_who_pct;
 
   // Jika ada filter aktif (misal Standardisasi Saja atau Status), hitung ulang secara dinamis
-  if (state.data.stations && (state.filterStandardizedOnly || state.statusFilter !== 'ALL')) {
+  if (state.data.stations && state.statusFilter !== 'ALL') {
     const activeStations = state.data.stations.filter(s => {
-      if (state.filterStandardizedOnly && s.pm_from_ppm) return false;
       if (state.statusFilter !== 'ALL' && s.status !== state.statusFilter) return false;
       return true;
     });
@@ -498,12 +493,12 @@ function initMap() {
     maxZoom: 10
   }).setView([-1.5, 118.0], 5);
 
-  // Esri World Dark Gray Canvas tiles (Clean dark theme, no watermark, 100% free without API key)
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+  // Esri World Light Gray Canvas (Official Esri, 100% Free, NO API Key, NO Watermark)
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
     attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ | Data: AQMS KLHK',
     maxZoom: 16
   }).addTo(state.map);
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}', {
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}', {
     maxZoom: 16
   }).addTo(state.map);
 
@@ -520,7 +515,6 @@ function renderMap() {
   state.mapBuffers = [];
 
   const stations = state.data.stations.filter(s => {
-    if (state.filterStandardizedOnly && s.pm_from_ppm) return false;
     if (state.statusFilter !== 'ALL' && s.status !== state.statusFilter) return false;
     return true;
   });
@@ -533,11 +527,11 @@ function renderMap() {
         : Number(state.bufferRadius);
       const buffer = L.circle([s.lat, s.lng], {
         radius: radiusMeters,
-        color: '#38bdf8',
+        color: '#2563eb',
         weight: 1.5,
         opacity: 0.85,
-        fillColor: '#38bdf8',
-        fillOpacity: 0.12,
+        fillColor: '#3b82f6',
+        fillOpacity: 0.15,
         dashArray: '4, 4',
         interactive: false
       }).addTo(state.map);
@@ -626,7 +620,7 @@ function renderSensorReliabilityHeatmap() {
 
   const summary = data.summary;
   const months = data.months;
-  const statusFilter = document.getElementById('reliabilityStatusFilter')?.value || 'ALL';
+  const statusFilter = state.statusFilter;
 
   // 1. Update KPI Summary
   const netValEl = document.getElementById('netCompletenessVal');
@@ -727,9 +721,7 @@ function renderRankingList() {
   if (!container || !state.data.stations) return;
 
   let list = [...state.data.stations].filter(s => s.pm25_avg !== null);
-  if (state.filterStandardizedOnly) {
-    list = list.filter(s => !s.pm_from_ppm);
-  }
+
   if (state.statusFilter !== 'ALL') {
     list = list.filter(s => s.status === state.statusFilter);
   }
@@ -737,7 +729,7 @@ function renderRankingList() {
   // Sort descending by PM2.5
   list.sort((a, b) => b.pm25_avg - a.pm25_avg);
 
-  let html = `<div style="max-height: 420px; overflow-y: auto; padding-right: 6px;">`;
+  let html = `<div class="ranking-scroll-container">`;
   list.forEach((stn, idx) => {
     const isLogger = stn.pm_from_ppm;
     const badge = isLogger ? `<span class="badge badge-logger" title="Sensor datalogger ppm dikonversi ke ug/m3">* [Konversi Logger]</span>` : '';
@@ -745,7 +737,7 @@ function renderRankingList() {
     const exceedsWHO = stn.pm25_avg > 15;
 
     html += `
-      <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 12px; margin-bottom:6px; background:rgba(255,255,255,0.03); border-radius:6px; border-left:3px solid ${getAQIColor(stn.pm25_avg)};">
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 12px; margin-bottom:6px; background:#f8f9fc; border:1px solid #e2e8f0; border-radius:8px; border-left:4px solid ${getAQIColor(stn.pm25_avg)};">
         <div style="display:flex; align-items:center; gap:8px;">
           <span style="font-family:'JetBrains Mono'; font-size:0.75rem; color:#64748b; width:22px;">#${idx+1}</span>
           <div>
@@ -817,7 +809,7 @@ function renderTrendMonthly() {
       maintainAspectRatio: false,
       interaction: { mode: 'index', intersect: false },
       plugins: {
-        legend: { labels: { color: '#94a3b8', font: { size: 10 } } },
+        legend: { labels: { color: '#64748b', font: { size: 10 } } },
         tooltip: {
           callbacks: {
             footer: (items) => {
@@ -830,11 +822,11 @@ function renderTrendMonthly() {
         }
       },
       scales: {
-        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
+        x: { grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#64748b' } },
         y: {
-          grid: { color: 'rgba(255,255,255,0.05)' },
-          ticks: { color: '#94a3b8' },
-          title: { display: true, text: 'Konsentrasi PM2.5 (µg/m³)', color: '#94a3b8' }
+          grid: { color: 'rgba(0,0,0,0.06)' },
+          ticks: { color: '#64748b' },
+          title: { display: true, text: 'Konsentrasi PM2.5 (µg/m³)', color: '#64748b' }
         }
       }
     }
@@ -917,7 +909,7 @@ function renderSiteTypeChart() {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: { labels: { color: '#94a3b8' } },
+        legend: { labels: { color: '#64748b' } },
         tooltip: {
           callbacks: {
             afterBody: (items) => {
@@ -931,11 +923,11 @@ function renderSiteTypeChart() {
         }
       },
       scales: {
-        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
+        x: { grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#64748b' } },
         y: {
-          grid: { color: 'rgba(255,255,255,0.05)' },
-          ticks: { color: '#94a3b8' },
-          title: { display: true, text: 'Median PM2.5 (µg/m³)', color: '#94a3b8' }
+          grid: { color: 'rgba(0,0,0,0.06)' },
+          ticks: { color: '#64748b' },
+          title: { display: true, text: 'Median PM2.5 (µg/m³)', color: '#64748b' }
         }
       }
     }
@@ -976,7 +968,7 @@ function renderCorrelationMatrix() {
     html += `<tr><td>${getLabel(cols[i])}</td>`;
     row.forEach((val, j) => {
       let bg = 'transparent';
-      let textColor = '#94a3b8';
+      let textColor = '#475569';
       if (val !== null) {
         if (val > 0) {
           const alpha = Math.min(0.85, Math.abs(val));
@@ -1074,7 +1066,7 @@ function renderWindRose() {
       gridHtml += `
         <div class="rose-grid-cell ${isMax ? 'highlight' : ''}">
           <div class="rose-grid-dir">${d}</div>
-          <div class="rose-grid-val" style="color: ${color};">${val > 0 ? val.toFixed(1) + '<span style="font-size:0.58rem;font-weight:normal;color:#94a3b8;margin-left:2px;">µg/m³</span>' : '-'}</div>
+          <div class="rose-grid-val" style="color: ${color};">${val > 0 ? val.toFixed(1) + '<span style="font-size:0.58rem;font-weight:normal;color:#64748b;margin-left:2px;">µg/m³</span>' : '-'}</div>
           <div class="rose-grid-sub">${cnt > 0 ? cnt.toLocaleString() + ' jam' : '0'}</div>
         </div>
       `;
@@ -1127,7 +1119,7 @@ function renderWindRose() {
           display: true,
           position: 'top',
           labels: {
-            color: '#94a3b8',
+            color: '#64748b',
             font: { size: 11, family: 'Inter' },
             boxWidth: 12
           }
@@ -1157,15 +1149,15 @@ function renderWindRose() {
           beginAtZero: true,
           min: 0,
           suggestedMax: suggestedMaxVal,
-          angleLines: { color: 'rgba(255,255,255,0.12)' },
-          grid: { color: 'rgba(255,255,255,0.08)' },
+          angleLines: { color: 'rgba(0,0,0,0.08)' },
+          grid: { color: 'rgba(0,0,0,0.08)' },
           pointLabels: {
-            color: '#cbd5e1',
+            color: '#475569',
             font: { size: 10, weight: 600, family: 'Inter' }
           },
           ticks: {
             backdropColor: 'transparent',
-            color: '#94a3b8',
+            color: '#64748b',
             font: { size: 9 },
             stepSize: Math.ceil(suggestedMaxVal / 4)
           }
@@ -1182,7 +1174,6 @@ function renderTrafficScatter() {
   if (!ctx || !state.data.traffic) return;
 
   let points = state.data.traffic.filter(d => d.distance_to_road_m && d.pm25_avg);
-  if (state.filterStandardizedOnly) points = points.filter(p => !p.is_logger);
 
   const scatterData = points.map(p => ({
     x: p.distance_to_road_m,
@@ -1217,7 +1208,7 @@ function renderTrafficScatter() {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: { labels: { color: '#94a3b8' } },
+        legend: { labels: { color: '#64748b' } },
         tooltip: {
           backgroundColor: '#0f172a',
           borderColor: 'rgba(255, 255, 255, 0.18)',
@@ -1244,14 +1235,14 @@ function renderTrafficScatter() {
       },
       scales: {
         x: {
-          grid: { color: 'rgba(255,255,255,0.05)' },
-          ticks: { color: '#94a3b8' },
-          title: { display: true, text: 'Jarak Stasiun ke Jalan Raya (meter)', color: '#94a3b8' }
+          grid: { color: 'rgba(0,0,0,0.06)' },
+          ticks: { color: '#64748b' },
+          title: { display: true, text: 'Jarak Stasiun ke Jalan Raya (meter)', color: '#64748b' }
         },
         y: {
-          grid: { color: 'rgba(255,255,255,0.05)' },
-          ticks: { color: '#94a3b8' },
-          title: { display: true, text: 'Konsentrasi Rata-rata PM2.5 (µg/m³)', color: '#94a3b8' }
+          grid: { color: 'rgba(0,0,0,0.06)' },
+          ticks: { color: '#64748b' },
+          title: { display: true, text: 'Konsentrasi Rata-rata PM2.5 (µg/m³)', color: '#64748b' }
         }
       }
     }
@@ -1312,7 +1303,7 @@ function renderLagEffectChart() {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: { labels: { color: '#94a3b8' } },
+        legend: { labels: { color: '#64748b' } },
         tooltip: {
           callbacks: {
             afterBody: (items) => {
@@ -1324,11 +1315,11 @@ function renderLagEffectChart() {
         }
       },
       scales: {
-        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
+        x: { grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#64748b' } },
         y: {
-          grid: { color: 'rgba(255,255,255,0.05)' },
-          ticks: { color: '#94a3b8' },
-          title: { display: true, text: 'Koefisien Korelasi Pearson (r)', color: '#94a3b8' }
+          grid: { color: 'rgba(0,0,0,0.06)' },
+          ticks: { color: '#64748b' },
+          title: { display: true, text: 'Koefisien Korelasi Pearson (r)', color: '#64748b' }
         }
       }
     }
@@ -1350,34 +1341,80 @@ function renderVulnerableChart() {
   state.charts.vulnerable = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: tiers.map(t => `Kuartil Polusi ${t} (${data[t]?.pm25_range.min}-${data[t]?.pm25_range.max} µg/m³)`),
+      labels: tiers.map(t => [
+        `Kuartil ${t}`,
+        `(${data[t]?.pm25_range.min.toFixed(1)} - ${data[t]?.pm25_range.max.toFixed(1)} µg/m³)`
+      ]),
       datasets: [
         {
           label: 'Admisi Respiratorik Balita (<5 Thn)',
           data: under5,
           backgroundColor: '#ef4444',
-          borderRadius: 4
+          borderRadius: 6,
+          barPercentage: 0.82,
+          categoryPercentage: 0.78
         },
         {
           label: 'Admisi Respiratorik Lansia (>60 Thn)',
           data: over60,
           backgroundColor: '#f59e0b',
-          borderRadius: 4
+          borderRadius: 6,
+          barPercentage: 0.82,
+          categoryPercentage: 0.78
         }
       ]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      layout: {
+        padding: {
+          left: 4,
+          right: 12,
+          top: 6,
+          bottom: 4
+        }
+      },
       plugins: {
-        legend: { labels: { color: '#94a3b8' } }
+        legend: {
+          position: 'top',
+          labels: {
+            color: '#64748b',
+            boxWidth: 12,
+            padding: 12,
+            font: { size: 11, weight: 600 }
+          }
+        },
+        tooltip: {
+          callbacks: {
+            title: (items) => {
+              const idx = items[0].dataIndex;
+              const t = tiers[idx];
+              return `Kuartil Polusi ${t} (${data[t]?.pm25_range.min}-${data[t]?.pm25_range.max} µg/m³)`;
+            }
+          }
+        }
       },
       scales: {
-        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8', font: { size: 10 } } },
+        x: {
+          grid: { color: 'rgba(0,0,0,0.06)' },
+          ticks: {
+            color: '#64748b',
+            font: { size: 10, weight: 600 },
+            maxRotation: 0,
+            minRotation: 0,
+            autoSkip: false
+          }
+        },
         y: {
-          grid: { color: 'rgba(255,255,255,0.05)' },
-          ticks: { color: '#94a3b8' },
-          title: { display: true, text: 'Rata-rata Pasien Rawat Inap / Hari', color: '#94a3b8' }
+          grid: { color: 'rgba(0,0,0,0.06)' },
+          ticks: { color: '#64748b', font: { size: 10 } },
+          title: {
+            display: true,
+            text: 'Rata-rata Pasien Rawat Inap / Hari',
+            color: '#64748b',
+            font: { size: 11, weight: 600 }
+          }
         }
       }
     }
@@ -1438,14 +1475,14 @@ function renderDiseaseChart() {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: { labels: { color: '#94a3b8' } }
+        legend: { labels: { color: '#64748b' } }
       },
       scales: {
-        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
+        x: { grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#64748b' } },
         y1: {
           type: 'linear',
           position: 'left',
-          grid: { color: 'rgba(255,255,255,0.05)' },
+          grid: { color: 'rgba(0,0,0,0.06)' },
           ticks: { color: '#ef4444' },
           title: { display: true, text: 'PM2.5 (µg/m³)', color: '#ef4444' }
         },
@@ -1489,7 +1526,7 @@ function renderAuditCharts() {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: { position: 'bottom', labels: { color: '#94a3b8' } }
+        legend: { position: 'bottom', labels: { color: '#64748b' } }
       },
       cutout: '70%'
     }
@@ -1501,9 +1538,7 @@ function renderAuditTable() {
   if (!container || !state.data.audit) return;
 
   let stations = state.data.audit.stations;
-  if (state.filterStandardizedOnly) {
-    stations = stations.filter(s => !s.is_logger);
-  }
+
   if (state.statusFilter !== 'ALL') {
     stations = stations.filter(s => s.status === state.statusFilter);
   }
@@ -1575,14 +1610,14 @@ function renderIslandDistribution() {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: { labels: { color: '#94a3b8' } }
+        legend: { labels: { color: '#64748b' } }
       },
       scales: {
-        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
+        x: { grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#64748b' } },
         y: {
-          grid: { color: 'rgba(255,255,255,0.05)' },
-          ticks: { color: '#94a3b8' },
-          title: { display: true, text: 'Jumlah Stasiun AQMS', color: '#94a3b8' }
+          grid: { color: 'rgba(0,0,0,0.06)' },
+          ticks: { color: '#64748b' },
+          title: { display: true, text: 'Jumlah Stasiun AQMS', color: '#64748b' }
         }
       }
     }
@@ -1627,7 +1662,7 @@ function renderGapAnalysisChart() {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: { labels: { color: '#94a3b8' } },
+        legend: { labels: { color: '#64748b' } },
         tooltip: {
           backgroundColor: '#0f172a',
           borderColor: 'rgba(255, 255, 255, 0.18)',
@@ -1658,14 +1693,14 @@ function renderGapAnalysisChart() {
       },
       scales: {
         x: {
-          grid: { color: 'rgba(255,255,255,0.05)' },
-          ticks: { color: '#94a3b8' },
-          title: { display: true, text: 'Total Beban Kasus Respiratorik RS (Jiwa)', color: '#94a3b8' }
+          grid: { color: 'rgba(0,0,0,0.06)' },
+          ticks: { color: '#64748b' },
+          title: { display: true, text: 'Total Beban Kasus Respiratorik RS (Jiwa)', color: '#64748b' }
         },
         y: {
-          grid: { color: 'rgba(255,255,255,0.05)' },
-          ticks: { color: '#94a3b8' },
-          title: { display: true, text: 'Keandalan / Coverage Sensor (%)', color: '#94a3b8' }
+          grid: { color: 'rgba(0,0,0,0.06)' },
+          ticks: { color: '#64748b' },
+          title: { display: true, text: 'Keandalan / Coverage Sensor (%)', color: '#64748b' }
         }
       }
     }
@@ -1711,56 +1746,3 @@ function renderPriorityMatrix() {
 }
 
 // ==============================================================
-// SENSITIVITY TEST (INTERACTIVE SLIDER)
-// ==============================================================
-
-function initSensitivity() {
-  updateSensitivityUI(1000);
-}
-
-function updateSensitivityUI(factorVal) {
-  const container = document.getElementById('sensitivityResultsContainer');
-  if (!container || !state.data.sensitivity) return;
-
-  const sens = state.data.sensitivity;
-  const ratio = factorVal / 1000;
-
-  let html = '';
-  Object.keys(sens).forEach(stn => {
-    const item = sens[stn];
-    const adjPM25 = item.current_avg * ratio;
-    const exceedsPP22 = adjPM25 > 55;
-    const exceedsWHO = adjPM25 > 15;
-
-    html += `
-      <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:16px;">
-        <div style="font-weight:700; font-size:0.95rem; margin-bottom:4px;">${stn}</div>
-        <div style="font-size:0.75rem; color:#94a3b8; margin-bottom:12px;">Baseline Referensi: ${item.baseline_pm25} µg/m³</div>
-        
-        <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px;">
-          <span style="font-size:0.8rem; color:#94a3b8;">Estimasi PM2.5 (${factorVal}×):</span>
-          <span style="font-family:'JetBrains Mono'; font-weight:700; font-size:1.3rem; color:${getAQIColor(adjPM25)};">
-            ${adjPM25.toFixed(2)} <span style="font-size:0.75rem; font-weight:normal;">µg/m³</span>
-          </span>
-        </div>
-
-        <div style="margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.06); font-size:0.75rem; display:flex; flex-direction:column; gap:4px;">
-          <div style="display:flex; justify-content:space-between;">
-            <span>Baku Mutu PP 22/2021 (55 µg/m³):</span>
-            <span style="font-weight:600; color:${exceedsPP22 ? '#ef4444' : '#10b981'};">
-              ${exceedsPP22 ? 'Terlampaui' : 'Memenuhi'}
-            </span>
-          </div>
-          <div style="display:flex; justify-content:space-between;">
-            <span>Pedoman WHO (15 µg/m³):</span>
-            <span style="font-weight:600; color:${exceedsWHO ? '#ef4444' : '#10b981'};">
-              ${exceedsWHO ? 'Terlampaui' : 'Memenuhi'}
-            </span>
-          </div>
-        </div>
-      </div>
-    `;
-  });
-
-  container.innerHTML = html;
-}
