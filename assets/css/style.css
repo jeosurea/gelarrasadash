@@ -350,7 +350,7 @@ body::before {
   transition: all var(--transition-base);
   white-space: normal;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
   text-align: left;
   width: 100%;
@@ -377,15 +377,15 @@ body::before {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   border-radius: 6px;
   background: #f1f5f9;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   font-weight: 700;
   color: var(--text-muted);
   flex-shrink: 0;
-  margin-top: 1px;
+  margin-top: 0;
   transition: all var(--transition-base);
 }
 
@@ -402,8 +402,8 @@ body::before {
 }
 
 .tab-title {
-  font-size: 0.82rem;
-  font-weight: 600;
+  font-size: 0.95rem;
+  font-weight: 650;
   line-height: 1.35;
   color: inherit;
 }
