@@ -320,7 +320,7 @@ body::before {
 }
 
 .sidebar-section-title {
-  font-size: 0.68rem;
+  font-size: 1.2rem;
   font-weight: 700;
   color: var(--text-muted);
   text-transform: uppercase;
