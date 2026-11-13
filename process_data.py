@@ -348,37 +348,42 @@ correlation_data = {
 save_json(clean_nan(correlation_data), 'correlation_matrix.json')
 
 # ------ 8. Wind Pollution Rose ------
-# 16 arah mata angin
+# 16 arah mata angin dihitung dari data observasi per jam (hourly) untuk akurasi meteorologis
 def deg_to_direction(deg):
     dirs = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE',
             'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
     idx = int(round(deg / 22.5)) % 16
     return dirs[idx]
 
-daily['wind_dir_cat'] = pd.to_numeric(daily['wind_direction_deg'], errors='coerce').apply(
-    lambda x: deg_to_direction(x) if not np.isnan(x) else None
-)
+hourly_clean = hourly.dropna(subset=['wind_direction_deg', 'pm25']).copy()
+hourly_clean['wind_dir_cat'] = hourly_clean['wind_direction_deg'].apply(deg_to_direction)
+daily_clean = daily.dropna(subset=['wind_direction_deg', 'pm25']).copy()
+daily_clean['wind_dir_cat'] = daily_clean['wind_direction_deg'].apply(deg_to_direction)
 
-# Ambil beberapa stasiun menarik
-rose_stations = ['SM2-01_Samarinda', 'JKT-02_Marunda', 'KTG-01_PalangkaRaya',
-                 'BGR-01_Cisarua', 'PKU-01_Pekanbaru']
+rose_stations = sorted(stations['label'].dropna().unique().tolist())
 wind_rose = {}
 direction_order = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE',
                    'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
 
 for stn in rose_stations:
-    stn_data = daily[daily['station'] == stn]
+    sub_h = hourly_clean[hourly_clean['station'] == stn]
+    use_hourly = len(sub_h) >= 50
+    stn_data = sub_h if use_hourly else daily_clean[daily_clean['station'] == stn]
     if len(stn_data) == 0:
         continue
     rose_vals = []
+    agg = stn_data.groupby('wind_dir_cat')['pm25'].agg(['mean', 'count'])
     for d in direction_order:
-        subset = stn_data[stn_data['wind_dir_cat'] == d]
-        pm_avg = subset['pm25'].mean() if len(subset) > 0 else 0
-        count = len(subset)
+        if d in agg.index:
+            pm = round(float(agg.loc[d, 'mean']), 2)
+            cnt = int(agg.loc[d, 'count'])
+        else:
+            pm = 0.0
+            cnt = 0
         rose_vals.append({
             'direction': d,
-            'pm25_avg': round(float(pm_avg), 2) if not np.isnan(pm_avg) else 0,
-            'frequency': int(count)
+            'pm25_avg': pm,
+            'frequency': cnt
         })
     wind_rose[stn] = rose_vals
 
@@ -684,6 +689,127 @@ for stn in LOGGER_STATIONS:
         }
 
 save_json(clean_nan(sensitivity), 'sensitivity_data.json')
+
+# ------ 18. Sensor Reliability Heatmap (Keandalan Sensor dari Waktu ke Waktu) ------
+print("  Generating sensor_reliability_heatmap.json...")
+daily_copy = daily.copy()
+daily_copy['date'] = pd.to_datetime(daily_copy['date'])
+daily_copy['year_month'] = daily_copy['date'].dt.to_period('M').astype(str)
+
+all_months = sorted(daily_copy['year_month'].unique())
+month_meta = []
+month_expected = {}
+
+month_names_id = {
+    '01': 'Jan', '02': 'Feb', '03': 'Mar', '04': 'Apr',
+    '05': 'Mei', '06': 'Jun', '07': 'Jul', '08': 'Agu',
+    '09': 'Sep', '10': 'Okt', '11': 'Nov', '12': 'Des'
+}
+
+for ym in all_months:
+    sub = daily_copy[daily_copy['year_month'] == ym]
+    n_days = int(sub['date'].nunique())
+    eh = n_days * 24
+    month_expected[ym] = eh
+    cal_days = pd.Period(ym, freq='M').days_in_month
+    is_partial = n_days < cal_days
+    short_m = month_names_id.get(ym.split('-')[1], ym.split('-')[1])
+    short_y = ym.split('-')[0][2:]
+    
+    month_meta.append({
+        'key': ym,
+        'year': ym.split('-')[0],
+        'month_num': ym.split('-')[1],
+        'label': f"{short_m} '{short_y}",
+        'full_label': f"{short_m} {ym.split('-')[0]}",
+        'days': n_days,
+        'cal_days': cal_days,
+        'expected_hours': eh,
+        'is_partial': is_partial
+    })
+
+total_expected_per_stn = sum(month_expected.values())
+agg_hours = daily_copy.groupby(['station', 'year_month'])['n_hours_pm25'].sum().reset_index()
+
+stations_data = []
+lowest = {'completeness_pct': 999.0}
+
+for _, q in quality.iterrows():
+    stn_label = q['label']
+    loc_id = q['location_id']
+    stn_agg = agg_hours[agg_hours['station'] == stn_label].set_index('year_month')['n_hours_pm25'].to_dict()
+    
+    stn_valid = 0
+    monthly_records = []
+    
+    for mm in month_meta:
+        ym = mm['key']
+        vh = int(stn_agg.get(ym, 0))
+        eh = mm['expected_hours']
+        pct = round(min(100.0, (vh / eh * 100)), 1) if eh > 0 else 0.0
+        stn_valid += vh
+        
+        monthly_records.append({
+            'month': ym,
+            'label': mm['label'],
+            'full_label': mm['full_label'],
+            'valid_hours': vh,
+            'expected_hours': eh,
+            'completeness_pct': pct
+        })
+        
+        if q['status'] != 'EXCLUDED' and pct < lowest['completeness_pct']:
+            lowest = {
+                'station': stn_label,
+                'location_id': loc_id,
+                'status': q['status'],
+                'month': ym,
+                'month_label': mm['full_label'],
+                'valid_hours': vh,
+                'expected_hours': eh,
+                'completeness_pct': pct
+            }
+
+    stn_pct = round(min(100.0, (stn_valid / total_expected_per_stn * 100)), 1)
+    
+    stations_data.append({
+        'location_id': loc_id,
+        'station': stn_label,
+        'status': q['status'],
+        'island': q['island'],
+        'provinsi': q['provinsi'],
+        'site_type': q['site_type'],
+        'total_valid_hours': stn_valid,
+        'total_expected_hours': total_expected_per_stn,
+        'overall_completeness_pct': stn_pct,
+        'monthly': monthly_records
+    })
+
+status_order = {'OK': 1, 'CAUTION': 2, 'EXCLUDED': 3}
+stations_data.sort(key=lambda s: (status_order.get(s['status'], 9), s['station']))
+
+net_valid = sum(s['total_valid_hours'] for s in stations_data)
+net_expected = len(stations_data) * total_expected_per_stn
+net_pct = round(net_valid / net_expected * 100, 1)
+
+reliability_output = {
+    'summary': {
+        'network_valid_hours': net_valid,
+        'network_expected_hours': net_expected,
+        'overall_completeness_pct': net_pct,
+        'total_stations': len(stations_data),
+        'active_stations': sum(1 for s in stations_data if s['status'] != 'EXCLUDED'),
+        'excluded_stations': sum(1 for s in stations_data if s['status'] == 'EXCLUDED'),
+        'period_months': len(month_meta),
+        'start_month': month_meta[0]['full_label'],
+        'end_month': month_meta[-1]['full_label'],
+        'lowest_station_month': lowest
+    },
+    'months': month_meta,
+    'stations': stations_data
+}
+
+save_json(clean_nan(reliability_output), 'sensor_reliability_heatmap.json')
 
 # ============================================================
 # SELESAI

@@ -7,13 +7,13 @@
   
   <!-- Favicon / Meta -->
   <meta name="description" content="Dashboard Eksekutif & Analisis Spatiotemporal Kualitas Udara Indonesia (AQMS), Dampak Kesehatan Rentan, dan Rekomendasi Jaringan Pemantau.">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍃</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22 font-weight=%22bold%22 fill=%22%2310b981%22>AQ</text></svg>">
 
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   
   <!-- Custom Stylesheet -->
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/style.css?v=4.0">
 </head>
 <body>
 
@@ -26,7 +26,7 @@
   <!-- Header / Navigation Bar -->
   <header class="navbar">
     <div class="navbar-brand">
-      <div class="navbar-logo">AQ</div>
+      <div id="sidebarToggleBtn" class="navbar-logo" title="Klik logo AQ untuk sembunyikan/tampilkan menu navigasi" role="button" tabindex="0" aria-label="Toggle Sidebar Navigation">AQ</div>
       <div>
         <div class="navbar-title">AQMS NATIONAL ANALYTICS</div>
         <div class="navbar-subtitle">KLHK RI &bull; Decision Support & Intelligence System</div>
@@ -46,33 +46,63 @@
       <div class="filter-group">
         <span class="filter-label">Status Audit:</span>
         <select id="statusFilterSelect" class="filter-select">
-          <option value="ALL">Semua Status (OK, CAUTION, EXCLUDED)</option>
-          <option value="OK">Status OK Saja</option>
-          <option value="CAUTION">Status CAUTION (Peringatan)</option>
-          <option value="EXCLUDED">Status EXCLUDED (Nonaktif)</option>
+          <option value="ALL">Semua</option>
+          <option value="OK">OK</option>
+          <option value="CAUTION">CAUTION</option>
+          <option value="EXCLUDED">EXCLUDED</option>
         </select>
       </div>
     </div>
   </header>
 
-  <!-- 3 Tab Navigation Bar -->
-  <nav class="tab-nav">
-    <button class="tab-btn active" data-tab="tab1">
-      <span class="tab-number">1</span>
-      <span>Tab 1: Panorama Spatiotemporal & Episode Kritis</span>
-    </button>
-    <button class="tab-btn" data-tab="tab2">
-      <span class="tab-number">2</span>
-      <span>Tab 2: Faktor Pendorong & Dampak Kesehatan</span>
-    </button>
-    <button class="tab-btn" data-tab="tab3">
-      <span class="tab-number">3</span>
-      <span>Tab 3: Audit Jaringan & Rekomendasi Titik Baru</span>
-    </button>
-  </nav>
+  <!-- Dashboard Body with Sidebar Navigation -->
+  <div class="dashboard-body">
 
-  <!-- Main Dashboard Container -->
-  <main class="main-content">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar-nav">
+      <div class="sidebar-section-title">MODUL ANALISIS AQMS</div>
+      <nav class="tab-nav">
+        <button class="tab-btn active" data-tab="tab1">
+          <span class="tab-number">1</span>
+          <div class="tab-btn-text">
+            <span class="tab-title">Panorama Spatiotemporal & Episode Kritis</span>
+            <span class="tab-desc">Sebaran Spasial & Siklus Musiman</span>
+          </div>
+        </button>
+        <button class="tab-btn" data-tab="tab2">
+          <span class="tab-number">2</span>
+          <div class="tab-btn-text">
+            <span class="tab-title">Pendorong Lingkungan, Meteorologi, & Emisi Transportasi</span>
+            <span class="tab-desc">Mawar Polusi & Dampak Kesehatan</span>
+          </div>
+        </button>
+        <button class="tab-btn" data-tab="tab3">
+          <span class="tab-number">3</span>
+          <div class="tab-btn-text">
+            <span class="tab-title">Audit Integritas Jaringan Pemantauan AQMS Nasional</span>
+            <span class="tab-desc">QA/QC, Keandalan Sensor & Rekomendasi Preskriptif</span>
+          </div>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-status-box">
+          <div class="sidebar-status-title">STATUS JARINGAN</div>
+          <div class="sidebar-status-row">
+            <span class="status-pulse-dot"></span>
+            <span class="sidebar-status-text"><strong>26</strong> / 27 Stasiun Aktif</span>
+          </div>
+          <div class="sidebar-status-desc">Muaro Jambi: Offline (Sensor Rusak)</div>
+        </div>
+        <div class="sidebar-brand-credit">
+          <div>KLHK RI &bull; Gelarrasa 2026</div>
+          <div style="font-size:0.65rem; color:#64748b; margin-top:2px;">Intelligence & Decision Support</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Dashboard Container -->
+    <main class="main-content">
 
     <!-- ============================================================== -->
     <!-- TAB 1: PANORAMA SPATIOTEMPORAL & EPISODE KRITIS               -->
@@ -81,33 +111,37 @@
       
       <!-- KPI Executive Summary Cards -->
       <div class="kpi-grid">
-        <div class="kpi-card">
+        <div class="kpi-card" id="cardNationalPm25">
           <div class="kpi-card-header">
-            <div class="kpi-trend up">Konsentrasi PM2.5</div>
+            <span class="kpi-header-label">PM2.5</span>
+            <div class="kpi-trend" id="tagNationalPm25">35-55 Sensitif</div>
           </div>
           <div id="kpiNationalPm25" class="kpi-value" data-animate>0 <span class="unit">µg/m³</span></div>
           <div class="kpi-label">Rata-rata Nasional PM2.5</div>
         </div>
 
-        <div class="kpi-card">
+        <div class="kpi-card" id="cardIkuAvg">
           <div class="kpi-card-header">
-            <div class="kpi-trend down">Indeks Kualitas Udara</div>
+            <span class="kpi-header-label">IKU</span>
+            <div class="kpi-trend" id="tagIkuAvg">≥70 Baik (Target)</div>
           </div>
           <div id="kpiIkuAvg" class="kpi-value" data-animate>0 <span class="unit">IKU</span></div>
           <div class="kpi-label">Rata-rata IKU Nasional (Target >70)</div>
         </div>
 
-        <div class="kpi-card">
+        <div class="kpi-card" id="cardPp22Compliance">
           <div class="kpi-card-header">
-            <div class="kpi-trend down">Standar Baku Mutu</div>
+            <span class="kpi-header-label">PP 22/2021</span>
+            <div class="kpi-trend" id="tagPp22Compliance">Patuh Tinggi (Baik)</div>
           </div>
           <div id="kpiPp22Compliance" class="kpi-value" data-animate>0%</div>
           <div class="kpi-label">% Kepatuhan PP 22/2021 (≤55 µg/m³)</div>
         </div>
 
-        <div class="kpi-card">
+        <div class="kpi-card" id="cardWhoCompliance">
           <div class="kpi-card-header">
-            <div class="kpi-trend down">WHO Guideline</div>
+            <span class="kpi-header-label">WHO</span>
+            <div class="kpi-trend" id="tagWhoCompliance">Kritis (Hanya 11.5%)</div>
           </div>
           <div id="kpiWhoCompliance" class="kpi-value" data-animate>0%</div>
           <div class="kpi-label">% Kepatuhan WHO Annual (≤15 µg/m³)</div>
@@ -116,6 +150,7 @@
 
       <!-- Info Alert Box -->
       <div class="info-box mb-lg">
+        <div class="info-icon">i</div>
         <div>
           <strong>Metodologi Spatiotemporal:</strong> Data mencakup 27 stasiun pemantau AQMS di 5 kepulauan besar Indonesia. Stasiun <strong>Medan (MDN-01)</strong>, <strong>Banjarbaru (BJB-01)</strong>, dan <strong>Pesawaran (PSW-01)</strong> menggunakan penanda khusus <span class="badge badge-logger">[Konversi Logger]</span> karena data mentah ppm dikonversikan ke µg/m³ dengan rasio kalibrasi empiris 1000×.
         </div>
@@ -180,7 +215,7 @@
               <div class="chart-subtitle">Konsentrasi PM2.5 bulanan per pulau dibandingkan rata-rata nasional</div>
             </div>
             <div style="font-size:0.75rem; color:#ef4444; font-weight:600; background:rgba(239,68,68,0.1); padding:4px 10px; border-radius:4px;">
-               Puncak Lonjakan Polusi: Kemarau & Asap Gambut (Jul - Okt)
+              Puncak Lonjakan Polusi: Kemarau & Asap Gambut (Jul - Okt)
             </div>
           </div>
           <div class="chart-container" style="height:320px;">
@@ -236,24 +271,79 @@
         <span class="section-badge info">Zona Driver / Penyebab</span>
       </div>
 
-      <div class="chart-grid three-col mb-lg">
+      <div class="chart-grid mb-md">
         <!-- Wind Rose Polar -->
         <div class="chart-card">
-          <div class="chart-card-header">
-            <div>
+          <div class="chart-card-header chart-card-header-stacked">
+            <div class="chart-title-group">
               <div class="chart-title">Mawar Polusi (Pollution Rose)</div>
               <div class="chart-subtitle">Distribusi arah angin polar pembawa polutan pekat</div>
             </div>
-            <select id="windRoseStationSelect" class="filter-select">
-              <option value="SM2-01_Samarinda">Samarinda (Kaltim)</option>
-              <option value="JKT-02_Marunda">Jakarta Marunda</option>
-              <option value="KTG-01_PalangkaRaya">Palangka Raya (Gambut)</option>
-              <option value="PKU-01_Pekanbaru">Pekanbaru</option>
-              <option value="BGR-01_Cisarua">Cisarua (Baseline)</option>
-            </select>
+            <div class="chart-filter-row">
+              <span class="filter-label">Stasiun:</span>
+              <select id="windRoseStationSelect" class="filter-select select-wide" aria-label="Pilih Stasiun Mawar Polusi">
+                <option value="SM2-01_Samarinda" selected>Samarinda (Kaltim)</option>
+                <option value="JKT-01_Gambir">Jakarta Gambir (Pusat)</option>
+                <option value="JKT-02_Marunda">Jakarta Marunda (Pesisir/Industri)</option>
+                <option value="JKT-03_Cengkareng">Jakarta Cengkareng (Trafik/Barat)</option>
+                <option value="BGR-01_Cisarua">Cisarua Bogor (Baseline Pegunungan)</option>
+                <option value="BGR-02_Baranangsiang">Baranangsiang Bogor (Urban)</option>
+                <option value="BGL-01_Bengkulu">Bengkulu</option>
+                <option value="BJB-01_Banjarbaru">Banjarbaru (Kalsel)</option>
+                <option value="BTM-01_Batam">Batam (Kepri)</option>
+                <option value="IDP-01_Indrapuri">Indrapuri (Aceh Besar)</option>
+                <option value="JMB-01_KotaJambi">Kota Jambi</option>
+                <option value="KTB-01_Kototabang">Kototabang (Agam GAW)</option>
+                <option value="KTG-01_PalangkaRaya">Palangka Raya (Gambut Kalteng)</option>
+                <option value="KTG-02_Sampit">Sampit (Kotawaringin Timur)</option>
+                <option value="MDN-01_Medan">Medan (Sumatera Utara)</option>
+                <option value="MER-01_Merauke">Merauke (Papua Selatan)</option>
+                <option value="MLG-01_Malang">Malang (Jawa Timur)</option>
+                <option value="MRS-01_Maros">Maros (Sulawesi Selatan)</option>
+                <option value="PKN-01_PangkalanBun">Pangkalan Bun (Kalteng)</option>
+                <option value="PKU-01_Pekanbaru">Pekanbaru (Riau)</option>
+                <option value="PLB-01_TalangBetutu">Palembang Talang Betutu (Sumsel)</option>
+                <option value="PLU-01_LoreLindu">Lore Lindu (Poso Sulteng)</option>
+                <option value="PSW-01_Pesawaran">Pesawaran (Lampung)</option>
+                <option value="SRG-01_Sorong">Sorong (Papua Barat Daya)</option>
+                <option value="STG-01_Sintang">Sintang (Kalbar)</option>
+                <option value="YKY-01_Sleman">Sleman (DI Yogyakarta)</option>
+              </select>
+            </div>
           </div>
-          <div class="chart-container" style="height:280px;">
-            <canvas id="windRoseChart"></canvas>
+          <!-- Ringkasan Angka Kunci Arah Angin -->
+          <div class="wind-rose-metrics" id="windRoseMetrics">
+            <div class="rose-metric-item">
+              <span class="rose-metric-label">Polutan Tertinggi</span>
+              <span class="rose-metric-val max" id="roseMaxVal">-</span>
+            </div>
+            <div class="rose-metric-item">
+              <span class="rose-metric-label">Rata-rata Stasiun</span>
+              <span class="rose-metric-val avg" id="roseAvgVal">-</span>
+            </div>
+            <div class="rose-metric-item">
+              <span class="rose-metric-label">Angin Terbersih</span>
+              <span class="rose-metric-val min" id="roseMinVal">-</span>
+            </div>
+            <div class="rose-metric-item">
+              <span class="rose-metric-label">Arah Terbanyak</span>
+              <span class="rose-metric-val freq" id="roseFreqVal">-</span>
+            </div>
+          </div>
+
+          <div id="windRoseInsight" class="wind-rose-insight">Memuat analisis arah angin...</div>
+
+          <!-- Body Split: Kiri Chart Radar, Kanan Nilai Konsentrasi PM2.5 per Sektor -->
+          <div class="wind-rose-body-split">
+            <div class="wind-rose-chart-pane">
+              <div class="chart-container" style="height:270px; min-height:270px; position: relative;">
+                <canvas id="windRoseChart"></canvas>
+              </div>
+            </div>
+            <div class="wind-rose-side-pane">
+              <div class="wind-rose-grid-title" style="font-size:0.68rem; font-weight:700; color:var(--text-muted); margin-bottom:6px; text-transform:uppercase; letter-spacing:0.5px;">Nilai Konsentrasi PM2.5 per Sektor:</div>
+              <div class="wind-rose-grid" id="windRoseDataGrid"></div>
+            </div>
           </div>
         </div>
 
@@ -265,21 +355,21 @@
               <div class="chart-subtitle">Dampak kedekatan arteri transportasi terhadap emisi partikulat</div>
             </div>
           </div>
-          <div class="chart-container" style="height:280px;">
+          <div class="chart-container" style="height:370px;">
             <canvas id="trafficScatterChart"></canvas>
           </div>
         </div>
+      </div>
 
-        <!-- Correlation Matrix -->
-        <div class="chart-card">
-          <div class="chart-card-header">
-            <div>
-              <div class="chart-title">Matriks Korelasi Pearson</div>
-              <div class="chart-subtitle">Korelasi PM2.5, PM10, Suhu, Kelembapan, dan Angin</div>
-            </div>
+      <!-- Correlation Matrix (Dipindahkan ke bagian bawah kedua kotak di atas) -->
+      <div class="chart-card mb-lg">
+        <div class="chart-card-header">
+          <div>
+            <div class="chart-title">Matriks Korelasi Pearson</div>
+            <div class="chart-subtitle">Korelasi PM2.5, PM10, Suhu, Kelembapan, dan Angin</div>
           </div>
-          <div id="correlationMatrixTable" style="max-height:280px; overflow-y:auto;"></div>
         </div>
+        <div id="correlationMatrixTable" class="correlation-matrix-wrapper"></div>
       </div>
 
       <div class="gradient-divider"></div>
@@ -302,7 +392,7 @@
               <div class="chart-subtitle">Korelasi lonjakan pasien rumah sakit pasca peningkatan polusi PM2.5</div>
             </div>
             <div style="font-size:0.75rem; color:#f59e0b; font-weight:600; background:rgba(245,158,11,0.1); padding:4px 10px; border-radius:4px;">
-               Puncak Risiko: Hari ke 1 - 3 (Lag 1-3)
+              Puncak Risiko: Hari ke 1 - 3 (Lag 1-3)
             </div>
           </div>
           <div class="chart-container" style="height:300px;">
@@ -393,85 +483,73 @@
         </div>
       </div>
 
-      <div class="chart-card full-width mb-lg spatial-analysis-card">
-        <div class="chart-card-header">
-          <div>
-            <div class="chart-title">Autokorelasi Spasial PM2.5: Global Moran's I & Local Moran (LISA)</div>
-            <div class="chart-subtitle">Rata-rata PM2.5 per stasiun; tetangga dihitung dengan k-nearest neighbors di dalam pulau terpilih</div>
+      <!-- Keandalan Sensor dari Waktu ke Waktu (Sensor Reliability Heatmap) -->
+      <div class="chart-card full-width mb-lg sensor-reliability-card">
+        <div class="chart-card-header chart-card-header-stacked">
+          <div class="chart-title-group">
+            <div class="chart-title">Keandalan Sensor dari Waktu ke Waktu</div>
+            <div class="chart-subtitle">Distribusi kelengkapan data per jam (data completeness) bulanan seluruh stasiun AQMS (Januari 2024 &ndash; Oktober 2026)</div>
           </div>
-          <div class="spatial-controls">
-            <label for="spatialVariableSelect">Variabel
-              <select id="spatialVariableSelect" class="filter-select">
-                <option value="pm25">PM2.5 (µg/m³)</option>
-                <option value="pm10">PM10 (µg/m³)</option>
-                <option value="so2">SO2 (µg/m³)</option>
-                <option value="co">CO (µg/m³)</option>
-                <option value="o3">O3 (µg/m³)</option>
-                <option value="no2">NO2 (µg/m³)</option>
-                <option value="temperature_c">Suhu (°C)</option>
-                <option value="humidity_pct">Kelembapan (%)</option>
-                <option value="wind_speed_ms">Kecepatan angin (m/s)</option>
-              </select>
-            </label>
-            <label for="spatialAlternativeSelect">Hipotesis alternatif
-              <select id="spatialAlternativeSelect" class="filter-select">
-                <option value="positive">Positif (I &gt; E[I])</option>
-                <option value="negative">Negatif (I &lt; E[I])</option>
-                <option value="two-sided" selected>Dua sisi (I ≠ E[I])</option>
-              </select>
-            </label>
-            <label for="spatialAlphaSelect">Taraf signifikansi (α)
-              <select id="spatialAlphaSelect" class="filter-select">
-                <option value="0.01">0,01</option>
-                <option value="0.05" selected>0,05</option>
-                <option value="0.1">0,10</option>
-              </select>
-            </label>
-            <label for="spatialIslandSelect">Pulau
-              <select id="spatialIslandSelect" class="filter-select"></select>
-            </label>
-            <label for="spatialNeighborsSelect">Tetangga (k)
-              <select id="spatialNeighborsSelect" class="filter-select"></select>
-            </label>
-            <label class="spatial-control-range" for="permutationCountInput">Simulasi permutasi
-              <span><input id="permutationCountInput" type="range" min="99" max="999" step="100" value="499"><output id="permutationCountValue" for="permutationCountInput">499</output></span>
-            </label>
+          <div class="chart-filter-row">
+            <span class="filter-label">Filter Status:</span>
+            <select id="reliabilityStatusFilter" class="filter-select select-wide" aria-label="Filter Status Keandalan Stasiun">
+              <option value="ALL" selected>Semua Status (27 Stasiun Lengkap)</option>
+              <option value="OK">Status OK (21 Stasiun Kualitas Baik)</option>
+              <option value="CAUTION">Status CAUTION (5 Stasiun Dalam Perhatian)</option>
+              <option value="EXCLUDED">Status EXCLUDED (1 Stasiun Non-aktif / Out-of-Period)</option>
+            </select>
           </div>
         </div>
-        <div class="spatial-summary-grid">
-          <div class="spatial-stat">
-            <span>Global Moran's I</span>
-            <strong id="globalMoranValue">-</strong>
-            <small id="globalMoranInterpretation">Pilih pulau untuk menghitung</small>
+
+        <!-- Ringkasan Kelengkapan Keseluruhan & Titik Terendah -->
+        <div class="reliability-summary-grid">
+          <div class="reliability-stat-card">
+            <span class="reliability-stat-label">Kelengkapan Keseluruhan Jaringan</span>
+            <strong class="reliability-stat-val text-good" id="netCompletenessVal">-</strong>
+            <small class="reliability-stat-sub" id="netCompletenessDetail">Memuat data observasi...</small>
           </div>
-          <div class="spatial-stat">
-            <span>Signifikansi Global</span>
-            <strong id="globalMoranP">-</strong>
-            <small id="globalMoranPLabel">p-value sesuai hipotesis</small>
-            <small id="globalMoranPermutationDetail">Simulasi ekstrem: -</small>
+          <div class="reliability-stat-card">
+            <span class="reliability-stat-label">Stasiun-Bulan Terendah</span>
+            <strong class="reliability-stat-val text-danger" id="lowestMonthVal">-</strong>
+            <small class="reliability-stat-sub" id="lowestMonthDetail">Memuat data...</small>
           </div>
-          <div class="spatial-stat">
-            <span>Stasiun Dianalisis</span>
-            <strong id="spatialStationCount">-</strong>
-            <small>OK, tanpa konversi logger</small>
+          <div class="reliability-stat-card">
+            <span class="reliability-stat-label">Total Stasiun Dipantau</span>
+            <strong class="reliability-stat-val" id="totalMonitoredStations">27 Stasiun</strong>
+            <small class="reliability-stat-sub">26 Beroperasi &bull; 1 Non-aktif (JMB-02)</small>
           </div>
-          <div class="spatial-stat">
-            <span>Simulasi Permutasi</span>
-            <strong id="permutationSummary">499</strong>
-            <small>pengacakan Monte Carlo</small>
+          <div class="reliability-stat-card">
+            <span class="reliability-stat-label">Cakupan Observasi</span>
+            <strong class="reliability-stat-val" id="observationPeriodVal">34 Bulan</strong>
+            <small class="reliability-stat-sub">Jan 2024 &ndash; Okt 2026 (Penyebut Disesuaikan)</small>
           </div>
         </div>
-        <div id="spatialAnalysisMessage" class="spatial-message" role="status"></div>
-        <div id="lisaMap" class="spatial-map"></div>
-        <div class="spatial-legend" aria-label="Legenda klaster LISA">
-          <span><i class="cluster-dot cluster-hh"></i> High-High</span>
-          <span><i class="cluster-dot cluster-ll"></i> Low-Low</span>
-          <span><i class="cluster-dot cluster-hl"></i> High-Low</span>
-          <span><i class="cluster-dot cluster-lh"></i> Low-High</span>
-          <span><i class="cluster-dot cluster-ns"></i> Tidak signifikan</span>
+
+        <!-- Edukasi / Konteks Metrik -->
+        <div class="reliability-disclaimer-banner">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; color:#38bdf8;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          <span><strong>Catatan Metodologis:</strong> Metrik ini mengukur <strong>ketersediaan data</strong> (rasio jam pengamatan PM2.5 valid terhadap jam kalender yang diharapkan, dengan penyesuaian penyebut pada bulan parsial Oktober 2026 sebanyak 14 hari = 336 jam), <strong>bukan diagnosis kerusakan fisik sensor</strong>. Penurunan nilai dapat disebabkan oleh pemeliharaan berkala, siklus kalibrasi berkala, transmisi telemetri GSM, atau gangguan daya lokal.</span>
+        </div>
+
+        <!-- Heatmap Grid / Table Container -->
+        <div class="reliability-table-container">
+          <div id="sensorReliabilityHeatmap" class="sensor-reliability-table-wrapper">
+            <!-- Dynamic Heatmap Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Legenda Warna Heatmap -->
+        <div class="heatmap-legend" aria-label="Legenda Kelengkapan Data Sensor">
+          <span class="legend-title">Kelengkapan:</span>
+          <span class="legend-chip"><i class="legend-swatch" style="background:#10b981;"></i> &ge; 90% (Sangat Baik)</span>
+          <span class="legend-chip"><i class="legend-swatch" style="background:#84cc16;"></i> 75% &ndash; 89% (Baik)</span>
+          <span class="legend-chip"><i class="legend-swatch" style="background:#eab308;"></i> 50% &ndash; 74% (Cukup)</span>
+          <span class="legend-chip"><i class="legend-swatch" style="background:#f97316;"></i> 25% &ndash; 49% (Kurang)</span>
+          <span class="legend-chip"><i class="legend-swatch" style="background:#ef4444;"></i> &gt; 0% &ndash; 24% (Kritis)</span>
+          <span class="legend-chip"><i class="legend-swatch" style="background:#334155;"></i> 0% (Kosong / Excluded)</span>
         </div>
       </div>
-
+      
       <!-- Sensitivity Test Interactive Slider (Error Bar / Uncertainty Band) -->
       <div class="sensitivity-control">
         <div class="sensitivity-header">
@@ -519,13 +597,14 @@
 
     </div>
 
-  </main>
+    </main>
+  </div>
 
   <!-- External Libraries -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   
   <!-- Dashboard Main Logic -->
-  <script src="assets/js/dashboard.js"></script>
+  <script src="assets/js/dashboard.js?v=4.0"></script>
 </body>
 </html>
