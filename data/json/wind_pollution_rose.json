@@ -1,243 +1,79 @@
 {
-  "SM2-01_Samarinda": [
+  "BGL-01_Bengkulu": [
     {
       "direction": "N",
-      "pm25_avg": 109.73,
-      "frequency": 4
-    },
-    {
-      "direction": "NNE",
-      "pm25_avg": 91.72,
-      "frequency": 6
-    },
-    {
-      "direction": "NE",
-      "pm25_avg": 40.52,
-      "frequency": 5
-    },
-    {
-      "direction": "ENE",
-      "pm25_avg": 70.51,
-      "frequency": 24
-    },
-    {
-      "direction": "E",
-      "pm25_avg": 90.62,
-      "frequency": 101
-    },
-    {
-      "direction": "ESE",
-      "pm25_avg": 70.77,
-      "frequency": 195
-    },
-    {
-      "direction": "SE",
-      "pm25_avg": 74.76,
-      "frequency": 216
-    },
-    {
-      "direction": "SSE",
-      "pm25_avg": 76.57,
-      "frequency": 147
-    },
-    {
-      "direction": "S",
-      "pm25_avg": 80.18,
-      "frequency": 84
-    },
-    {
-      "direction": "SSW",
-      "pm25_avg": 77.46,
-      "frequency": 40
-    },
-    {
-      "direction": "SW",
-      "pm25_avg": 77.34,
-      "frequency": 26
-    },
-    {
-      "direction": "WSW",
-      "pm25_avg": 104.33,
-      "frequency": 16
-    },
-    {
-      "direction": "W",
-      "pm25_avg": 116.97,
-      "frequency": 7
-    },
-    {
-      "direction": "WNW",
-      "pm25_avg": 169.11,
-      "frequency": 2
-    },
-    {
-      "direction": "NW",
-      "pm25_avg": 32.87,
+      "pm25_avg": 14.4,
       "frequency": 1
     },
     {
-      "direction": "NNW",
-      "pm25_avg": 45.73,
-      "frequency": 3
-    }
-  ],
-  "JKT-02_Marunda": [
-    {
-      "direction": "N",
-      "pm25_avg": 60.12,
-      "frequency": 168
-    },
-    {
       "direction": "NNE",
-      "pm25_avg": 59.88,
-      "frequency": 256
+      "pm25_avg": 24.6,
+      "frequency": 2
     },
     {
       "direction": "NE",
-      "pm25_avg": 60.25,
-      "frequency": 240
+      "pm25_avg": 26.56,
+      "frequency": 34
     },
     {
       "direction": "ENE",
-      "pm25_avg": 60.14,
-      "frequency": 94
+      "pm25_avg": 24.07,
+      "frequency": 118
     },
     {
       "direction": "E",
-      "pm25_avg": 59.84,
-      "frequency": 33
+      "pm25_avg": 25.34,
+      "frequency": 491
     },
     {
       "direction": "ESE",
-      "pm25_avg": 59.49,
-      "frequency": 11
+      "pm25_avg": 25.78,
+      "frequency": 1310
     },
     {
       "direction": "SE",
-      "pm25_avg": 59.37,
-      "frequency": 4
+      "pm25_avg": 25.63,
+      "frequency": 2961
     },
     {
       "direction": "SSE",
-      "pm25_avg": 60.27,
-      "frequency": 3
+      "pm25_avg": 25.65,
+      "frequency": 4634
     },
     {
       "direction": "S",
-      "pm25_avg": 60.0,
-      "frequency": 8
+      "pm25_avg": 25.54,
+      "frequency": 5498
     },
     {
       "direction": "SSW",
-      "pm25_avg": 63.08,
-      "frequency": 5
+      "pm25_avg": 25.45,
+      "frequency": 4533
     },
     {
       "direction": "SW",
-      "pm25_avg": 61.09,
-      "frequency": 8
+      "pm25_avg": 25.6,
+      "frequency": 2822
     },
     {
       "direction": "WSW",
-      "pm25_avg": 59.54,
-      "frequency": 7
+      "pm25_avg": 25.5,
+      "frequency": 1332
     },
     {
       "direction": "W",
-      "pm25_avg": 59.24,
-      "frequency": 10
+      "pm25_avg": 25.84,
+      "frequency": 447
     },
     {
       "direction": "WNW",
-      "pm25_avg": 59.45,
-      "frequency": 21
+      "pm25_avg": 25.33,
+      "frequency": 107
     },
     {
       "direction": "NW",
-      "pm25_avg": 59.94,
-      "frequency": 50
-    },
-    {
-      "direction": "NNW",
-      "pm25_avg": 60.18,
-      "frequency": 100
-    }
-  ],
-  "KTG-01_PalangkaRaya": [
-    {
-      "direction": "N",
-      "pm25_avg": 0.0,
-      "frequency": 0
-    },
-    {
-      "direction": "NNE",
-      "pm25_avg": 0.0,
-      "frequency": 0
-    },
-    {
-      "direction": "NE",
-      "pm25_avg": 0.0,
-      "frequency": 0
-    },
-    {
-      "direction": "ENE",
-      "pm25_avg": 0.0,
-      "frequency": 0
-    },
-    {
-      "direction": "E",
-      "pm25_avg": 0.0,
-      "frequency": 0
-    },
-    {
-      "direction": "ESE",
-      "pm25_avg": 0.0,
-      "frequency": 0
-    },
-    {
-      "direction": "SE",
-      "pm25_avg": 28.25,
-      "frequency": 12
-    },
-    {
-      "direction": "SSE",
-      "pm25_avg": 61.24,
-      "frequency": 935
-    },
-    {
-      "direction": "S",
-      "pm25_avg": 63.15,
-      "frequency": 71
-    },
-    {
-      "direction": "SSW",
-      "pm25_avg": 0.0,
-      "frequency": 0
-    },
-    {
-      "direction": "SW",
-      "pm25_avg": 0.0,
-      "frequency": 0
-    },
-    {
-      "direction": "WSW",
-      "pm25_avg": 0.0,
-      "frequency": 0
-    },
-    {
-      "direction": "W",
-      "pm25_avg": 0.0,
-      "frequency": 0
-    },
-    {
-      "direction": "WNW",
-      "pm25_avg": 0.0,
-      "frequency": 0
-    },
-    {
-      "direction": "NW",
-      "pm25_avg": 0.0,
-      "frequency": 0
+      "pm25_avg": 23.85,
+      "frequency": 17
     },
     {
       "direction": "NNW",
@@ -283,28 +119,28 @@
     },
     {
       "direction": "SSE",
-      "pm25_avg": 0.0,
-      "frequency": 0
+      "pm25_avg": 13.21,
+      "frequency": 4618
     },
     {
       "direction": "S",
       "pm25_avg": 13.23,
-      "frequency": 51
+      "frequency": 4744
     },
     {
       "direction": "SSW",
-      "pm25_avg": 13.23,
-      "frequency": 955
+      "pm25_avg": 13.21,
+      "frequency": 4755
     },
     {
       "direction": "SW",
-      "pm25_avg": 13.35,
-      "frequency": 12
+      "pm25_avg": 13.27,
+      "frequency": 4663
     },
     {
       "direction": "WSW",
-      "pm25_avg": 0.0,
-      "frequency": 0
+      "pm25_avg": 13.25,
+      "frequency": 4908
     },
     {
       "direction": "W",
@@ -327,7 +163,7 @@
       "frequency": 0
     }
   ],
-  "PKU-01_Pekanbaru": [
+  "BGR-02_Baranangsiang": [
     {
       "direction": "N",
       "pm25_avg": 0.0,
@@ -365,18 +201,756 @@
     },
     {
       "direction": "SSE",
-      "pm25_avg": 48.34,
-      "frequency": 116
+      "pm25_avg": 19.24,
+      "frequency": 4843
     },
     {
       "direction": "S",
-      "pm25_avg": 46.89,
-      "frequency": 822
+      "pm25_avg": 19.25,
+      "frequency": 4736
     },
     {
       "direction": "SSW",
-      "pm25_avg": 47.32,
-      "frequency": 80
+      "pm25_avg": 19.22,
+      "frequency": 4602
+    },
+    {
+      "direction": "SW",
+      "pm25_avg": 19.25,
+      "frequency": 4811
+    },
+    {
+      "direction": "WSW",
+      "pm25_avg": 19.23,
+      "frequency": 4703
+    },
+    {
+      "direction": "W",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "WNW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NNW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    }
+  ],
+  "BJB-01_Banjarbaru": [
+    {
+      "direction": "N",
+      "pm25_avg": 48.35,
+      "frequency": 65
+    },
+    {
+      "direction": "NNE",
+      "pm25_avg": 50.51,
+      "frequency": 553
+    },
+    {
+      "direction": "NE",
+      "pm25_avg": 50.04,
+      "frequency": 1398
+    },
+    {
+      "direction": "ENE",
+      "pm25_avg": 50.03,
+      "frequency": 1003
+    },
+    {
+      "direction": "E",
+      "pm25_avg": 49.27,
+      "frequency": 1433
+    },
+    {
+      "direction": "ESE",
+      "pm25_avg": 50.31,
+      "frequency": 1011
+    },
+    {
+      "direction": "SE",
+      "pm25_avg": 49.23,
+      "frequency": 1474
+    },
+    {
+      "direction": "SSE",
+      "pm25_avg": 49.72,
+      "frequency": 984
+    },
+    {
+      "direction": "S",
+      "pm25_avg": 48.29,
+      "frequency": 1443
+    },
+    {
+      "direction": "SSW",
+      "pm25_avg": 49.76,
+      "frequency": 1060
+    },
+    {
+      "direction": "SW",
+      "pm25_avg": 48.93,
+      "frequency": 1422
+    },
+    {
+      "direction": "WSW",
+      "pm25_avg": 48.77,
+      "frequency": 998
+    },
+    {
+      "direction": "W",
+      "pm25_avg": 49.49,
+      "frequency": 1372
+    },
+    {
+      "direction": "WNW",
+      "pm25_avg": 48.33,
+      "frequency": 1019
+    },
+    {
+      "direction": "NW",
+      "pm25_avg": 47.91,
+      "frequency": 1385
+    },
+    {
+      "direction": "NNW",
+      "pm25_avg": 48.3,
+      "frequency": 483
+    }
+  ],
+  "BTM-01_Batam": [
+    {
+      "direction": "N",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NNE",
+      "pm25_avg": 39.12,
+      "frequency": 4
+    },
+    {
+      "direction": "NE",
+      "pm25_avg": 50.71,
+      "frequency": 23
+    },
+    {
+      "direction": "ENE",
+      "pm25_avg": 47.62,
+      "frequency": 130
+    },
+    {
+      "direction": "E",
+      "pm25_avg": 46.08,
+      "frequency": 470
+    },
+    {
+      "direction": "ESE",
+      "pm25_avg": 48.09,
+      "frequency": 1316
+    },
+    {
+      "direction": "SE",
+      "pm25_avg": 46.92,
+      "frequency": 3090
+    },
+    {
+      "direction": "SSE",
+      "pm25_avg": 47.97,
+      "frequency": 4452
+    },
+    {
+      "direction": "S",
+      "pm25_avg": 47.72,
+      "frequency": 5516
+    },
+    {
+      "direction": "SSW",
+      "pm25_avg": 47.58,
+      "frequency": 4447
+    },
+    {
+      "direction": "SW",
+      "pm25_avg": 47.51,
+      "frequency": 2963
+    },
+    {
+      "direction": "WSW",
+      "pm25_avg": 47.48,
+      "frequency": 1300
+    },
+    {
+      "direction": "W",
+      "pm25_avg": 47.34,
+      "frequency": 437
+    },
+    {
+      "direction": "WNW",
+      "pm25_avg": 46.74,
+      "frequency": 109
+    },
+    {
+      "direction": "NW",
+      "pm25_avg": 53.9,
+      "frequency": 18
+    },
+    {
+      "direction": "NNW",
+      "pm25_avg": 44.0,
+      "frequency": 3
+    }
+  ],
+  "IDP-01_Indrapuri": [
+    {
+      "direction": "N",
+      "pm25_avg": 10.1,
+      "frequency": 391
+    },
+    {
+      "direction": "NNE",
+      "pm25_avg": 10.46,
+      "frequency": 1875
+    },
+    {
+      "direction": "NE",
+      "pm25_avg": 10.3,
+      "frequency": 4568
+    },
+    {
+      "direction": "ENE",
+      "pm25_avg": 10.25,
+      "frequency": 4982
+    },
+    {
+      "direction": "E",
+      "pm25_avg": 10.26,
+      "frequency": 2629
+    },
+    {
+      "direction": "ESE",
+      "pm25_avg": 10.32,
+      "frequency": 631
+    },
+    {
+      "direction": "SE",
+      "pm25_avg": 9.58,
+      "frequency": 94
+    },
+    {
+      "direction": "SSE",
+      "pm25_avg": 8.23,
+      "frequency": 70
+    },
+    {
+      "direction": "S",
+      "pm25_avg": 7.85,
+      "frequency": 413
+    },
+    {
+      "direction": "SSW",
+      "pm25_avg": 7.81,
+      "frequency": 1296
+    },
+    {
+      "direction": "SW",
+      "pm25_avg": 7.82,
+      "frequency": 2351
+    },
+    {
+      "direction": "WSW",
+      "pm25_avg": 7.73,
+      "frequency": 2560
+    },
+    {
+      "direction": "W",
+      "pm25_avg": 7.66,
+      "frequency": 1702
+    },
+    {
+      "direction": "WNW",
+      "pm25_avg": 7.61,
+      "frequency": 582
+    },
+    {
+      "direction": "NW",
+      "pm25_avg": 7.51,
+      "frequency": 128
+    },
+    {
+      "direction": "NNW",
+      "pm25_avg": 10.46,
+      "frequency": 50
+    }
+  ],
+  "JKT-01_Gambir": [
+    {
+      "direction": "N",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NNE",
+      "pm25_avg": 48.04,
+      "frequency": 3819
+    },
+    {
+      "direction": "NE",
+      "pm25_avg": 47.99,
+      "frequency": 3882
+    },
+    {
+      "direction": "ENE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "E",
+      "pm25_avg": 48.15,
+      "frequency": 3984
+    },
+    {
+      "direction": "ESE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "SE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "SSE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "S",
+      "pm25_avg": 48.0,
+      "frequency": 3863
+    },
+    {
+      "direction": "SSW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "SW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "WSW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "W",
+      "pm25_avg": 48.32,
+      "frequency": 4028
+    },
+    {
+      "direction": "WNW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NW",
+      "pm25_avg": 48.03,
+      "frequency": 3878
+    },
+    {
+      "direction": "NNW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    }
+  ],
+  "JKT-02_Marunda": [
+    {
+      "direction": "N",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NNE",
+      "pm25_avg": 60.16,
+      "frequency": 4024
+    },
+    {
+      "direction": "NE",
+      "pm25_avg": 60.23,
+      "frequency": 3837
+    },
+    {
+      "direction": "ENE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "E",
+      "pm25_avg": 60.19,
+      "frequency": 3974
+    },
+    {
+      "direction": "ESE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "SE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "SSE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "S",
+      "pm25_avg": 59.92,
+      "frequency": 3945
+    },
+    {
+      "direction": "SSW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "SW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "WSW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "W",
+      "pm25_avg": 60.05,
+      "frequency": 3893
+    },
+    {
+      "direction": "WNW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NW",
+      "pm25_avg": 59.84,
+      "frequency": 3807
+    },
+    {
+      "direction": "NNW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    }
+  ],
+  "JKT-03_Cengkareng": [
+    {
+      "direction": "N",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NNE",
+      "pm25_avg": 54.24,
+      "frequency": 3942
+    },
+    {
+      "direction": "NE",
+      "pm25_avg": 54.06,
+      "frequency": 3978
+    },
+    {
+      "direction": "ENE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "E",
+      "pm25_avg": 53.96,
+      "frequency": 3917
+    },
+    {
+      "direction": "ESE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "SE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "SSE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "S",
+      "pm25_avg": 54.01,
+      "frequency": 3907
+    },
+    {
+      "direction": "SSW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "SW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "WSW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "W",
+      "pm25_avg": 54.03,
+      "frequency": 3832
+    },
+    {
+      "direction": "WNW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NW",
+      "pm25_avg": 54.04,
+      "frequency": 3894
+    },
+    {
+      "direction": "NNW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    }
+  ],
+  "JMB-01_KotaJambi": [
+    {
+      "direction": "N",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NNE",
+      "pm25_avg": 32.25,
+      "frequency": 2
+    },
+    {
+      "direction": "NE",
+      "pm25_avg": 51.41,
+      "frequency": 28
+    },
+    {
+      "direction": "ENE",
+      "pm25_avg": 44.36,
+      "frequency": 124
+    },
+    {
+      "direction": "E",
+      "pm25_avg": 46.09,
+      "frequency": 499
+    },
+    {
+      "direction": "ESE",
+      "pm25_avg": 44.89,
+      "frequency": 1414
+    },
+    {
+      "direction": "SE",
+      "pm25_avg": 43.8,
+      "frequency": 3016
+    },
+    {
+      "direction": "SSE",
+      "pm25_avg": 44.2,
+      "frequency": 4503
+    },
+    {
+      "direction": "S",
+      "pm25_avg": 44.68,
+      "frequency": 5408
+    },
+    {
+      "direction": "SSW",
+      "pm25_avg": 44.44,
+      "frequency": 4476
+    },
+    {
+      "direction": "SW",
+      "pm25_avg": 44.36,
+      "frequency": 2923
+    },
+    {
+      "direction": "WSW",
+      "pm25_avg": 45.31,
+      "frequency": 1281
+    },
+    {
+      "direction": "W",
+      "pm25_avg": 44.02,
+      "frequency": 466
+    },
+    {
+      "direction": "WNW",
+      "pm25_avg": 41.05,
+      "frequency": 96
+    },
+    {
+      "direction": "NW",
+      "pm25_avg": 44.6,
+      "frequency": 26
+    },
+    {
+      "direction": "NNW",
+      "pm25_avg": 46.7,
+      "frequency": 2
+    }
+  ],
+  "KTB-01_Kototabang": [
+    {
+      "direction": "N",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NNE",
+      "pm25_avg": 16.9,
+      "frequency": 2
+    },
+    {
+      "direction": "NE",
+      "pm25_avg": 22.91,
+      "frequency": 22
+    },
+    {
+      "direction": "ENE",
+      "pm25_avg": 18.92,
+      "frequency": 103
+    },
+    {
+      "direction": "E",
+      "pm25_avg": 18.58,
+      "frequency": 499
+    },
+    {
+      "direction": "ESE",
+      "pm25_avg": 18.55,
+      "frequency": 1349
+    },
+    {
+      "direction": "SE",
+      "pm25_avg": 18.5,
+      "frequency": 3066
+    },
+    {
+      "direction": "SSE",
+      "pm25_avg": 18.81,
+      "frequency": 4570
+    },
+    {
+      "direction": "S",
+      "pm25_avg": 18.48,
+      "frequency": 5490
+    },
+    {
+      "direction": "SSW",
+      "pm25_avg": 18.78,
+      "frequency": 4409
+    },
+    {
+      "direction": "SW",
+      "pm25_avg": 18.59,
+      "frequency": 2926
+    },
+    {
+      "direction": "WSW",
+      "pm25_avg": 19.59,
+      "frequency": 1283
+    },
+    {
+      "direction": "W",
+      "pm25_avg": 17.69,
+      "frequency": 467
+    },
+    {
+      "direction": "WNW",
+      "pm25_avg": 15.64,
+      "frequency": 98
+    },
+    {
+      "direction": "NW",
+      "pm25_avg": 17.36,
+      "frequency": 18
+    },
+    {
+      "direction": "NNW",
+      "pm25_avg": 12.57,
+      "frequency": 3
+    }
+  ],
+  "KTG-01_PalangkaRaya": [
+    {
+      "direction": "N",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NNE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "ENE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "E",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "ESE",
+      "pm25_avg": 59.84,
+      "frequency": 4705
+    },
+    {
+      "direction": "SE",
+      "pm25_avg": 61.93,
+      "frequency": 4720
+    },
+    {
+      "direction": "SSE",
+      "pm25_avg": 59.96,
+      "frequency": 4666
+    },
+    {
+      "direction": "S",
+      "pm25_avg": 62.75,
+      "frequency": 4803
+    },
+    {
+      "direction": "SSW",
+      "pm25_avg": 61.62,
+      "frequency": 4612
     },
     {
       "direction": "SW",
@@ -407,6 +981,1154 @@
       "direction": "NNW",
       "pm25_avg": 0.0,
       "frequency": 0
+    }
+  ],
+  "KTG-02_Sampit": [
+    {
+      "direction": "N",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NNE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "ENE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "E",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "ESE",
+      "pm25_avg": 59.26,
+      "frequency": 4725
+    },
+    {
+      "direction": "SE",
+      "pm25_avg": 61.46,
+      "frequency": 4662
+    },
+    {
+      "direction": "SSE",
+      "pm25_avg": 61.53,
+      "frequency": 4694
+    },
+    {
+      "direction": "S",
+      "pm25_avg": 60.79,
+      "frequency": 4723
+    },
+    {
+      "direction": "SSW",
+      "pm25_avg": 61.17,
+      "frequency": 4720
+    },
+    {
+      "direction": "SW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "WSW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "W",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "WNW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NNW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    }
+  ],
+  "MDN-01_Medan": [
+    {
+      "direction": "N",
+      "pm25_avg": 43.73,
+      "frequency": 71
+    },
+    {
+      "direction": "NNE",
+      "pm25_avg": 45.35,
+      "frequency": 512
+    },
+    {
+      "direction": "NE",
+      "pm25_avg": 45.19,
+      "frequency": 1371
+    },
+    {
+      "direction": "ENE",
+      "pm25_avg": 45.86,
+      "frequency": 1019
+    },
+    {
+      "direction": "E",
+      "pm25_avg": 46.22,
+      "frequency": 1414
+    },
+    {
+      "direction": "ESE",
+      "pm25_avg": 45.5,
+      "frequency": 983
+    },
+    {
+      "direction": "SE",
+      "pm25_avg": 45.69,
+      "frequency": 1409
+    },
+    {
+      "direction": "SSE",
+      "pm25_avg": 45.34,
+      "frequency": 990
+    },
+    {
+      "direction": "S",
+      "pm25_avg": 45.56,
+      "frequency": 1320
+    },
+    {
+      "direction": "SSW",
+      "pm25_avg": 45.05,
+      "frequency": 937
+    },
+    {
+      "direction": "SW",
+      "pm25_avg": 45.56,
+      "frequency": 1429
+    },
+    {
+      "direction": "WSW",
+      "pm25_avg": 45.55,
+      "frequency": 1007
+    },
+    {
+      "direction": "W",
+      "pm25_avg": 45.39,
+      "frequency": 1419
+    },
+    {
+      "direction": "WNW",
+      "pm25_avg": 46.04,
+      "frequency": 979
+    },
+    {
+      "direction": "NW",
+      "pm25_avg": 45.51,
+      "frequency": 1312
+    },
+    {
+      "direction": "NNW",
+      "pm25_avg": 45.85,
+      "frequency": 468
+    }
+  ],
+  "MER-01_Merauke": [
+    {
+      "direction": "N",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NNE",
+      "pm25_avg": 12.69,
+      "frequency": 9
+    },
+    {
+      "direction": "NE",
+      "pm25_avg": 13.86,
+      "frequency": 119
+    },
+    {
+      "direction": "ENE",
+      "pm25_avg": 13.63,
+      "frequency": 479
+    },
+    {
+      "direction": "E",
+      "pm25_avg": 14.27,
+      "frequency": 927
+    },
+    {
+      "direction": "ESE",
+      "pm25_avg": 15.43,
+      "frequency": 1015
+    },
+    {
+      "direction": "SE",
+      "pm25_avg": 17.11,
+      "frequency": 1052
+    },
+    {
+      "direction": "SSE",
+      "pm25_avg": 17.99,
+      "frequency": 876
+    },
+    {
+      "direction": "S",
+      "pm25_avg": 18.55,
+      "frequency": 363
+    },
+    {
+      "direction": "SSW",
+      "pm25_avg": 19.25,
+      "frequency": 43
+    },
+    {
+      "direction": "SW",
+      "pm25_avg": 18.09,
+      "frequency": 8
+    },
+    {
+      "direction": "WSW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "W",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "WNW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NNW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    }
+  ],
+  "MLG-01_Malang": [
+    {
+      "direction": "N",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NNE",
+      "pm25_avg": 26.12,
+      "frequency": 5
+    },
+    {
+      "direction": "NE",
+      "pm25_avg": 29.33,
+      "frequency": 23
+    },
+    {
+      "direction": "ENE",
+      "pm25_avg": 30.44,
+      "frequency": 115
+    },
+    {
+      "direction": "E",
+      "pm25_avg": 30.93,
+      "frequency": 497
+    },
+    {
+      "direction": "ESE",
+      "pm25_avg": 30.61,
+      "frequency": 1389
+    },
+    {
+      "direction": "SE",
+      "pm25_avg": 30.91,
+      "frequency": 3020
+    },
+    {
+      "direction": "SSE",
+      "pm25_avg": 30.6,
+      "frequency": 4496
+    },
+    {
+      "direction": "S",
+      "pm25_avg": 30.61,
+      "frequency": 5492
+    },
+    {
+      "direction": "SSW",
+      "pm25_avg": 30.7,
+      "frequency": 4441
+    },
+    {
+      "direction": "SW",
+      "pm25_avg": 30.76,
+      "frequency": 2856
+    },
+    {
+      "direction": "WSW",
+      "pm25_avg": 30.7,
+      "frequency": 1350
+    },
+    {
+      "direction": "W",
+      "pm25_avg": 30.34,
+      "frequency": 459
+    },
+    {
+      "direction": "WNW",
+      "pm25_avg": 31.26,
+      "frequency": 123
+    },
+    {
+      "direction": "NW",
+      "pm25_avg": 33.04,
+      "frequency": 23
+    },
+    {
+      "direction": "NNW",
+      "pm25_avg": 30.65,
+      "frequency": 2
+    }
+  ],
+  "MRS-01_Maros": [
+    {
+      "direction": "N",
+      "pm25_avg": 23.3,
+      "frequency": 1
+    },
+    {
+      "direction": "NNE",
+      "pm25_avg": 36.35,
+      "frequency": 6
+    },
+    {
+      "direction": "NE",
+      "pm25_avg": 35.15,
+      "frequency": 20
+    },
+    {
+      "direction": "ENE",
+      "pm25_avg": 35.32,
+      "frequency": 105
+    },
+    {
+      "direction": "E",
+      "pm25_avg": 36.31,
+      "frequency": 432
+    },
+    {
+      "direction": "ESE",
+      "pm25_avg": 36.85,
+      "frequency": 1340
+    },
+    {
+      "direction": "SE",
+      "pm25_avg": 37.11,
+      "frequency": 2995
+    },
+    {
+      "direction": "SSE",
+      "pm25_avg": 36.75,
+      "frequency": 4513
+    },
+    {
+      "direction": "S",
+      "pm25_avg": 36.77,
+      "frequency": 5532
+    },
+    {
+      "direction": "SSW",
+      "pm25_avg": 36.8,
+      "frequency": 4509
+    },
+    {
+      "direction": "SW",
+      "pm25_avg": 37.05,
+      "frequency": 2936
+    },
+    {
+      "direction": "WSW",
+      "pm25_avg": 36.72,
+      "frequency": 1304
+    },
+    {
+      "direction": "W",
+      "pm25_avg": 36.62,
+      "frequency": 440
+    },
+    {
+      "direction": "WNW",
+      "pm25_avg": 36.33,
+      "frequency": 112
+    },
+    {
+      "direction": "NW",
+      "pm25_avg": 38.13,
+      "frequency": 18
+    },
+    {
+      "direction": "NNW",
+      "pm25_avg": 48.6,
+      "frequency": 2
+    }
+  ],
+  "PKN-01_PangkalanBun": [
+    {
+      "direction": "N",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NNE",
+      "pm25_avg": 83.5,
+      "frequency": 2
+    },
+    {
+      "direction": "NE",
+      "pm25_avg": 42.04,
+      "frequency": 21
+    },
+    {
+      "direction": "ENE",
+      "pm25_avg": 54.39,
+      "frequency": 119
+    },
+    {
+      "direction": "E",
+      "pm25_avg": 45.51,
+      "frequency": 479
+    },
+    {
+      "direction": "ESE",
+      "pm25_avg": 43.86,
+      "frequency": 1303
+    },
+    {
+      "direction": "SE",
+      "pm25_avg": 44.15,
+      "frequency": 2991
+    },
+    {
+      "direction": "SSE",
+      "pm25_avg": 46.36,
+      "frequency": 4600
+    },
+    {
+      "direction": "S",
+      "pm25_avg": 45.58,
+      "frequency": 5468
+    },
+    {
+      "direction": "SSW",
+      "pm25_avg": 45.14,
+      "frequency": 4506
+    },
+    {
+      "direction": "SW",
+      "pm25_avg": 44.73,
+      "frequency": 2924
+    },
+    {
+      "direction": "WSW",
+      "pm25_avg": 45.05,
+      "frequency": 1259
+    },
+    {
+      "direction": "W",
+      "pm25_avg": 45.15,
+      "frequency": 469
+    },
+    {
+      "direction": "WNW",
+      "pm25_avg": 45.44,
+      "frequency": 120
+    },
+    {
+      "direction": "NW",
+      "pm25_avg": 46.1,
+      "frequency": 25
+    },
+    {
+      "direction": "NNW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    }
+  ],
+  "PKU-01_Pekanbaru": [
+    {
+      "direction": "N",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NNE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NE",
+      "pm25_avg": 42.05,
+      "frequency": 36
+    },
+    {
+      "direction": "ENE",
+      "pm25_avg": 45.65,
+      "frequency": 128
+    },
+    {
+      "direction": "E",
+      "pm25_avg": 46.05,
+      "frequency": 537
+    },
+    {
+      "direction": "ESE",
+      "pm25_avg": 47.26,
+      "frequency": 1308
+    },
+    {
+      "direction": "SE",
+      "pm25_avg": 47.28,
+      "frequency": 3107
+    },
+    {
+      "direction": "SSE",
+      "pm25_avg": 47.04,
+      "frequency": 4521
+    },
+    {
+      "direction": "S",
+      "pm25_avg": 47.31,
+      "frequency": 5457
+    },
+    {
+      "direction": "SSW",
+      "pm25_avg": 47.43,
+      "frequency": 4377
+    },
+    {
+      "direction": "SW",
+      "pm25_avg": 46.51,
+      "frequency": 2864
+    },
+    {
+      "direction": "WSW",
+      "pm25_avg": 46.09,
+      "frequency": 1364
+    },
+    {
+      "direction": "W",
+      "pm25_avg": 47.21,
+      "frequency": 470
+    },
+    {
+      "direction": "WNW",
+      "pm25_avg": 52.73,
+      "frequency": 109
+    },
+    {
+      "direction": "NW",
+      "pm25_avg": 49.68,
+      "frequency": 19
+    },
+    {
+      "direction": "NNW",
+      "pm25_avg": 72.17,
+      "frequency": 3
+    }
+  ],
+  "PLB-01_TalangBetutu": [
+    {
+      "direction": "N",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NNE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NE",
+      "pm25_avg": 44.48,
+      "frequency": 20
+    },
+    {
+      "direction": "ENE",
+      "pm25_avg": 48.24,
+      "frequency": 128
+    },
+    {
+      "direction": "E",
+      "pm25_avg": 53.24,
+      "frequency": 587
+    },
+    {
+      "direction": "ESE",
+      "pm25_avg": 57.38,
+      "frequency": 1741
+    },
+    {
+      "direction": "SE",
+      "pm25_avg": 67.47,
+      "frequency": 3939
+    },
+    {
+      "direction": "SSE",
+      "pm25_avg": 76.27,
+      "frequency": 5271
+    },
+    {
+      "direction": "S",
+      "pm25_avg": 69.91,
+      "frequency": 4311
+    },
+    {
+      "direction": "SSW",
+      "pm25_avg": 59.38,
+      "frequency": 2047
+    },
+    {
+      "direction": "SW",
+      "pm25_avg": 52.29,
+      "frequency": 713
+    },
+    {
+      "direction": "WSW",
+      "pm25_avg": 53.45,
+      "frequency": 189
+    },
+    {
+      "direction": "W",
+      "pm25_avg": 43.85,
+      "frequency": 40
+    },
+    {
+      "direction": "WNW",
+      "pm25_avg": 26.4,
+      "frequency": 1
+    },
+    {
+      "direction": "NW",
+      "pm25_avg": 40.6,
+      "frequency": 1
+    },
+    {
+      "direction": "NNW",
+      "pm25_avg": 159.55,
+      "frequency": 2
+    }
+  ],
+  "PLU-01_LoreLindu": [
+    {
+      "direction": "N",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NNE",
+      "pm25_avg": 11.0,
+      "frequency": 1
+    },
+    {
+      "direction": "NE",
+      "pm25_avg": 11.42,
+      "frequency": 25
+    },
+    {
+      "direction": "ENE",
+      "pm25_avg": 11.45,
+      "frequency": 108
+    },
+    {
+      "direction": "E",
+      "pm25_avg": 11.29,
+      "frequency": 487
+    },
+    {
+      "direction": "ESE",
+      "pm25_avg": 11.23,
+      "frequency": 1360
+    },
+    {
+      "direction": "SE",
+      "pm25_avg": 11.34,
+      "frequency": 2976
+    },
+    {
+      "direction": "SSE",
+      "pm25_avg": 11.31,
+      "frequency": 4488
+    },
+    {
+      "direction": "S",
+      "pm25_avg": 11.26,
+      "frequency": 5513
+    },
+    {
+      "direction": "SSW",
+      "pm25_avg": 11.21,
+      "frequency": 4533
+    },
+    {
+      "direction": "SW",
+      "pm25_avg": 11.2,
+      "frequency": 2996
+    },
+    {
+      "direction": "WSW",
+      "pm25_avg": 11.18,
+      "frequency": 1228
+    },
+    {
+      "direction": "W",
+      "pm25_avg": 11.31,
+      "frequency": 457
+    },
+    {
+      "direction": "WNW",
+      "pm25_avg": 11.29,
+      "frequency": 90
+    },
+    {
+      "direction": "NW",
+      "pm25_avg": 11.3,
+      "frequency": 25
+    },
+    {
+      "direction": "NNW",
+      "pm25_avg": 13.0,
+      "frequency": 3
+    }
+  ],
+  "PSW-01_Pesawaran": [
+    {
+      "direction": "N",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NNE",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NE",
+      "pm25_avg": 37.52,
+      "frequency": 8
+    },
+    {
+      "direction": "ENE",
+      "pm25_avg": 54.41,
+      "frequency": 91
+    },
+    {
+      "direction": "E",
+      "pm25_avg": 50.85,
+      "frequency": 522
+    },
+    {
+      "direction": "ESE",
+      "pm25_avg": 51.63,
+      "frequency": 1736
+    },
+    {
+      "direction": "SE",
+      "pm25_avg": 50.63,
+      "frequency": 3900
+    },
+    {
+      "direction": "SSE",
+      "pm25_avg": 50.77,
+      "frequency": 5700
+    },
+    {
+      "direction": "S",
+      "pm25_avg": 50.55,
+      "frequency": 5914
+    },
+    {
+      "direction": "SSW",
+      "pm25_avg": 50.91,
+      "frequency": 3855
+    },
+    {
+      "direction": "SW",
+      "pm25_avg": 49.72,
+      "frequency": 1873
+    },
+    {
+      "direction": "WSW",
+      "pm25_avg": 49.98,
+      "frequency": 557
+    },
+    {
+      "direction": "W",
+      "pm25_avg": 54.83,
+      "frequency": 122
+    },
+    {
+      "direction": "WNW",
+      "pm25_avg": 50.57,
+      "frequency": 12
+    },
+    {
+      "direction": "NW",
+      "pm25_avg": 43.55,
+      "frequency": 4
+    },
+    {
+      "direction": "NNW",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    }
+  ],
+  "SM2-01_Samarinda": [
+    {
+      "direction": "N",
+      "pm25_avg": 88.13,
+      "frequency": 6
+    },
+    {
+      "direction": "NNE",
+      "pm25_avg": 83.06,
+      "frequency": 154
+    },
+    {
+      "direction": "NE",
+      "pm25_avg": 86.07,
+      "frequency": 1487
+    },
+    {
+      "direction": "ENE",
+      "pm25_avg": 85.82,
+      "frequency": 2466
+    },
+    {
+      "direction": "E",
+      "pm25_avg": 86.8,
+      "frequency": 2755
+    },
+    {
+      "direction": "ESE",
+      "pm25_avg": 87.71,
+      "frequency": 2448
+    },
+    {
+      "direction": "SE",
+      "pm25_avg": 81.68,
+      "frequency": 1410
+    },
+    {
+      "direction": "SSE",
+      "pm25_avg": 87.58,
+      "frequency": 917
+    },
+    {
+      "direction": "S",
+      "pm25_avg": 84.63,
+      "frequency": 2027
+    },
+    {
+      "direction": "SSW",
+      "pm25_avg": 84.07,
+      "frequency": 869
+    },
+    {
+      "direction": "SW",
+      "pm25_avg": 84.79,
+      "frequency": 1333
+    },
+    {
+      "direction": "WSW",
+      "pm25_avg": 85.22,
+      "frequency": 1694
+    },
+    {
+      "direction": "W",
+      "pm25_avg": 88.06,
+      "frequency": 747
+    },
+    {
+      "direction": "WNW",
+      "pm25_avg": 85.54,
+      "frequency": 1735
+    },
+    {
+      "direction": "NW",
+      "pm25_avg": 91.11,
+      "frequency": 1269
+    },
+    {
+      "direction": "NNW",
+      "pm25_avg": 101.59,
+      "frequency": 121
+    }
+  ],
+  "SRG-01_Sorong": [
+    {
+      "direction": "N",
+      "pm25_avg": 23.4,
+      "frequency": 1
+    },
+    {
+      "direction": "NNE",
+      "pm25_avg": 19.45,
+      "frequency": 2
+    },
+    {
+      "direction": "NE",
+      "pm25_avg": 19.75,
+      "frequency": 26
+    },
+    {
+      "direction": "ENE",
+      "pm25_avg": 18.77,
+      "frequency": 112
+    },
+    {
+      "direction": "E",
+      "pm25_avg": 18.8,
+      "frequency": 459
+    },
+    {
+      "direction": "ESE",
+      "pm25_avg": 18.22,
+      "frequency": 1277
+    },
+    {
+      "direction": "SE",
+      "pm25_avg": 18.45,
+      "frequency": 2991
+    },
+    {
+      "direction": "SSE",
+      "pm25_avg": 18.44,
+      "frequency": 4478
+    },
+    {
+      "direction": "S",
+      "pm25_avg": 18.35,
+      "frequency": 5604
+    },
+    {
+      "direction": "SSW",
+      "pm25_avg": 18.32,
+      "frequency": 4474
+    },
+    {
+      "direction": "SW",
+      "pm25_avg": 18.36,
+      "frequency": 2909
+    },
+    {
+      "direction": "WSW",
+      "pm25_avg": 18.33,
+      "frequency": 1356
+    },
+    {
+      "direction": "W",
+      "pm25_avg": 18.19,
+      "frequency": 445
+    },
+    {
+      "direction": "WNW",
+      "pm25_avg": 18.89,
+      "frequency": 112
+    },
+    {
+      "direction": "NW",
+      "pm25_avg": 16.89,
+      "frequency": 28
+    },
+    {
+      "direction": "NNW",
+      "pm25_avg": 18.23,
+      "frequency": 3
+    }
+  ],
+  "STG-01_Sintang": [
+    {
+      "direction": "N",
+      "pm25_avg": 0.0,
+      "frequency": 0
+    },
+    {
+      "direction": "NNE",
+      "pm25_avg": 21.1,
+      "frequency": 2
+    },
+    {
+      "direction": "NE",
+      "pm25_avg": 51.08,
+      "frequency": 23
+    },
+    {
+      "direction": "ENE",
+      "pm25_avg": 40.66,
+      "frequency": 114
+    },
+    {
+      "direction": "E",
+      "pm25_avg": 38.53,
+      "frequency": 498
+    },
+    {
+      "direction": "ESE",
+      "pm25_avg": 38.35,
+      "frequency": 1289
+    },
+    {
+      "direction": "SE",
+      "pm25_avg": 37.8,
+      "frequency": 3004
+    },
+    {
+      "direction": "SSE",
+      "pm25_avg": 38.83,
+      "frequency": 4638
+    },
+    {
+      "direction": "S",
+      "pm25_avg": 38.82,
+      "frequency": 5523
+    },
+    {
+      "direction": "SSW",
+      "pm25_avg": 38.08,
+      "frequency": 4488
+    },
+    {
+      "direction": "SW",
+      "pm25_avg": 37.23,
+      "frequency": 2915
+    },
+    {
+      "direction": "WSW",
+      "pm25_avg": 36.77,
+      "frequency": 1222
+    },
+    {
+      "direction": "W",
+      "pm25_avg": 37.61,
+      "frequency": 445
+    },
+    {
+      "direction": "WNW",
+      "pm25_avg": 34.59,
+      "frequency": 108
+    },
+    {
+      "direction": "NW",
+      "pm25_avg": 29.47,
+      "frequency": 23
+    },
+    {
+      "direction": "NNW",
+      "pm25_avg": 50.56,
+      "frequency": 7
+    }
+  ],
+  "YKY-01_Sleman": [
+    {
+      "direction": "N",
+      "pm25_avg": 40.54,
+      "frequency": 3721
+    },
+    {
+      "direction": "NNE",
+      "pm25_avg": 40.42,
+      "frequency": 3309
+    },
+    {
+      "direction": "NE",
+      "pm25_avg": 40.51,
+      "frequency": 1527
+    },
+    {
+      "direction": "ENE",
+      "pm25_avg": 40.24,
+      "frequency": 314
+    },
+    {
+      "direction": "E",
+      "pm25_avg": 38.7,
+      "frequency": 62
+    },
+    {
+      "direction": "ESE",
+      "pm25_avg": 38.76,
+      "frequency": 148
+    },
+    {
+      "direction": "SE",
+      "pm25_avg": 39.62,
+      "frequency": 850
+    },
+    {
+      "direction": "SSE",
+      "pm25_avg": 38.78,
+      "frequency": 2178
+    },
+    {
+      "direction": "S",
+      "pm25_avg": 38.96,
+      "frequency": 3707
+    },
+    {
+      "direction": "SSW",
+      "pm25_avg": 39.15,
+      "frequency": 3438
+    },
+    {
+      "direction": "SW",
+      "pm25_avg": 39.01,
+      "frequency": 2041
+    },
+    {
+      "direction": "WSW",
+      "pm25_avg": 38.75,
+      "frequency": 630
+    },
+    {
+      "direction": "W",
+      "pm25_avg": 38.53,
+      "frequency": 134
+    },
+    {
+      "direction": "WNW",
+      "pm25_avg": 39.82,
+      "frequency": 58
+    },
+    {
+      "direction": "NW",
+      "pm25_avg": 40.68,
+      "frequency": 434
+    },
+    {
+      "direction": "NNW",
+      "pm25_avg": 41.2,
+      "frequency": 1740
     }
   ]
 }

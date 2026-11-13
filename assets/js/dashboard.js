@@ -15,9 +15,7 @@ const state = {
   mapMarkers: [],
   mapBuffers: [],
   bufferEnabled: false,
-  bufferRadius: 'adaptive',
-  lisaMap: null,
-  lisaMarkers: []
+  bufferRadius: 'adaptive'
 };
 
 // Data paths
@@ -30,6 +28,7 @@ const DATA_PATHS = {
   siteType: 'data/json/site_type_comparison.json',
   corr: 'data/json/correlation_matrix.json',
   windRose: 'data/json/wind_pollution_rose.json',
+  sensorReliability: 'data/json/sensor_reliability_heatmap.json',
   traffic: 'data/json/traffic_scatter.json',
   lagEffect: 'data/json/lag_effect.json',
   vulnerable: 'data/json/vulnerable_groups.json',
@@ -72,13 +71,59 @@ function getStationRepresentativenessRadius(siteType) {
 
 // Initialization
 document.addEventListener('DOMContentLoaded', async () => {
+  setupSidebarToggle();
   setupTabEvents();
   setupFilterEvents();
-  setupSpatialEvents();
+  setupReliabilityEvents();
   await loadAllData();
   document.getElementById('loadingOverlay').classList.add('hidden');
   renderDashboard();
+  // Setup wind rose station selector (after data loaded)
+  const wrSelect = document.getElementById('windRoseStationSelect');
+  if (wrSelect) {
+    wrSelect.addEventListener('change', () => {
+      if (state.charts.windRose) {
+        try { state.charts.windRose.destroy(); } catch(e) {}
+        state.charts.windRose = null;
+      }
+      renderWindRose();
+    });
+  }
 });
+
+// Setup Sidebar Toggle (Logo AQ Click)
+function setupSidebarToggle() {
+  const toggleBtn = document.getElementById('sidebarToggleBtn');
+  const dashboardBody = document.querySelector('.dashboard-body');
+  if (!toggleBtn || !dashboardBody) return;
+
+  function toggle() {
+    const isCollapsed = dashboardBody.classList.toggle('sidebar-collapsed');
+    toggleBtn.classList.toggle('collapsed', isCollapsed);
+    toggleBtn.title = isCollapsed
+      ? 'Klik logo AQ untuk memunculkan kembali menu navigasi'
+      : 'Klik logo AQ untuk menyembunyikan menu navigasi';
+
+    // Resize maps and charts after slide transition
+    setTimeout(() => {
+      if (state.map) state.map.invalidateSize();
+      if (state.charts.windRose && typeof state.charts.windRose.resize === 'function') {
+        state.charts.windRose.resize();
+      }
+      Object.values(state.charts).forEach(c => {
+        if (c && typeof c.resize === 'function') c.resize();
+      });
+    }, 380);
+  }
+
+  toggleBtn.addEventListener('click', toggle);
+  toggleBtn.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      toggle();
+    }
+  });
+}
 
 // Setup Navigation Tabs
 function setupTabEvents() {
@@ -97,11 +142,32 @@ function setupTabEvents() {
       if (target === 'tab1' && state.map) {
         setTimeout(() => state.map.invalidateSize(), 200);
       }
-      if (target === 'tab3' && state.lisaMap) {
+      // Tab 2: always re-render wind rose fresh when tab is activated
+      if (target === 'tab2') {
+        // Destroy cached chart so it can be rebuilt at correct canvas size
+        if (state.charts.windRose) {
+          try { state.charts.windRose.destroy(); } catch(e) {}
+          state.charts.windRose = null;
+        }
+        // Small delay so CSS display:block takes effect before Chart.js measures canvas
         setTimeout(() => {
-          state.lisaMap.invalidateSize();
-          renderSpatialAutocorrelation();
-        }, 200);
+          renderWindRose();
+          if (state.charts.trafficScatter && typeof state.charts.trafficScatter.resize === 'function') {
+            state.charts.trafficScatter.resize();
+          }
+          if (state.charts.lagEffect && typeof state.charts.lagEffect.resize === 'function') {
+            state.charts.lagEffect.resize();
+          }
+          if (state.charts.vulnerable && typeof state.charts.vulnerable.resize === 'function') {
+            state.charts.vulnerable.resize();
+          }
+          if (state.charts.diseaseTrend && typeof state.charts.diseaseTrend.resize === 'function') {
+            state.charts.diseaseTrend.resize();
+          }
+        }, 80);
+      }
+      if (target === 'tab3') {
+        renderSensorReliabilityHeatmap();
       }
     });
   });
@@ -147,58 +213,62 @@ function setupFilterEvents() {
   }
 }
 
-function setupSpatialEvents() {
-  const bufferOn = document.getElementById('bufferOnButton');
-  const bufferOff = document.getElementById('bufferOffButton');
-  const bufferRadius = document.getElementById('bufferRadiusSelect');
-  const islandSelect = document.getElementById('spatialIslandSelect');
-  const neighborsSelect = document.getElementById('spatialNeighborsSelect');
-  const variableSelect = document.getElementById('spatialVariableSelect');
-  const alternativeSelect = document.getElementById('spatialAlternativeSelect');
-  const alphaSelect = document.getElementById('spatialAlphaSelect');
-  const permutationInput = document.getElementById('permutationCountInput');
-  const permutationValue = document.getElementById('permutationCountValue');
-
-  if (bufferOn) bufferOn.addEventListener('click', () => setBufferEnabled(true));
-  if (bufferOff) bufferOff.addEventListener('click', () => setBufferEnabled(false));
-
-  if (bufferRadius) {
-    bufferRadius.addEventListener('change', (event) => {
-      const val = event.target.value;
-      state.bufferRadius = val === 'adaptive' ? 'adaptive' : Number(val);
-      updateBufferControls();
-      renderMap();
+function setupReliabilityEvents() {
+  const statusFilter = document.getElementById('reliabilityStatusFilter');
+  if (statusFilter) {
+    statusFilter.addEventListener('change', () => {
+      renderSensorReliabilityHeatmap();
     });
   }
 
-  updateBufferControls();
-
-  if (islandSelect) {
-    islandSelect.addEventListener('change', () => {
-      updateNeighborOptions();
-      renderSpatialAutocorrelation();
-    });
+  // Setup floating tooltip for reliability heatmap
+  let tooltip = document.getElementById('reliabilityTooltip');
+  if (!tooltip) {
+    tooltip = document.createElement('div');
+    tooltip.id = 'reliabilityTooltip';
+    tooltip.className = 'reliability-tooltip';
+    document.body.appendChild(tooltip);
   }
 
-  if (neighborsSelect) {
-    neighborsSelect.addEventListener('change', renderSpatialAutocorrelation);
-  }
-
-  if (variableSelect) {
-    variableSelect.addEventListener('change', () => {
-      updateNeighborOptions();
-      renderSpatialAutocorrelation();
+  const container = document.getElementById('sensorReliabilityHeatmap');
+  if (container) {
+    container.addEventListener('mouseover', (e) => {
+      const cell = e.target.closest('.heat-cell');
+      if (!cell) return;
+      const d = cell.dataset;
+      const statusClass = (d.status || 'ok').toLowerCase();
+      tooltip.innerHTML = `
+        <div style="font-weight:700; color:#ffffff; font-size:0.76rem; margin-bottom:3px;">${d.stn}</div>
+        <div style="color:#94a3b8; font-size:0.65rem; margin-bottom:6px;">${d.prov} &bull; Status: <span class="status-badge-sm ${statusClass}">${d.status}</span></div>
+        <div style="display:flex; justify-content:space-between; gap:14px; margin-bottom:2px;">
+          <span style="color:#94a3b8;">Bulan:</span><strong style="color:#ffffff;">${d.month}</strong>
+        </div>
+        <div style="display:flex; justify-content:space-between; gap:14px; margin-bottom:2px;">
+          <span style="color:#94a3b8;">Kelengkapan:</span><strong style="color:${getReliabilityColor(Number(d.pct))}">${d.pct}%</strong>
+        </div>
+        <div style="display:flex; justify-content:space-between; gap:14px;">
+          <span style="color:#94a3b8;">Jam Observasi:</span><strong style="color:#ffffff;">${Number(d.valid).toLocaleString('id-ID')} / ${Number(d.expected).toLocaleString('id-ID')} jam</strong>
+        </div>
+      `;
+      tooltip.style.display = 'block';
     });
-  }
 
-  if (alternativeSelect) alternativeSelect.addEventListener('change', renderSpatialAutocorrelation);
-  if (alphaSelect) alphaSelect.addEventListener('change', renderSpatialAutocorrelation);
-  if (permutationInput) {
-    permutationInput.addEventListener('input', () => {
-      if (permutationValue) permutationValue.value = permutationInput.value;
-      renderSpatialAutocorrelation();
+    container.addEventListener('mousemove', (e) => {
+      if (tooltip.style.display !== 'block') return;
+      let x = e.clientX + 14;
+      let y = e.clientY + 14;
+      const tw = tooltip.offsetWidth || 230;
+      const th = tooltip.offsetHeight || 120;
+      if (x + tw > window.innerWidth - 10) x = e.clientX - tw - 12;
+      if (y + th > window.innerHeight - 10) y = e.clientY - th - 12;
+      tooltip.style.left = x + 'px';
+      tooltip.style.top = y + 'px';
     });
-    if (permutationValue) permutationValue.value = permutationInput.value;
+
+    container.addEventListener('mouseout', (e) => {
+      const cell = e.target.closest('.heat-cell');
+      if (cell) tooltip.style.display = 'none';
+    });
   }
 }
 
@@ -236,17 +306,23 @@ function updateBufferControls() {
 async function loadAllData() {
   try {
     const keys = Object.keys(DATA_PATHS);
-    const promises = keys.map(k => fetch(DATA_PATHS[k]).then(r => r.json()));
+    const bust = `?v=3.1_${Date.now()}`;
+    const promises = keys.map(k => fetch(DATA_PATHS[k] + bust).then(r => {
+      if (!r.ok) throw new Error(`HTTP ${r.status} fetching ${DATA_PATHS[k]}`);
+      return r.json();
+    }));
     const results = await Promise.all(promises);
     keys.forEach((k, idx) => {
       state.data[k] = results[idx];
     });
+    console.log("Data JSON berhasil dimuat. Total stasiun Mawar Polusi:", Object.keys(state.data.windRose || {}).length);
   } catch (err) {
     console.error("Error loading JSON data:", err);
   }
 }
 
 function applyFilters() {
+  renderKPIs();
   renderMap();
   renderRankingList();
   renderSiteTypeChart();
@@ -262,9 +338,8 @@ function renderDashboard() {
   renderSiteTypeChart();
   renderRankingList();
   
-  // Tab 2
+  // Tab 2 (wind rose rendered on first tab click to avoid 0x0 canvas issue)
   renderCorrelationMatrix();
-  renderWindRose();
   renderTrafficScatter();
   renderLagEffectChart();
   renderVulnerableChart();
@@ -276,7 +351,7 @@ function renderDashboard() {
   renderIslandDistribution();
   renderGapAnalysisChart();
   renderPriorityMatrix();
-  renderSpatialAutocorrelation();
+  renderSensorReliabilityHeatmap();
 
   // Sensitivity
   initSensitivity();
@@ -290,10 +365,128 @@ function renderKPIs() {
   const kpi = state.data.kpi;
   if (!kpi) return;
 
-  document.getElementById('kpiNationalPm25').innerHTML = `${kpi.national_pm25_avg} <span class="unit">µg/m³</span>`;
-  document.getElementById('kpiIkuAvg').innerHTML = `${kpi.national_iku_avg} <span class="unit">IKU</span>`;
-  document.getElementById('kpiPp22Compliance').innerHTML = `${kpi.compliance_pp22_pct}%`;
-  document.getElementById('kpiWhoCompliance').innerHTML = `${kpi.compliance_who_pct}%`;
+  // Nilai awal dari ringkasan KPI nasional
+  let pmVal = kpi.national_pm25_avg;
+  let ikuVal = kpi.national_iku_avg;
+  let pp22Val = kpi.compliance_pp22_pct;
+  let whoVal = kpi.compliance_who_pct;
+
+  // Jika ada filter aktif (misal Standardisasi Saja atau Status), hitung ulang secara dinamis
+  if (state.data.stations && (state.filterStandardizedOnly || state.statusFilter !== 'ALL')) {
+    const activeStations = state.data.stations.filter(s => {
+      if (state.filterStandardizedOnly && s.pm_from_ppm) return false;
+      if (state.statusFilter !== 'ALL' && s.status !== state.statusFilter) return false;
+      return true;
+    });
+
+    if (activeStations.length > 0) {
+      const validPm = activeStations.map(s => s.pm25_avg).filter(v => typeof v === 'number' && !isNaN(v));
+      if (validPm.length > 0) {
+        pmVal = Number((validPm.reduce((a, b) => a + b, 0) / validPm.length).toFixed(2));
+        const abovePP22 = validPm.filter(v => v > 55).length;
+        const aboveWHO = validPm.filter(v => v > 15).length;
+        pp22Val = Number(((validPm.length - abovePP22) / validPm.length * 100).toFixed(1));
+        whoVal = Number(((validPm.length - aboveWHO) / validPm.length * 100).toFixed(1));
+      }
+    }
+  }
+
+  // 1. Evaluasi PM2.5 (Mengikuti 4 Kategori Legenda: Hijau <=15, Kuning 15-35, Oranye 35-55, Merah >55)
+  let pmClass = 'index-orange';
+  let pmStatus = '35-55 Sensitif';
+  if (pmVal <= 15) {
+    pmClass = 'index-green';
+    pmStatus = '≤15 WHO (Baik)';
+  } else if (pmVal <= 35) {
+    pmClass = 'index-yellow';
+    pmStatus = '15-35 Sedang';
+  } else if (pmVal <= 55) {
+    pmClass = 'index-orange';
+    pmStatus = '35-55 Sensitif';
+  } else {
+    pmClass = 'index-red';
+    pmStatus = '>55 Kritis';
+  }
+
+  // 2. Evaluasi IKU (Standar KLHK RI: Hijau >=70, Kuning 60-70, Oranye 50-60, Merah <50)
+  let ikuClass = 'index-green';
+  let ikuStatus = '≥70 Baik (Target)';
+  if (ikuVal >= 70) {
+    ikuClass = 'index-green';
+    ikuStatus = '≥70 Baik (Target)';
+  } else if (ikuVal >= 60) {
+    ikuClass = 'index-yellow';
+    ikuStatus = '60-70 Sedang';
+  } else if (ikuVal >= 50) {
+    ikuClass = 'index-orange';
+    ikuStatus = '50-60 Sensitif';
+  } else {
+    ikuClass = 'index-red';
+    ikuStatus = '<50 Kritis';
+  }
+
+  // 3. Evaluasi Kepatuhan PP 22/2021 (Baku Mutu 55 ug/m3)
+  let pp22Class = 'index-green';
+  let pp22Status = 'Patuh Tinggi (Baik)';
+  if (pp22Val >= 75) {
+    pp22Class = 'index-green';
+    pp22Status = 'Patuh Tinggi (Baik)';
+  } else if (pp22Val >= 50) {
+    pp22Class = 'index-yellow';
+    pp22Status = 'Kepatuhan Sedang';
+  } else if (pp22Val >= 25) {
+    pp22Class = 'index-orange';
+    pp22Status = 'Sensitif';
+  } else {
+    pp22Class = 'index-red';
+    pp22Status = 'Kritis / Rendah';
+  }
+
+  // 4. Evaluasi Kepatuhan WHO Annual (Pedoman Ketat 15 ug/m3)
+  let whoClass = 'index-red';
+  let whoStatus = 'Kritis (Hanya 11.5%)';
+  if (whoVal >= 50) {
+    whoClass = 'index-green';
+    whoStatus = 'Tinggi (Baik)';
+  } else if (whoVal >= 35) {
+    whoClass = 'index-yellow';
+    whoStatus = 'Sedang';
+  } else if (whoVal >= 20) {
+    whoClass = 'index-orange';
+    whoStatus = 'Sensitif';
+  } else {
+    whoClass = 'index-red';
+    whoStatus = 'Kritis (Hanya 11.5%)';
+  }
+
+  // Tampilkan nilai ke elemen DOM
+  const elPm = document.getElementById('kpiNationalPm25');
+  const elIku = document.getElementById('kpiIkuAvg');
+  const elPp22 = document.getElementById('kpiPp22Compliance');
+  const elWho = document.getElementById('kpiWhoCompliance');
+
+  if (elPm) elPm.innerHTML = `${pmVal} <span class="unit">µg/m³</span>`;
+  if (elIku) elIku.innerHTML = `${ikuVal} <span class="unit">IKU</span>`;
+  if (elPp22) elPp22.innerHTML = `${pp22Val}%`;
+  if (elWho) elWho.innerHTML = `${whoVal}%`;
+
+  // Terapkan warna kartu, efek glow, dan badge tag
+  const applyCardStyle = (cardId, tagId, statusClass, statusLabel) => {
+    const card = document.getElementById(cardId);
+    const tag = document.getElementById(tagId);
+    if (card) {
+      card.classList.remove('index-green', 'index-yellow', 'index-orange', 'index-red', 'index-blue', 'index-purple');
+      card.classList.add(statusClass);
+    }
+    if (tag) {
+      tag.textContent = statusLabel;
+    }
+  };
+
+  applyCardStyle('cardNationalPm25', 'tagNationalPm25', pmClass, pmStatus);
+  applyCardStyle('cardIkuAvg', 'tagIkuAvg', ikuClass, ikuStatus);
+  applyCardStyle('cardPp22Compliance', 'tagPp22Compliance', pp22Class, pp22Status);
+  applyCardStyle('cardWhoCompliance', 'tagWhoCompliance', whoClass, whoStatus);
 }
 
 function initMap() {
@@ -417,269 +610,116 @@ function renderMap() {
   });
 }
 
-function renderSpatialAutocorrelation() {
-  const stations = state.data.stations;
-  const islandSelect = document.getElementById('spatialIslandSelect');
-  const variableSelect = document.getElementById('spatialVariableSelect');
-  const alternativeSelect = document.getElementById('spatialAlternativeSelect');
-  const alphaSelect = document.getElementById('spatialAlphaSelect');
-  const permutationInput = document.getElementById('permutationCountInput');
-  if (!stations || !islandSelect || !variableSelect || !alternativeSelect || !alphaSelect || !permutationInput) return;
-
-  const variable = variableSelect.value;
-  const variableLabel = variableSelect.options[variableSelect.selectedIndex].textContent;
-  const alternative = alternativeSelect.value;
-  const alpha = Number(alphaSelect.value);
-  const permutationCount = Number(permutationInput.value);
-  const eligible = stations.filter(s => s.status === 'OK' && !s.pm_from_ppm &&
-    Number.isFinite(s.spatial_values?.[variable]) && Number.isFinite(s.lat) && Number.isFinite(s.lng));
-  const islandCounts = eligible.reduce((counts, station) => {
-    counts[station.island] = (counts[station.island] || 0) + 1;
-    return counts;
-  }, {});
-  const islands = Object.keys(islandCounts).filter(island => islandCounts[island] >= 4).sort();
-
-  if (!islands.length) {
-    updateSpatialSummary(null, 'Tidak ada pulau dengan minimal empat stasiun yang memenuhi kriteria QA.');
-    return;
-  }
-
-  const previousIsland = islandSelect.value;
-  islandSelect.innerHTML = islands.map(island =>
-    `<option value="${island}">${island} (${islandCounts[island]} stasiun)</option>`
-  ).join('');
-  islandSelect.value = islands.includes(previousIsland) ? previousIsland : islands[0];
-  updateNeighborOptions();
-
-  const islandStations = eligible.filter(s => s.island === islandSelect.value);
-  const requestedK = Number(document.getElementById('spatialNeighborsSelect').value) || 4;
-  const k = Math.min(requestedK, islandStations.length - 1);
-  const result = calculateMoranStatistics(islandStations, k, variable, alternative, alpha, permutationCount);
-
-  if (!result) {
-    updateSpatialSummary(null, 'Nilai PM2.5 pada pulau ini tidak bervariasi; Moran tidak dapat dihitung.');
-    return;
-  }
-
-  const denseWeightsNote = k === islandStations.length - 1
-    ? ` Catatan: k=${k} memasukkan semua stasiun lain sebagai tetangga, sehingga pola kedekatan lokal tidak dapat dibedakan.`
-    : '';
-  updateSpatialSummary(result, `Variabel ${variableLabel}; hipotesis ${alternativeLabel(alternative)}; α=${alpha}; ${permutationCount} simulasi. Analisis mencakup ${islandStations.length} stasiun ${islandSelect.value}, status OK dan tanpa konversi logger; tetangga ${k}-NN dalam pulau. LISA dikoreksi FDR. Hasil bersifat eksploratif karena jumlah stasiun per pulau terbatas.${denseWeightsNote}`);
-  renderLisaMap(result);
+function getReliabilityColor(pct) {
+  if (pct >= 90) return '#10b981'; // >= 90% Sangat Baik
+  if (pct >= 75) return '#84cc16'; // 75 - 89% Baik
+  if (pct >= 50) return '#eab308'; // 50 - 74% Cukup
+  if (pct >= 25) return '#f97316'; // 25 - 49% Kurang
+  if (pct > 0)  return '#ef4444'; // > 0 - 24% Kritis
+  return '#334155';               // 0% Kosong / Non-aktif
 }
 
-function updateNeighborOptions() {
-  const islandSelect = document.getElementById('spatialIslandSelect');
-  const neighborsSelect = document.getElementById('spatialNeighborsSelect');
-  const variable = document.getElementById('spatialVariableSelect')?.value;
-  if (!islandSelect || !neighborsSelect || !state.data.stations || !variable) return;
+function renderSensorReliabilityHeatmap() {
+  const container = document.getElementById('sensorReliabilityHeatmap');
+  const data = state.data.sensorReliability;
+  if (!container || !data) return;
 
-  const count = state.data.stations.filter(s => s.island === islandSelect.value && s.status === 'OK' &&
-    !s.pm_from_ppm && Number.isFinite(s.spatial_values?.[variable]) && Number.isFinite(s.lat) && Number.isFinite(s.lng)).length;
-  const maxK = Math.min(5, count - 1);
-  const previousK = Number(neighborsSelect.value) || 4;
-  neighborsSelect.innerHTML = Array.from({ length: Math.max(0, maxK - 1) }, (_, index) => index + 2)
-    .map(k => `<option value="${k}">${k}</option>`).join('');
-  neighborsSelect.value = String(Math.min(previousK, maxK));
-}
+  const summary = data.summary;
+  const months = data.months;
+  const statusFilter = document.getElementById('reliabilityStatusFilter')?.value || 'ALL';
 
-function calculateMoranStatistics(stations, k, variable, alternative, alpha, permutationCount) {
-  const values = stations.map(s => s.spatial_values[variable]);
-  const mean = values.reduce((sum, value) => sum + value, 0) / values.length;
-  const deviations = values.map(value => value - mean);
-  const standardDeviation = Math.sqrt(deviations.reduce((sum, value) => sum + value * value, 0) / values.length);
-  if (!standardDeviation || !Number.isFinite(standardDeviation)) return null;
+  // 1. Update KPI Summary
+  const netValEl = document.getElementById('netCompletenessVal');
+  const netSubEl = document.getElementById('netCompletenessDetail');
+  const lowValEl = document.getElementById('lowestMonthVal');
+  const lowSubEl = document.getElementById('lowestMonthDetail');
+  const totStnEl = document.getElementById('totalMonitoredStations');
+  const obsPerEl = document.getElementById('observationPeriodVal');
 
-  const z = deviations.map(value => value / standardDeviation);
-  const denominator = z.reduce((sum, value) => sum + value * value, 0);
-  const neighbors = stations.map((station, index) => stations
-    .map((candidate, candidateIndex) => ({
-      index: candidateIndex,
-      distance: candidateIndex === index ? Infinity : haversineKm(station.lat, station.lng, candidate.lat, candidate.lng)
-    }))
-    .sort((a, b) => a.distance - b.distance)
-    .slice(0, k)
-    .map(candidate => candidate.index));
-  const globalI = moranIndex(z, neighbors, denominator);
-  const expectedGlobal = -1 / (stations.length - 1);
-  const randomSeed = stations.reduce((seed, station) => seed + station.label.length, 0) +
-    [...variable].reduce((seed, character) => seed + character.charCodeAt(0), 0);
-  const globalRandom = seededRandom(randomSeed);
-  let globalExtreme = 0;
+  if (netValEl) netValEl.textContent = `${summary.overall_completeness_pct}%`;
+  if (netSubEl) netSubEl.textContent = `${summary.network_valid_hours.toLocaleString('id-ID')} dari ${summary.network_expected_hours.toLocaleString('id-ID')} jam valid`;
+  if (lowValEl) lowValEl.textContent = `${summary.lowest_station_month.completeness_pct}%`;
+  if (lowSubEl) lowSubEl.textContent = `${summary.lowest_station_month.station} (${summary.lowest_station_month.month_label})`;
+  if (totStnEl) totStnEl.textContent = `${summary.total_stations} Stasiun (${summary.active_stations} Aktif)`;
+  if (obsPerEl) obsPerEl.textContent = `${summary.period_months} Bulan (${summary.start_month} – ${summary.end_month})`;
 
-  for (let iteration = 0; iteration < permutationCount; iteration++) {
-    const permuted = shuffle(z, globalRandom);
-    const permutedI = moranIndex(permuted, neighbors, denominator);
-    if (isAtLeastAsExtreme(permutedI, globalI, expectedGlobal, alternative)) globalExtreme++;
-  }
+  // 2. Filter Stations
+  const filtered = data.stations.filter(s => statusFilter === 'ALL' || s.status === statusFilter);
 
-  const m2 = denominator / stations.length;
-  const localResults = stations.map((station, index) => {
-    const lag = neighbors[index].reduce((sum, neighborIndex) => sum + z[neighborIndex], 0) / k;
-    const localI = z[index] * lag / m2;
-    const expectedLocal = z[index] * (-z[index] / (stations.length - 1)) / m2;
-    const candidates = z.filter((_, candidateIndex) => candidateIndex !== index);
-    const stationSeed = randomSeed + station.label.split('').reduce((sum, character) => sum + character.charCodeAt(0), 0);
-    const random = seededRandom(stationSeed);
-    let extreme = 0;
-
-    for (let iteration = 0; iteration < permutationCount; iteration++) {
-      const sampled = shuffle(candidates, random).slice(0, k);
-      const permutedLag = sampled.reduce((sum, value) => sum + value, 0) / k;
-      const permutedI = z[index] * permutedLag / m2;
-      if (isAtLeastAsExtreme(permutedI, localI, expectedLocal, alternative)) extreme++;
-    }
-
-    return { station, z: z[index], lag, localI, p: (extreme + 1) / (permutationCount + 1) };
+  // Group months by year for multi-header table
+  const yearGroups = {};
+  months.forEach(m => {
+    if (!yearGroups[m.year]) yearGroups[m.year] = [];
+    yearGroups[m.year].push(m);
   });
 
-  applyFdrCorrection(localResults);
-  localResults.forEach(result => {
-    if (result.q > alpha) result.cluster = 'NS';
-    else if (result.z >= 0 && result.lag >= 0) result.cluster = 'HH';
-    else if (result.z < 0 && result.lag < 0) result.cluster = 'LL';
-    else if (result.z >= 0) result.cluster = 'HL';
-    else result.cluster = 'LH';
+  // 3. Build Table HTML
+  let html = `<table class="reliability-heatmap-table">
+    <thead>
+      <tr class="year-row">
+        <th rowspan="2" class="sticky-col">Stasiun & Wilayah</th>
+        <th rowspan="2" class="sticky-status">Status QC</th>
+        <th rowspan="2" style="width:75px; text-align:center;">Rata-rata</th>`;
+
+  Object.keys(yearGroups).sort().forEach(yr => {
+    const group = yearGroups[yr];
+    const partialNotice = yr === '2026' ? ' (Jan–Okt*)' : ` (${group.length} Bulan)`;
+    html += `<th colspan="${group.length}">Tahun ${yr}${partialNotice}</th>`;
   });
 
-  return {
-    stations: localResults,
-    globalI,
-    globalP: (globalExtreme + 1) / (permutationCount + 1),
-    globalExtreme,
-    expectedGlobal,
-    variable,
-    alternative,
-    alpha,
-    permutationCount,
-    k
-  };
-}
+  html += `</tr><tr>`;
 
-function isAtLeastAsExtreme(simulated, observed, expected, alternative) {
-  if (alternative === 'positive') return simulated + 1e-12 >= observed;
-  if (alternative === 'negative') return simulated - 1e-12 <= observed;
-  return Math.abs(simulated - expected) + 1e-12 >= Math.abs(observed - expected);
-}
-
-function alternativeLabel(alternative) {
-  if (alternative === 'positive') return 'sisi atas/positif';
-  if (alternative === 'negative') return 'sisi bawah/negatif';
-  return 'dua sisi';
-}
-
-function seededRandom(seed) {
-  let value = seed || 1;
-  return () => {
-    value ^= value << 13;
-    value ^= value >>> 17;
-    value ^= value << 5;
-    return (value >>> 0) / 4294967296;
-  };
-}
-
-function shuffle(values, random) {
-  const shuffled = values.slice();
-  for (let index = shuffled.length - 1; index > 0; index--) {
-    const target = Math.floor(random() * (index + 1));
-    [shuffled[index], shuffled[target]] = [shuffled[target], shuffled[index]];
-  }
-  return shuffled;
-}
-
-function moranIndex(values, neighbors, denominator) {
-  const numerator = neighbors.reduce((sum, neighborIndexes, index) => {
-    const lag = neighborIndexes.reduce((neighborSum, neighborIndex) => neighborSum + values[neighborIndex], 0) / neighborIndexes.length;
-    return sum + values[index] * lag;
-  }, 0);
-  return numerator / denominator;
-}
-
-function haversineKm(lat1, lng1, lat2, lng2) {
-  const radians = degrees => degrees * Math.PI / 180;
-  const deltaLat = radians(lat2 - lat1);
-  const deltaLng = radians(lng2 - lng1);
-  const a = Math.sin(deltaLat / 2) ** 2 + Math.cos(radians(lat1)) * Math.cos(radians(lat2)) * Math.sin(deltaLng / 2) ** 2;
-  return 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-}
-
-function applyFdrCorrection(results) {
-  const ordered = results.slice().sort((a, b) => a.p - b.p);
-  let adjusted = 1;
-  for (let index = ordered.length - 1; index >= 0; index--) {
-    adjusted = Math.min(adjusted, ordered[index].p * ordered.length / (index + 1));
-    ordered[index].q = Math.min(1, adjusted);
-  }
-}
-
-function updateSpatialSummary(result, message) {
-  const globalValue = document.getElementById('globalMoranValue');
-  const globalP = document.getElementById('globalMoranP');
-  const permutationDetail = document.getElementById('globalMoranPermutationDetail');
-  const stationCount = document.getElementById('spatialStationCount');
-  const interpretation = document.getElementById('globalMoranInterpretation');
-  const messageNode = document.getElementById('spatialAnalysisMessage');
-  if (!globalValue || !globalP || !permutationDetail || !stationCount || !interpretation || !messageNode) return;
-
-  if (!result) {
-    globalValue.textContent = '-';
-    globalP.textContent = '-';
-    permutationDetail.textContent = 'Simulasi ekstrem: -';
-    stationCount.textContent = '0';
-    interpretation.textContent = 'Analisis tidak tersedia';
-    messageNode.textContent = message;
-    return;
-  }
-
-  globalValue.textContent = result.globalI.toFixed(3);
-  globalP.textContent = result.globalP.toFixed(3);
-  permutationDetail.textContent = `${result.globalExtreme} dari ${result.permutationCount} simulasi ekstrem`;
-  stationCount.textContent = String(result.stations.length);
-  document.getElementById('globalMoranPLabel').textContent = `p-value ${alternativeLabel(result.alternative)}`;
-  document.getElementById('permutationSummary').textContent = String(result.permutationCount);
-  if (result.globalP <= result.alpha) {
-    const positive = result.globalI > result.expectedGlobal;
-    interpretation.textContent = positive ? 'Autokorelasi positif signifikan' : 'Autokorelasi negatif signifikan';
-  } else {
-    interpretation.textContent = `Tidak signifikan pada α = ${result.alpha}`;
-  }
-  messageNode.textContent = `${message} p-value global memakai koreksi Monte Carlo (+1); p lokal diuji dengan simulasi kondisional dan dikoreksi Benjamini-Hochberg.`;
-}
-
-function renderLisaMap(result) {
-  const mapNode = document.getElementById('lisaMap');
-  if (!mapNode || typeof L === 'undefined') return;
-
-  if (!state.lisaMap) {
-    state.lisaMap = L.map(mapNode, { zoomControl: true, minZoom: 4, maxZoom: 12 }).setView([-2, 118], 4);
-    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
-      attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
-      maxZoom: 16
-    }).addTo(state.lisaMap);
-    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}', {
-      maxZoom: 16
-    }).addTo(state.lisaMap);
-  }
-
-  state.lisaMarkers.forEach(marker => state.lisaMap.removeLayer(marker));
-  state.lisaMarkers = [];
-  const colors = { HH: '#ef4444', LL: '#10b981', HL: '#f59e0b', LH: '#38bdf8', NS: '#94a3b8' };
-
-  result.stations.forEach(item => {
-    const marker = L.circleMarker([item.station.lat, item.station.lng], {
-      radius: 9,
-      fillColor: colors[item.cluster],
-      color: '#f8fafc',
-      weight: 1.5,
-      fillOpacity: 0.9
-    }).bindPopup(`<strong>${item.station.label}</strong><br>${result.variable.toUpperCase()}: ${item.station.spatial_values[result.variable].toFixed(2)}<br>Klaster: ${item.cluster}<br>Local I: ${item.localI.toFixed(3)}<br>p: ${item.p.toFixed(3)} · q: ${item.q.toFixed(3)}`);
-    marker.addTo(state.lisaMap);
-    state.lisaMarkers.push(marker);
+  months.forEach(m => {
+    const isPart = m.is_partial;
+    const title = `${m.full_label} (${m.days} hari = ${m.expected_hours} jam)${isPart ? ' [Bulan Parsial]' : ''}`;
+    html += `<th title="${title}">${m.month_num}${isPart ? '*' : ''}</th>`;
   });
 
-  if (state.currentTab === 'tab3' && result.stations.length) {
-    state.lisaMap.fitBounds(L.latLngBounds(result.stations.map(item => [item.station.lat, item.station.lng])), { padding: [24, 24], maxZoom: 7 });
-  }
+  html += `</tr></thead><tbody>`;
+
+  filtered.forEach(stn => {
+    const statusClass = (stn.status || 'ok').toLowerCase();
+    const avgColor = getReliabilityColor(stn.overall_completeness_pct);
+
+    html += `<tr>
+      <td class="sticky-col">
+        <div class="stn-cell-title" title="${stn.station}">${stn.station}</div>
+        <div class="stn-cell-sub">${stn.provinsi} &bull; ${stn.island}</div>
+      </td>
+      <td class="sticky-status">
+        <span class="status-badge-sm ${statusClass}">${stn.status}</span>
+      </td>
+      <td style="text-align:center;">
+        <span style="font-family:'JetBrains Mono'; font-weight:700; color:${avgColor}; font-size:0.75rem;">
+          ${stn.overall_completeness_pct}%
+        </span>
+      </td>`;
+
+    stn.monthly.forEach(m => {
+      const color = getReliabilityColor(m.completeness_pct);
+      const textColor = (m.completeness_pct >= 50 && m.completeness_pct < 90) ? '#0f172a' : '#ffffff';
+      const cellText = m.completeness_pct === 0 ? '0' : Math.round(m.completeness_pct);
+
+      html += `<td>
+        <span class="heat-cell"
+              style="background:${color}; color:${textColor};"
+              data-stn="${stn.station}"
+              data-prov="${stn.provinsi} (${stn.island})"
+              data-status="${stn.status}"
+              data-month="${m.full_label}"
+              data-pct="${m.completeness_pct}"
+              data-valid="${m.valid_hours}"
+              data-expected="${m.expected_hours}">
+          ${cellText}
+        </span>
+      </td>`;
+    });
+
+    html += `</tr>`;
+  });
+
+  html += `</tbody></table>`;
+  container.innerHTML = html;
 }
 
 function renderRankingList() {
@@ -718,7 +758,7 @@ function renderRankingList() {
             ${stn.pm25_avg} <span style="font-size:0.7rem; font-weight:normal;">µg/m³</span>
           </div>
           <div style="font-size:0.65rem; color:${exceedsPP22 ? '#ef4444' : (exceedsWHO ? '#f59e0b' : '#10b981')}">
-            ${exceedsPP22 ? '> Baku Mutu PP22' : (exceedsWHO ? '> Pedoman WHO' : '✓ Memenuhi WHO')}
+            ${exceedsPP22 ? '> Baku Mutu PP22' : (exceedsWHO ? '> Pedoman WHO' : 'Memenuhi WHO')}
           </div>
         </div>
       </div>
@@ -783,8 +823,8 @@ function renderTrendMonthly() {
             footer: (items) => {
               const label = items[0].label;
               const m = parseInt(label.split('-')[1]);
-              if (m >= 7 && m <= 10) return '🔥 Musim Kemarau / Episode Karhutla & Asap Gambut';
-              return '🌧️ Musim Hujan / Dispersi Basah';
+              if (m >= 7 && m <= 10) return 'Musim Kemarau / Episode Karhutla & Asap Gambut';
+              return 'Musim Hujan / Dispersi Basah';
             }
           }
         }
@@ -914,12 +954,26 @@ function renderCorrelationMatrix() {
   const cols = data.columns;
   const matrix = data.matrix;
 
-  let html = `<div class="data-table-wrapper"><table class="data-table"><thead><tr><th>Variabel</th>`;
-  cols.forEach(c => html += `<th>${c.toUpperCase()}</th>`);
+  const colNameMap = {
+    'pm25': 'PM2.5',
+    'pm10': 'PM10',
+    'temperature_c': 'Suhu (°C)',
+    'humidity_pct': 'Kelembapan (%)',
+    'wind_speed_ms': 'Kec. Angin (m/s)',
+    'so2': 'SO2',
+    'no2': 'NO2',
+    'co': 'CO',
+    'o3': 'O3'
+  };
+
+  const getLabel = (c) => colNameMap[c] || c.toUpperCase();
+
+  let html = `<table class="correlation-matrix-table"><thead><tr><th>Variabel</th>`;
+  cols.forEach(c => html += `<th>${getLabel(c)}</th>`);
   html += `</tr></thead><tbody>`;
 
   matrix.forEach((row, i) => {
-    html += `<tr><td style="font-weight:600; color:#cbd5e1;">${cols[i].toUpperCase()}</td>`;
+    html += `<tr><td>${getLabel(cols[i])}</td>`;
     row.forEach((val, j) => {
       let bg = 'transparent';
       let textColor = '#94a3b8';
@@ -927,70 +981,200 @@ function renderCorrelationMatrix() {
         if (val > 0) {
           const alpha = Math.min(0.85, Math.abs(val));
           bg = `rgba(59, 130, 246, ${alpha})`;
-          if (alpha > 0.4) textColor = '#ffffff';
+          if (alpha > 0.35) textColor = '#ffffff';
         } else if (val < 0) {
           const alpha = Math.min(0.85, Math.abs(val));
           bg = `rgba(239, 68, 68, ${alpha})`;
-          if (alpha > 0.4) textColor = '#ffffff';
+          if (alpha > 0.35) textColor = '#ffffff';
         }
       }
-      html += `<td style="background:${bg}; color:${textColor}; text-align:center; font-family:'JetBrains Mono';">${val !== null ? val.toFixed(2) : '-'}</td>`;
+      const displayVal = val !== null ? (val === 1 ? '1.00' : val.toFixed(2)) : '-';
+      html += `<td style="background:${bg}; color:${textColor};">${displayVal}</td>`;
     });
     html += `</tr>`;
   });
-  html += `</tbody></table></div>`;
+  html += `</tbody></table>`;
   container.innerHTML = html;
 }
 
 function renderWindRose() {
-  const ctx = document.getElementById('windRoseChart');
+  const canvas = document.getElementById('windRoseChart');
   const selector = document.getElementById('windRoseStationSelect');
-  if (!ctx || !state.data.windRose) return;
+  const insightEl = document.getElementById('windRoseInsight');
+  const maxEl = document.getElementById('roseMaxVal');
+  const avgEl = document.getElementById('roseAvgVal');
+  const minEl = document.getElementById('roseMinVal');
+  const freqEl = document.getElementById('roseFreqVal');
+  const gridEl = document.getElementById('windRoseDataGrid');
+
+  if (!state.data.windRose) return;
 
   const stn = selector ? selector.value : 'SM2-01_Samarinda';
   const roseData = state.data.windRose[stn] || [];
 
+  if (roseData.length === 0) {
+    if (insightEl) insightEl.textContent = `Tidak ada data arah angin untuk stasiun ${stn}.`;
+    return;
+  }
+
   const labels = roseData.map(d => d.direction);
   const pmVals = roseData.map(d => d.pm25_avg);
+  const freqs = roseData.map(d => d.frequency);
 
-  if (state.charts.windRose) state.charts.windRose.destroy();
+  // Analisis statistik arah angin & polutan
+  const nonZero = roseData.filter(d => d.pm25_avg > 0);
+  let maxItem = { direction: '-', pm25_avg: 0 };
+  let minItem = { direction: '-', pm25_avg: 9999 };
+  let dominantItem = { direction: '-', frequency: 0 };
+  let sumPm = 0;
+  let totalObs = 0;
 
-  state.charts.windRose = new Chart(ctx, {
+  roseData.forEach(d => {
+    if (d.pm25_avg > maxItem.pm25_avg) maxItem = d;
+    if (d.pm25_avg > 0 && d.pm25_avg < minItem.pm25_avg) minItem = d;
+    if (d.frequency > dominantItem.frequency) dominantItem = d;
+    sumPm += d.pm25_avg * d.frequency;
+    totalObs += d.frequency;
+  });
+
+  const avgVal = totalObs > 0 ? (sumPm / totalObs) : (nonZero.length > 0 ? nonZero.reduce((a, b) => a + b.pm25_avg, 0) / nonZero.length : 0);
+  if (minItem.pm25_avg === 9999) minItem = { direction: '-', pm25_avg: 0 };
+
+  // 1. Tampilkan Quick Metrics Bar
+  if (maxEl) maxEl.innerHTML = `${maxItem.direction} &bull; ${maxItem.pm25_avg.toFixed(1)} <span style="font-size:0.65rem;font-weight:normal;">µg/m³</span>`;
+  if (avgEl) avgEl.innerHTML = `${avgVal.toFixed(1)} <span style="font-size:0.65rem;font-weight:normal;">µg/m³</span>`;
+  if (minEl) minEl.innerHTML = `${minItem.direction} &bull; ${minItem.pm25_avg.toFixed(1)} <span style="font-size:0.65rem;font-weight:normal;">µg/m³</span>`;
+  if (freqEl) freqEl.innerHTML = `${dominantItem.direction} &bull; ${(dominantItem.frequency || 0).toLocaleString()} <span style="font-size:0.65rem;font-weight:normal;">jam</span>`;
+
+  // 2. Tampilkan Insight Banner
+  if (insightEl) {
+    if (maxItem.pm25_avg > 0) {
+      insightEl.innerHTML = `Polutan tertinggi terhembus dari arah <strong>${maxItem.direction}</strong> (<strong>${maxItem.pm25_avg.toFixed(1)} µg/m³</strong>) &bull; Angin paling sering dari <strong>${dominantItem.direction}</strong> (${(dominantItem.frequency || 0).toLocaleString()} jam observasi)`;
+    } else {
+      insightEl.innerHTML = `Data konsentrasi PM2.5 stasiun <strong>${stn}</strong> tercatat 0 µg/m³`;
+    }
+  }
+
+  // 3. Tampilkan Data Grid 8 Arah Utama (Nilai Nyata Eksplisit di UI)
+  if (gridEl) {
+    const mainDirs = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+    const dirNames = {
+      'N': 'Utara (N)', 'NE': 'Timur Laut (NE)', 'E': 'Timur (E)', 'SE': 'Tenggara (SE)',
+      'S': 'Selatan (S)', 'SW': 'Barat Daya (SW)', 'W': 'Barat (W)', 'NW': 'Barat Laut (NW)'
+    };
+
+    let gridHtml = '';
+    mainDirs.forEach(d => {
+      const match = roseData.find(x => x.direction === d) || { pm25_avg: 0, frequency: 0 };
+      const val = match.pm25_avg;
+      const cnt = match.frequency;
+      const color = val > 55 ? '#ef4444' : (val > 35 ? '#f97316' : (val > 15 ? '#eab308' : (val > 0 ? '#10b981' : '#64748b')));
+      const isMax = d === maxItem.direction;
+
+      gridHtml += `
+        <div class="rose-grid-cell ${isMax ? 'highlight' : ''}">
+          <div class="rose-grid-dir">${d}</div>
+          <div class="rose-grid-val" style="color: ${color};">${val > 0 ? val.toFixed(1) + '<span style="font-size:0.58rem;font-weight:normal;color:#94a3b8;margin-left:2px;">µg/m³</span>' : '-'}</div>
+          <div class="rose-grid-sub">${cnt > 0 ? cnt.toLocaleString() + ' jam' : '0'}</div>
+        </div>
+      `;
+    });
+    gridEl.innerHTML = gridHtml;
+  }
+
+  // 4. Render Radar Chart Canvas
+  if (!canvas) return;
+
+  if (state.charts.windRose) {
+    state.charts.windRose.destroy();
+  }
+
+  const maxVal = maxItem.pm25_avg || 50;
+  const strokeColor = maxVal > 55 ? '#ef4444' : (maxVal > 35 ? '#f97316' : (maxVal > 15 ? '#eab308' : '#10b981'));
+  const fillColor = maxVal > 55 ? 'rgba(239, 68, 68, 0.28)' : (maxVal > 35 ? 'rgba(249, 115, 22, 0.28)' : (maxVal > 15 ? 'rgba(234, 179, 8, 0.28)' : 'rgba(16, 185, 129, 0.28)'));
+  const suggestedMaxVal = Math.max(30, Math.ceil((maxVal * 1.15) / 10) * 10);
+
+  // Radar data points: gunakan nilai riil, spanGaps true agar terhubung rapi
+  state.charts.windRose = new Chart(canvas, {
     type: 'radar',
     data: {
       labels: labels,
       datasets: [
         {
-          label: `Rata-rata PM2.5 per Arah Angin (${stn})`,
+          label: `Rata-rata PM2.5 (${stn})`,
           data: pmVals,
-          backgroundColor: 'rgba(239, 68, 68, 0.25)',
-          borderColor: '#ef4444',
+          backgroundColor: fillColor,
+          borderColor: strokeColor,
           borderWidth: 2,
-          pointBackgroundColor: '#ef4444'
+          pointBackgroundColor: strokeColor,
+          pointBorderColor: '#ffffff',
+          pointBorderWidth: 1.5,
+          pointRadius: 3.5,
+          pointHoverRadius: 6,
+          fill: true,
+          spanGaps: true
         }
       ]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      animation: {
+        duration: 350
+      },
       plugins: {
-        legend: { labels: { color: '#94a3b8' } }
+        legend: {
+          display: true,
+          position: 'top',
+          labels: {
+            color: '#94a3b8',
+            font: { size: 11, family: 'Inter' },
+            boxWidth: 12
+          }
+        },
+        tooltip: {
+          backgroundColor: '#0f172a',
+          borderColor: 'rgba(255,255,255,0.15)',
+          borderWidth: 1,
+          titleColor: '#ffffff',
+          bodyColor: '#cbd5e1',
+          callbacks: {
+            title: (items) => `Arah Angin: ${items[0].label}`,
+            label: (item) => {
+              const idx = item.dataIndex;
+              const f = freqs[idx] || 0;
+              const val = item.raw || 0;
+              return [
+                `Konsentrasi PM2.5: ${val.toFixed(2)} µg/m³`,
+                `Total Observasi: ${f.toLocaleString()} jam`
+              ];
+            }
+          }
+        }
       },
       scales: {
         r: {
-          angleLines: { color: 'rgba(255,255,255,0.1)' },
+          beginAtZero: true,
+          min: 0,
+          suggestedMax: suggestedMaxVal,
+          angleLines: { color: 'rgba(255,255,255,0.12)' },
           grid: { color: 'rgba(255,255,255,0.08)' },
-          pointLabels: { color: '#cbd5e1', font: { size: 10 } },
-          ticks: { backdropColor: 'transparent', color: '#94a3b8' }
+          pointLabels: {
+            color: '#cbd5e1',
+            font: { size: 10, weight: 600, family: 'Inter' }
+          },
+          ticks: {
+            backdropColor: 'transparent',
+            color: '#94a3b8',
+            font: { size: 9 },
+            stepSize: Math.ceil(suggestedMaxVal / 4)
+          }
         }
       }
     }
   });
 
-  if (selector && !selector.dataset.initialized) {
-    selector.dataset.initialized = 'true';
-    selector.addEventListener('change', () => renderWindRose());
-  }
+  // Event listener for selector is set up once via setupTabEvents
 }
 
 function renderTrafficScatter() {
@@ -1035,10 +1219,25 @@ function renderTrafficScatter() {
       plugins: {
         legend: { labels: { color: '#94a3b8' } },
         tooltip: {
+          backgroundColor: '#0f172a',
+          borderColor: 'rgba(255, 255, 255, 0.18)',
+          borderWidth: 1,
+          padding: 10,
+          titleColor: '#ffffff',
+          titleFont: { size: 12, weight: 'bold', family: 'Inter' },
+          bodyColor: '#cbd5e1',
+          bodyFont: { size: 11, family: 'Inter' },
+          displayColors: true,
+          boxPadding: 4,
           callbacks: {
+            title: (items) => items[0].raw.station,
             label: (ctx) => {
               const raw = ctx.raw;
-              return `${raw.station}: Jarak = ${raw.x}m, PM2.5 = ${raw.y} µg/m³, Trafik = ${raw.traffic || 'N/A'}/jam`;
+              return [
+                `Jarak ke Jalan: ${Number(raw.x).toLocaleString('id-ID')} m`,
+                `Rata-rata PM2.5: ${raw.y.toFixed(1)} µg/m³`,
+                `Intensitas Trafik: ${raw.traffic || 'N/A'}/jam`
+              ];
             }
           }
         }
@@ -1118,7 +1317,7 @@ function renderLagEffectChart() {
           callbacks: {
             afterBody: (items) => {
               const lag = items[0].dataIndex;
-              if (lag >= 1 && lag <= 3) return '⚡ Puncak Efek Jeda: Reaksi inflamasi saluran nafas memuncak pada hari ke 1-3 pasca pajanan.';
+              if (lag >= 1 && lag <= 3) return 'Puncak Efek Jeda: Reaksi inflamasi saluran nafas memuncak pada hari ke 1-3 pasca pajanan.';
               return '';
             }
           }
@@ -1430,10 +1629,29 @@ function renderGapAnalysisChart() {
       plugins: {
         legend: { labels: { color: '#94a3b8' } },
         tooltip: {
+          backgroundColor: '#0f172a',
+          borderColor: 'rgba(255, 255, 255, 0.18)',
+          borderWidth: 1,
+          padding: 10,
+          titleColor: '#ffffff',
+          titleFont: { size: 12, weight: 'bold', family: 'Inter' },
+          bodyColor: '#cbd5e1',
+          bodyFont: { size: 11, family: 'Inter' },
+          displayColors: true,
+          boxPadding: 4,
           callbacks: {
+            title: (items) => {
+              const r = items[0].raw;
+              return `${r.station} (${r.island})`;
+            },
             label: (c) => {
               const r = c.raw;
-              return `${r.station} (${r.island}): Kasus ISPA/Resp = ${r.x}, Ketersediaan Sensor = ${r.y.toFixed(1)}% [${r.status}]`;
+              const anomalyTag = r.is_anomaly ? ' [ANOMALI KRITIS]' : ' [Normal]';
+              return [
+                `Beban Kasus RS: ${Number(r.x).toLocaleString('id-ID')} jiwa`,
+                `Ketersediaan Sensor: ${r.y.toFixed(1)}%`,
+                `Status: ${r.status}${anomalyTag}`
+              ];
             }
           }
         }
@@ -1530,13 +1748,13 @@ function updateSensitivityUI(factorVal) {
           <div style="display:flex; justify-content:space-between;">
             <span>Baku Mutu PP 22/2021 (55 µg/m³):</span>
             <span style="font-weight:600; color:${exceedsPP22 ? '#ef4444' : '#10b981'};">
-              ${exceedsPP22 ? '⚠️ Terlampaui' : '✓ Memenuhi'}
+              ${exceedsPP22 ? 'Terlampaui' : 'Memenuhi'}
             </span>
           </div>
           <div style="display:flex; justify-content:space-between;">
             <span>Pedoman WHO (15 µg/m³):</span>
             <span style="font-weight:600; color:${exceedsWHO ? '#ef4444' : '#10b981'};">
-              ${exceedsWHO ? '⚠️ Terlampaui' : '✓ Memenuhi'}
+              ${exceedsWHO ? 'Terlampaui' : 'Memenuhi'}
             </span>
           </div>
         </div>
