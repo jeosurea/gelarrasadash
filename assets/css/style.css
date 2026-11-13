@@ -169,14 +169,14 @@ body::before {
 }
 
 .navbar-title {
-  font-size: 1.15rem;
+  font-size: 1.9rem;
   font-weight: 700;
   color: #0f172a;
   letter-spacing: -0.3px;
 }
 
 .navbar-subtitle {
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
   font-weight: 400;
   letter-spacing: 0.5px;
