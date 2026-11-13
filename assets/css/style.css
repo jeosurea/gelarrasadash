@@ -548,15 +548,15 @@ body::before {
 }
 
 .kpi-card {
-  background: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.9) !important;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: var(--radius-md);
   padding: 16px 18px;
   position: relative;
   overflow: hidden;
   transition: all var(--transition-base);
   min-width: 0;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08) !important;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
 }
 
 .kpi-card:hover {
@@ -628,77 +628,101 @@ body::before {
 .kpi-trend.up { color: var(--accent-danger); background: rgba(239,68,68,0.1); }
 .kpi-trend.down { color: var(--accent-success); background: rgba(16,185,129,0.1); }
 
-/* Dynamic Index Color Classes for KPI Cards (Clean Matte Fill - No Neon Glow) */
+/* Dynamic Index Color Classes for KPI Cards (Subtle & Soft Pastel Fill) */
 .kpi-card.index-green {
+  background: #f0fdf4 !important;
+  border: 1px solid #bbf7d0 !important;
   border-top: 4px solid #10b981 !important;
 }
 .kpi-card.index-green .kpi-value { color: #0f172a !important; }
 .kpi-card.index-green .kpi-value .unit { color: #64748b !important; }
-.kpi-card.index-green .kpi-label {
-  font-size: 0.8rem;
-  line-height: 1.35;
-  color: #475569 !important;
-  font-weight: 600;
-  white-space: normal;
-}
+.kpi-card.index-green .kpi-label { font-size: 0.8rem; line-height: 1.35; color: #334155 !important; font-weight: 600; white-space: normal; }
+.kpi-card.index-green .kpi-header-label { color: #15803d !important; }
 .kpi-card.index-green .kpi-trend {
-  background: #ecfdf5 !important;
-  color: #059669 !important;
-  border: none !important;
+  background: #dcfce7 !important;
+  color: #15803d !important;
+  border: 1px solid #bbf7d0 !important;
+  font-weight: 600;
 }
 
 .kpi-card.index-yellow {
+  background: #fefce8 !important;
+  border: 1px solid #fef08a !important;
   border-top: 4px solid #eab308 !important;
 }
 .kpi-card.index-yellow .kpi-value { color: #0f172a !important; }
 .kpi-card.index-yellow .kpi-value .unit { color: #64748b !important; }
-.kpi-card.index-yellow .kpi-label {
-  font-size: 0.8rem;
-  line-height: 1.35;
-  color: #475569 !important;
-  font-weight: 600;
-  white-space: normal;
-}
+.kpi-card.index-yellow .kpi-label { font-size: 0.8rem; line-height: 1.35; color: #334155 !important; font-weight: 600; white-space: normal; }
+.kpi-card.index-yellow .kpi-header-label { color: #a16207 !important; }
 .kpi-card.index-yellow .kpi-trend {
-  background: #fefce8 !important;
-  color: #ca8a04 !important;
-  border: none !important;
+  background: #fef9c3 !important;
+  color: #a16207 !important;
+  border: 1px solid #fef08a !important;
+  font-weight: 600;
 }
 
 .kpi-card.index-orange {
+  background: #fff7ed !important;
+  border: 1px solid #fed7aa !important;
   border-top: 4px solid #f97316 !important;
 }
 .kpi-card.index-orange .kpi-value { color: #0f172a !important; }
 .kpi-card.index-orange .kpi-value .unit { color: #64748b !important; }
-.kpi-card.index-orange .kpi-label {
-  font-size: 0.8rem;
-  line-height: 1.35;
-  color: #475569 !important;
-  font-weight: 600;
-  white-space: normal;
-}
+.kpi-card.index-orange .kpi-label { font-size: 0.8rem; line-height: 1.35; color: #334155 !important; font-weight: 600; white-space: normal; }
+.kpi-card.index-orange .kpi-header-label { color: #c2410c !important; }
 .kpi-card.index-orange .kpi-trend {
-  background: #fff7ed !important;
-  color: #ea580c !important;
-  border: none !important;
+  background: #ffedd5 !important;
+  color: #c2410c !important;
+  border: 1px solid #fed7aa !important;
+  font-weight: 600;
 }
 
 .kpi-card.index-red {
+  background: #fef2f2 !important;
+  border: 1px solid #fecaca !important;
   border-top: 4px solid #ef4444 !important;
 }
 .kpi-card.index-red .kpi-value { color: #0f172a !important; }
 .kpi-card.index-red .kpi-value .unit { color: #64748b !important; }
-.kpi-card.index-red .kpi-label {
-  font-size: 0.8rem;
-  line-height: 1.35;
-  color: #475569 !important;
-  font-weight: 600;
-  white-space: normal;
-}
+.kpi-card.index-red .kpi-label { font-size: 0.8rem; line-height: 1.35; color: #334155 !important; font-weight: 600; white-space: normal; }
+.kpi-card.index-red .kpi-header-label { color: #b91c1c !important; }
 .kpi-card.index-red .kpi-trend {
-  background: #fef2f2 !important;
-  color: #dc2626 !important;
-  border: none !important;
+  background: #fee2e2 !important;
+  color: #b91c1c !important;
+  border: 1px solid #fecaca !important;
+  font-weight: 600;
+}
+
+.kpi-card.index-blue {
+  background: #f0f9ff !important;
+  border: 1px solid #bae6fd !important;
+  border-top: 4px solid #0284c7 !important;
+}
+.kpi-card.index-blue .kpi-value { color: #0f172a !important; }
+.kpi-card.index-blue .kpi-value .unit { color: #64748b !important; }
+.kpi-card.index-blue .kpi-label { font-size: 0.8rem; line-height: 1.35; color: #334155 !important; font-weight: 600; white-space: normal; }
+.kpi-card.index-blue .kpi-header-label { color: #0369a1 !important; }
+.kpi-card.index-blue .kpi-trend {
+  background: #e0f2fe !important;
+  color: #0369a1 !important;
+  border: 1px solid #bae6fd !important;
+  font-weight: 600;
+}
+
+.kpi-card.index-purple {
+  background: #faf5ff !important;
+  border: 1px solid #e9d5ff !important;
+  border-top: 4px solid #8b5cf6 !important;
+}
+.kpi-card.index-purple .kpi-value { color: #0f172a !important; }
+.kpi-card.index-purple .kpi-value .unit { color: #64748b !important; }
+.kpi-card.index-purple .kpi-label { font-size: 0.8rem; line-height: 1.35; color: #334155 !important; font-weight: 600; white-space: normal; }
+.kpi-card.index-purple .kpi-header-label { color: #7e22ce !important; }
+.kpi-card.index-purple .kpi-trend {
+  background: #f3e8ff !important;
+  color: #7e22ce !important;
+  border: 1px solid #e9d5ff !important;
+  font-weight: 600;
 }
 
 .kpi-value {
@@ -1350,29 +1374,34 @@ body::before {
    ================================================================ */
 .heatmap-grid {
   display: grid;
-  gap: 2px;
-  font-size: 0.65rem;
+  gap: 3px;
+  font-size: 0.68rem;
 }
 
 .heatmap-cell {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6px 4px;
-  border-radius: 3px;
+  padding: 8px 4px;
+  min-height: 28px;
+  border-radius: 4px;
   font-family: 'JetBrains Mono', monospace;
-  font-weight: 500;
-  font-size: 0.62rem;
+  font-weight: 600;
+  font-size: 0.68rem;
   transition: transform var(--transition-fast);
   cursor: default;
 }
 
-.heatmap-cell:hover { transform: scale(1.15); z-index: 5; }
+.heatmap-cell:hover {
+  transform: scale(1.15);
+  z-index: 5;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+}
 
 .heatmap-label {
   font-size: 0.68rem;
-  color: var(--text-muted);
-  font-weight: 500;
+  color: #64748b;
+  font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1488,17 +1517,19 @@ body::before {
 /* Info Box */
 .info-box {
   display: flex;
-  gap: 12px;
-  padding: 14px 18px;
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
   border-radius: var(--radius-md);
-  font-size: 0.8rem;
-  color: #1e3a8a;
+  font-size: 0.78rem;
+  color: #334155;
   line-height: 1.5;
 }
 
-.info-box .info-icon { font-size: 1rem; flex-shrink: 0; margin-top: 2px; }
+.info-box strong { color: #0f172a; font-weight: 600; }
+.info-box .info-icon { font-size: 1rem; flex-shrink: 0; }
 
 /* Warning Box */
 .warning-box {
@@ -2160,4 +2191,23 @@ body::before {
 }
 .ranking-scroll-container::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.25);
+}
+
+/* Map Title Legend (positioned directly below chart title) */
+.legend-strip.map-title-legend {
+  margin: 6px 0 0 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  gap: 12px !important;
+}
+.legend-strip.map-title-legend .legend-item {
+  font-size: 0.73rem !important;
+  color: #475569 !important;
+  font-weight: 500 !important;
+}
+.legend-strip.map-title-legend .legend-color {
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50% !important;
 }

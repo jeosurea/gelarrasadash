@@ -772,10 +772,12 @@ function renderTrendMonthly() {
       label: 'Rata-rata Nasional',
       data: data.national,
       borderColor: '#3b82f6',
-      backgroundColor: 'rgba(59, 130, 246, 0.1)',
+      backgroundColor: 'transparent',
       borderWidth: 3,
       tension: 0.3,
-      pointRadius: 3
+      pointRadius: 3,
+      pointStyle: 'circle',
+      fill: false
     }
   ];
 
@@ -792,10 +794,13 @@ function renderTrendMonthly() {
       label: isl,
       data: data.islands[isl],
       borderColor: islandColors[isl] || '#94a3b8',
+      backgroundColor: 'transparent',
       borderWidth: 1.8,
       borderDash: isl === 'Kalimantan' ? [] : [4, 4],
       tension: 0.3,
-      pointRadius: 2
+      pointRadius: 2,
+      pointStyle: 'circle',
+      fill: false
     });
   });
 
@@ -809,7 +814,29 @@ function renderTrendMonthly() {
       maintainAspectRatio: false,
       interaction: { mode: 'index', intersect: false },
       plugins: {
-        legend: { labels: { color: '#64748b', font: { size: 10 } } },
+        legend: {
+          position: 'top',
+          labels: {
+            usePointStyle: true,
+            boxWidth: 26,
+            color: '#475569',
+            padding: 14,
+            font: { size: 11, weight: '500' },
+            generateLabels: (chart) => {
+              const original = Chart.defaults.plugins.legend.labels.generateLabels(chart);
+              return original.map(item => {
+                item.pointStyle = 'line';
+                const ds = chart.data.datasets[item.datasetIndex];
+                if (ds) {
+                  item.lineDash = ds.borderDash || [];
+                  item.lineWidth = ds.borderWidth || 2;
+                  item.strokeStyle = ds.borderColor;
+                }
+                return item;
+              });
+            }
+          }
+        },
         tooltip: {
           callbacks: {
             footer: (items) => {
@@ -842,7 +869,7 @@ function renderDiurnalHeatmap() {
   const data = state.data.diurnal[groupName];
   if (!data) return;
 
-  let html = `<div style="overflow-x:auto;"><div class="heatmap-grid" style="grid-template-columns: 80px repeat(24, 1fr); min-width: 650px;">`;
+  let html = `<div style="overflow-x:auto; padding-bottom:14px;"><div class="heatmap-grid" style="grid-template-columns: 44px repeat(24, 1fr); min-width: 780px;">`;
   
   // Header hours (0-23)
   html += `<div></div>`;
@@ -852,7 +879,7 @@ function renderDiurnalHeatmap() {
 
   // Days
   data.days.forEach((day, dIdx) => {
-    html += `<div class="heatmap-label" style="justify-content:flex-start; font-weight:600;">${day.substring(0,3)}</div>`;
+    html += `<div class="heatmap-label" style="justify-content:flex-start; font-weight:600; padding-left:2px;">${day.substring(0,3)}</div>`;
     for (let h = 0; h < 24; h++) {
       const val = data.matrix[h] ? data.matrix[h][dIdx] : null;
       const color = val ? getAQIColor(val) : '#1e293b';
@@ -909,7 +936,17 @@ function renderSiteTypeChart() {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: { labels: { color: '#64748b' } },
+        legend: {
+          position: 'top',
+          labels: {
+            boxWidth: 14,
+            boxHeight: 14,
+            borderRadius: 3,
+            color: '#475569',
+            padding: 14,
+            font: { size: 11, weight: '500' }
+          }
+        },
         tooltip: {
           callbacks: {
             afterBody: (items) => {
@@ -1208,7 +1245,16 @@ function renderTrafficScatter() {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: { labels: { color: '#64748b' } },
+        legend: {
+          position: 'top',
+          labels: {
+            usePointStyle: true,
+            boxWidth: 8,
+            color: '#475569',
+            padding: 14,
+            font: { size: 11, weight: '500' }
+          }
+        },
         tooltip: {
           backgroundColor: '#0f172a',
           borderColor: 'rgba(255, 255, 255, 0.18)',
