@@ -70,7 +70,7 @@ function getStationRepresentativenessRadius(siteType) {
 // Chart.js Light Mode Defaults
 if (typeof Chart !== 'undefined') {
   Chart.defaults.color = '#64748b';
-  Chart.defaults.font.family = "'Inter', sans-serif";
+  Chart.defaults.font.family = "'Brulia Text', sans-serif";
   Chart.defaults.plugins.tooltip.backgroundColor = '#0f172a';
   Chart.defaults.plugins.tooltip.titleColor = '#ffffff';
   Chart.defaults.plugins.tooltip.bodyColor = '#e2e8f0';
