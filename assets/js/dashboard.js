@@ -80,12 +80,86 @@ if (typeof Chart !== 'undefined') {
   Chart.defaults.plugins.tooltip.padding = 10;
 }
 
+// ===== Chart theme (non-warna): tooltip, animasi, bentuk =====
+const CHART_PALETTE = { grid: '#ECE8DA', aqua: '#B4EBE6' };
+
+// Pita latar ambang batas WHO / PP22 pada sumbu Y (warna semantik, bukan palet)
+const thresholdBandsPlugin = {
+  id: 'thresholdBands',
+  beforeDatasetsDraw(chart, _args, opts) {
+    if (!opts || !opts.bands) return;
+    const { ctx, chartArea: a, scales: { y } } = chart;
+    if (!a || !y) return;
+    ctx.save();
+    opts.bands.forEach(b => {
+      const top = y.getPixelForValue(Math.min(b.to, y.max));
+      const bottom = y.getPixelForValue(Math.max(b.from, y.min));
+      ctx.fillStyle = b.color;
+      ctx.fillRect(a.left, top, a.right - a.left, bottom - top);
+      if (b.label) {
+        ctx.fillStyle = b.labelColor || '#475569';
+        ctx.font = "600 11px 'Brulia Text', sans-serif";
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'top';
+        ctx.fillText(b.label, a.right - 8, top + 4);
+      }
+    });
+    ctx.restore();
+  }
+};
+
+// Teks angka di tengah donut
+const donutCenterPlugin = {
+  id: 'donutCenter',
+  afterDraw(chart, _args, opts) {
+    if (!opts || !opts.text) return;
+    const { ctx, chartArea: a } = chart;
+    if (!a) return;
+    const cx = (a.left + a.right) / 2;
+    const cy = (a.top + a.bottom) / 2;
+    ctx.save();
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#0f172a';
+    ctx.font = "700 22px 'Brulia Display', sans-serif";
+    ctx.fillText(opts.text, cx, cy - 6);
+    if (opts.sub) {
+      ctx.fillStyle = '#64748b';
+      ctx.font = "500 11px 'Brulia Text', sans-serif";
+      ctx.fillText(opts.sub, cx, cy + 14);
+    }
+    ctx.restore();
+  }
+};
+
+function applyChartTheme() {
+  if (typeof Chart === 'undefined') return;
+  Chart.register(thresholdBandsPlugin, donutCenterPlugin);
+  Chart.defaults.font.family = "'Brulia Text', sans-serif";
+  Chart.defaults.color = '#64748b';
+  Chart.defaults.borderColor = CHART_PALETTE.grid;
+  Chart.defaults.elements.bar.borderRadius = 8;
+  Chart.defaults.elements.bar.borderSkipped = false;
+  Chart.defaults.animation.duration = 900;
+  Chart.defaults.plugins.tooltip.backgroundColor = '#ffffff';
+  Chart.defaults.plugins.tooltip.titleColor = '#0f172a';
+  Chart.defaults.plugins.tooltip.bodyColor = '#334155';
+  Chart.defaults.plugins.tooltip.borderColor = CHART_PALETTE.aqua;
+  Chart.defaults.plugins.tooltip.borderWidth = 1;
+  Chart.defaults.plugins.tooltip.cornerRadius = 12;
+  Chart.defaults.plugins.tooltip.padding = 12;
+  Chart.defaults.plugins.tooltip.boxWidth = 8;
+  Chart.defaults.plugins.tooltip.boxHeight = 8;
+  Chart.defaults.plugins.tooltip.usePointStyle = true;
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   setupSidebarToggle();
   setupTabEvents();
   setupFilterEvents();
   setupBufferEvents();
   setupReliabilityEvents();
+  applyChartTheme();
   await loadAllData();
   document.getElementById('loadingOverlay').classList.add('hidden');
   renderDashboard();
@@ -137,8 +211,39 @@ function setupSidebarToggle() {
 }
 
 // Setup Navigation Tabs
+// Indikator warna yang bergeser mengikuti tab aktif
+function moveTabIndicator(tab, animate = true) {
+  const nav = document.querySelector('.tab-nav');
+  const ind = nav && nav.querySelector('.tab-indicator');
+  if (!ind || !tab) return;
+  ind.style.left = tab.offsetLeft + 'px';
+  ind.style.top = tab.offsetTop + 'px';
+  ind.style.width = tab.offsetWidth + 'px';
+  ind.style.height = tab.offsetHeight + 'px';
+  if (animate) {
+    ind.classList.remove('sweep');
+    void ind.offsetWidth; // restart animasi
+    ind.classList.add('sweep');
+  }
+}
+
+function setupTabIndicator() {
+  const nav = document.querySelector('.tab-nav');
+  if (!nav || nav.querySelector('.tab-indicator')) return;
+  const ind = document.createElement('div');
+  ind.className = 'tab-indicator';
+  nav.prepend(ind);
+  const active = nav.querySelector('.tab-btn.active') || nav.querySelector('.tab-btn');
+  moveTabIndicator(active, false);
+  window.addEventListener('resize', () => {
+    const cur = nav.querySelector('.tab-btn.active');
+    moveTabIndicator(cur, false);
+  });
+}
+
 function setupTabEvents() {
   const tabs = document.querySelectorAll('.tab-btn');
+  setupTabIndicator();
   tabs.forEach(tab => {
     tab.addEventListener('click', (e) => {
       tabs.forEach(t => t.classList.remove('active'));
@@ -146,6 +251,7 @@ function setupTabEvents() {
       
       const target = tab.dataset.tab;
       tab.classList.add('active');
+      moveTabIndicator(tab);
       document.getElementById(target).classList.add('active');
       state.currentTab = target;
 
@@ -767,14 +873,31 @@ function renderTrendMonthly() {
   const data = state.data.trendMonthly;
   const labels = data.labels;
 
+  const insightEl = document.getElementById('trendInsight');
+  if (insightEl) {
+    const dry = [], wet = [];
+    labels.forEach((lbl, i) => {
+      const m = parseInt(lbl.split('-')[1]);
+      const v = data.national[i];
+      if (v == null) return;
+      (m >= 7 && m <= 10 ? dry : wet).push(v);
+    });
+    const avg = arr => arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : NaN;
+    const d = avg(dry), w = avg(wet);
+    if (!isNaN(d) && !isNaN(w) && w > 0) {
+      const pct = Math.round((d / w - 1) * 100);
+      insightEl.textContent = `Rata-rata PM2.5 Jul–Okt ${pct >= 0 ? 'naik' : 'turun'} ${Math.abs(pct)}% dibanding bulan lainnya (${d.toFixed(1)} vs ${w.toFixed(1)} µg/m³).`;
+    }
+  }
+
   const datasets = [
     {
       label: 'Rata-rata Nasional',
       data: data.national,
       borderColor: '#3b82f6',
       backgroundColor: 'transparent',
-      borderWidth: 3,
-      tension: 0.3,
+      borderWidth: 3.5,
+      tension: 0.35,
       pointRadius: 3,
       pointStyle: 'circle',
       fill: false
@@ -814,6 +937,14 @@ function renderTrendMonthly() {
       maintainAspectRatio: false,
       interaction: { mode: 'index', intersect: false },
       plugins: {
+        thresholdBands: {
+          bands: [
+            { from: 0,  to: 15,       color: 'rgba(16,185,129,0.10)', label: 'WHO ≤15', labelColor: '#047857' },
+            { from: 15, to: 35,       color: 'rgba(234,179,8,0.08)' },
+            { from: 35, to: 55,       color: 'rgba(249,115,22,0.08)', label: 'PP22 ≤55', labelColor: '#c2410c' },
+            { from: 55, to: Infinity, color: 'rgba(239,68,68,0.06)' }
+          ]
+        },
         legend: {
           position: 'top',
           labels: {
@@ -851,6 +982,7 @@ function renderTrendMonthly() {
       scales: {
         x: { grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#64748b' } },
         y: {
+          min: 0,
           grid: { color: 'rgba(0,0,0,0.06)' },
           ticks: { color: '#64748b' },
           title: { display: true, text: 'Konsentrasi PM2.5 (µg/m³)', color: '#64748b' }
@@ -1621,9 +1753,13 @@ function renderAuditCharts() {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: { position: 'bottom', labels: { color: '#64748b' } }
+        legend: { position: 'bottom', labels: { color: '#64748b', usePointStyle: true } },
+        donutCenter: {
+          text: `${summary.OK || 22}/${(summary.OK || 22) + (summary.CAUTION || 4) + (summary.EXCLUDED || 1)}`,
+          sub: 'stasiun OK'
+        }
       },
-      cutout: '70%'
+      cutout: '72%'
     }
   });
 }
@@ -1696,9 +1832,9 @@ function renderIslandDistribution() {
     data: {
       labels,
       datasets: [
-        { label: 'Status OK', data: okCounts, backgroundColor: '#10b981', stack: 'stack0' },
-        { label: 'Status CAUTION', data: cautionCounts, backgroundColor: '#f59e0b', stack: 'stack0' },
-        { label: 'Status EXCLUDED', data: excludedCounts, backgroundColor: '#ef4444', stack: 'stack0' }
+        { label: 'Status OK', data: okCounts, backgroundColor: '#10b981', stack: 'stack0', borderRadius: 0 },
+        { label: 'Status CAUTION', data: cautionCounts, backgroundColor: '#f59e0b', stack: 'stack0', borderRadius: 0 },
+        { label: 'Status EXCLUDED', data: excludedCounts, backgroundColor: '#ef4444', stack: 'stack0', borderRadius: 0 }
       ]
     },
     options: {

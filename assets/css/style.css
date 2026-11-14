@@ -21,7 +21,7 @@
 /* ── CSS Custom Properties ── */
 :root {
   /* Background & Surface (Clean Modern Light SaaS) */
-  --bg-primary: #f8f9fc;
+  --bg-primary: #FBF8EF;
   --bg-secondary: #ffffff;
   --bg-card: #ffffff;
   --bg-card-hover: #ffffff;
@@ -33,15 +33,15 @@
   --text-primary: #0f172a;
   --text-secondary: #475569;
   --text-muted: #64748b;
-  --text-accent: #5e5ce6;
+  --text-accent: #0f766e;
 
   /* Brand Accents */
-  --accent-primary: #5e5ce6;
-  --accent-primary-hover: #4f46e5;
-  --accent-primary-glow: rgba(94, 92, 230, 0.25);
-  --accent-secondary: #8b5cf6;
+  --accent-primary: #80CBC4;
+  --accent-primary-hover: #5FB5AD;
+  --accent-primary-glow: rgba(128, 203, 196, 0.4);
+  --accent-secondary: #FFB433;
   --accent-success: #10b981;
-  --accent-warning: #f59e0b;
+  --accent-warning: #FFB433;
   --accent-danger: #ef4444;
 
   /* Air Quality Colors */
@@ -82,7 +82,7 @@
   /* Shadows */
   --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
   --shadow-card-hover: 0 6px 16px -2px rgba(15, 23, 42, 0.08);
-  --shadow-glow: 0 0 20px rgba(94, 92, 230, 0.15);
+  --shadow-glow: 0 0 20px rgba(128, 203, 196, 0.3);
 }
 
 /* ── Reset & Base ── */
@@ -169,7 +169,7 @@ body::before {
   width: 36px;
   height: 36px;
   border-radius: 8px;
-  background: linear-gradient(135deg, #5e5ce6, #8b5cf6);
+  background: linear-gradient(135deg, #80CBC4, #FFB433);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -260,7 +260,7 @@ body::before {
 }
 
 .filter-select {
-  background: #f8f9fc;
+  background: #FBF8EF;
   border: 1px solid var(--border-subtle);
   color: var(--text-primary);
   padding: 6px 12px;
@@ -272,19 +272,42 @@ body::before {
   outline: none;
   appearance: none;
   -webkit-appearance: none;
-  background-color: #f8f9fc;
+  background-color: #FBF8EF;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpolyline points='6,9 12,15 18,9'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 8px center;
   padding-right: 28px;
 }
 
-.filter-select:focus { border-color: var(--accent-primary); }
+.filter-select {
+  background-color: #FFFFFF !important;
+}
+
+.filter-select:hover { border-color: var(--accent-primary); }
+
+.filter-select:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(128, 203, 196, 0.35);
+}
+
+/* Daftar opsi dropdown (native) mengikuti palet */
+.filter-select option {
+  background: #FFFFFF;
+  color: #0f172a;
+  padding: 6px 10px;
+}
+
+.filter-select option:hover,
+.filter-select option:checked,
+.filter-select option:focus {
+  background: #B4EBE6;
+  color: #0f172a;
+}
 
 /* Toggle Button Group */
 .toggle-group {
   display: flex;
-  background: #f8f9fc;
+  background: #FBF8EF;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-subtle);
   overflow: hidden;
@@ -306,7 +329,7 @@ body::before {
 .toggle-btn:hover { color: #1e3a8a; background: rgba(255,255,255,0.03); }
 .toggle-btn.active {
   background: var(--accent-primary);
-  color: white;
+  color: #0f172a;
   box-shadow: 0 0 12px rgba(59,130,246,0.3);
 }
 
@@ -405,11 +428,11 @@ body::before {
 }
 
 .tab-btn.active {
-  background: #5e5ce6;
-  border-color: #5e5ce6;
-  color: #ffffff;
+  background: #80CBC4;
+  border-color: #80CBC4;
+  color: #0f172a;
   font-weight: 600;
-  box-shadow: 0 4px 14px rgba(94, 92, 230, 0.25);
+  box-shadow: 0 4px 14px rgba(128, 203, 196, 0.4);
 }
 
 .tab-btn.active::after {
@@ -433,8 +456,8 @@ body::before {
 }
 
 .tab-btn.active .tab-number {
-  background: rgba(255, 255, 255, 0.22);
-  color: #ffffff;
+  background: rgba(255, 255, 255, 0.5);
+  color: #0f172a;
 }
 
 .tab-btn-text {
@@ -458,7 +481,7 @@ body::before {
 }
 
 .tab-btn.active .tab-desc {
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(15, 23, 42, 0.75);
 }
 
 .sidebar-footer {
@@ -471,7 +494,7 @@ body::before {
 }
 
 .sidebar-status-box {
-  background: #f8f9fc;
+  background: #FBF8EF;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
   padding: 10px 12px;
@@ -573,7 +596,7 @@ body::before {
   letter-spacing: 0.5px;
 }
 
-.section-badge.info { background: rgba(59,130,246,0.15); color: var(--accent-primary); }
+.section-badge.info { background: rgba(128,203,196,0.3); color: var(--text-accent); }
 .section-badge.warning { background: rgba(245,158,11,0.15); color: var(--accent-warning); }
 
 /* ================================================================
@@ -586,7 +609,7 @@ body::before {
   margin-bottom: var(--gap-lg);
   padding: 24px;
   border-radius: var(--radius-lg);
-  background: linear-gradient(135deg, #38bdf8 0%, #6366f1 50%, #8b5cf6 100%);
+  background: linear-gradient(135deg, #B4EBE6 0%, #80CBC4 50%, #FFB433 100%);
   box-shadow: 0 8px 24px rgba(99, 102, 241, 0.2);
 }
 
@@ -656,7 +679,7 @@ body::before {
 .kpi-icon.green { background: rgba(16,185,129,0.15); }
 .kpi-icon.orange { background: rgba(245,158,11,0.15); }
 .kpi-icon.red { background: rgba(239,68,68,0.15); }
-.kpi-icon.purple { background: rgba(139,92,246,0.15); }
+.kpi-icon.purple { background: rgba(13,148,136,0.15); }
 
 .kpi-trend {
   display: flex;
@@ -753,14 +776,14 @@ body::before {
 }
 
 .kpi-card.index-purple {
-  background: #faf5ff !important;
+  background: #f0fdfa !important;
   border: 1px solid #e9d5ff !important;
-  border-top: 4px solid #8b5cf6 !important;
+  border-top: 4px solid #99f6e4 !important;
 }
 .kpi-card.index-purple .kpi-value { color: #0f172a !important; }
 .kpi-card.index-purple .kpi-value .unit { color: #64748b !important; }
 .kpi-card.index-purple .kpi-label { font-size: 0.8rem; line-height: 1.35; color: #334155 !important; font-weight: 600; white-space: normal; }
-.kpi-card.index-purple .kpi-header-label { color: #7e22ce !important; }
+.kpi-card.index-purple .kpi-header-label { color: #0f766e !important; }
 .kpi-card.index-purple .kpi-trend {
   background: #f3e8ff !important;
   color: #7e22ce !important;
@@ -815,7 +838,7 @@ body::before {
 .chart-grid.single { grid-template-columns: 1fr; }
 
 .chart-card {
-  background:#f0e3ff;
+  background:#FFFFFF;
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
   border: 1px solid var(--glass-border);
@@ -877,7 +900,7 @@ body::before {
 .chart-action-btn:hover, .chart-action-btn.active {
   border-color: var(--accent-primary);
   color: var(--accent-primary);
-  background: rgba(59,130,246,0.08);
+  background: rgba(128, 203, 196, 0.2);
 }
 
 .chart-container {
@@ -1168,7 +1191,7 @@ body::before {
 .badge-logger .tooltip-text {
   visibility: hidden;
   width: 280px;
-  background: #f8f9fc;
+  background: #FBF8EF;
   color: #1e3a8a;
   border: 1px solid var(--border-medium);
   padding: 10px 14px;
@@ -1227,7 +1250,7 @@ body::before {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: var(--text-muted);
-  background: #f8f9fc;
+  background: #FBF8EF;
   border-bottom: 1px solid var(--border-medium);
   white-space: nowrap;
   position: sticky;
@@ -1242,8 +1265,8 @@ body::before {
 }
 
 .data-table tbody tr { transition: background var(--transition-fast); }
-.data-table tbody tr:nth-child(even) { background: #f8f9fc; }
-.data-table tbody tr:hover { background: rgba(59,130,246,0.05); }
+.data-table tbody tr:nth-child(even) { background: #FBF8EF; }
+.data-table tbody tr:hover { background: rgba(180,235,230,0.35); }
 
 .data-table .cell-value {
   font-family: 'Brulia Text', sans-serif;
@@ -1328,7 +1351,7 @@ body::before {
   align-items: center;
   gap: var(--gap-md);
   padding: 10px var(--gap-md);
-  background: #f8f9fc;
+  background: #FBF8EF;
   border-radius: var(--radius-sm);
   margin: var(--gap-md) 0;
   flex-wrap: wrap;
@@ -1540,7 +1563,7 @@ body::before {
 /* Stat Highlight */
 .stat-highlight {
   padding: 16px 20px;
-  background: #f8f9fc;
+  background: #FBF8EF;
   border-radius: var(--radius-md);
   border-left: 3px solid var(--accent-primary);
 }
@@ -1665,7 +1688,7 @@ body::before {
   font-size: 0.78rem;
   color: #334155;
   text-align: center;
-  background: #f8f9fc;
+  background: #FBF8EF;
   padding: 10px 16px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-subtle);
@@ -1693,7 +1716,7 @@ body::before {
 }
 
 .rose-metric-item {
-  background: #f8f9fc;
+  background: #FBF8EF;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
   padding: 6px 8px;
@@ -1831,7 +1854,7 @@ body::before {
   font-size: 0.72rem;
   letter-spacing: 0.3px;
   color: var(--text-muted);
-  background: #f8f9fc;
+  background: #FBF8EF;
   border-bottom: 1px solid var(--border-medium);
   white-space: nowrap;
 }
@@ -1882,7 +1905,7 @@ body::before {
 }
 
 .reliability-stat-card {
-  background: #f8f9fc;
+  background: #FBF8EF;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   padding: 10px 14px;
@@ -1952,7 +1975,7 @@ body::before {
   font-weight: 600;
   font-size: 0.65rem;
   color: var(--text-muted);
-  background: #f8f9fc;
+  background: #FBF8EF;
   border-bottom: 1px solid var(--border-medium);
   border-right: 1px solid rgba(255, 255, 255, 0.05);
   white-space: nowrap;
@@ -2010,7 +2033,7 @@ body::before {
   padding: 3px 2px;
   text-align: center;
   border-bottom: 1px solid #f1f5f9;
-  border-right: 1px solid #f8f9fc;
+  border-right: 1px solid #FBF8EF;
   height: 28px;
 }
 
@@ -2023,7 +2046,7 @@ body::before {
   font-family: 'Brulia Text', sans-serif;
   font-size: 0.62rem;
   font-weight: 600;
-  color: #ffffff;
+  color: #0f172a;
   cursor: pointer;
   transition: transform 0.12s ease, box-shadow 0.12s ease;
   user-select: none;
@@ -2091,7 +2114,7 @@ body::before {
   align-items: center;
   gap: 14px;
   padding: 10px 14px;
-  background: #f8f9fc;
+  background: #FBF8EF;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-subtle);
   font-size: 0.74rem;
@@ -2267,4 +2290,123 @@ body::before {
   width: 10px !important;
   height: 10px !important;
   border-radius: 50% !important;
+}
+
+/* ================================================================
+   CHART POLISH (palet teal / aqua / krem / amber)
+   ================================================================ */
+.chart-card {
+  border-radius: 18px;
+  border: 1px solid #ECE8DA;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 6px 18px -8px rgba(15, 23, 42, 0.08);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.chart-card:hover {
+  transform: translateY(-2px);
+  border-color: #B4EBE6;
+  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.05), 0 12px 28px -10px rgba(15, 23, 42, 0.14);
+}
+
+.chart-card .chart-title {
+  letter-spacing: -0.2px;
+}
+
+.chart-card-header {
+  padding-bottom: 12px;
+  border-bottom: 1px dashed #ECE8DA;
+  margin-bottom: 16px;
+}
+
+/* Sparkline di kartu KPI */
+.kpi-spark {
+  height: 40px;
+  margin-top: 10px;
+  position: relative;
+}
+
+.kpi-spark-label {
+  font-size: 0.7rem;
+  color: #64748b;
+  margin-top: 2px;
+  font-weight: 600;
+}
+
+/* Blok krem untuk memisahkan ritme halaman */
+.tab-panel .kpi-grid + .chart-grid,
+.tab-panel .chart-grid + .chart-grid {
+  margin-top: 4px;
+}
+
+.section-header {
+  border-bottom: 1px solid #ECE8DA;
+}
+
+
+/* ================================================================
+   SIDEBAR TAB: indikator warna yang bergeser saat pindah tab
+   ================================================================ */
+.tab-nav { position: relative; }
+
+.tab-indicator {
+  position: absolute;
+  z-index: 0;
+  border-radius: var(--radius-md);
+  background: linear-gradient(100deg, #80CBC4 0%, #B4EBE6 40%, #FFB433 100%);
+  background-size: 200% 100%;
+  background-position: 0% 50%;
+  box-shadow: 0 4px 14px rgba(128, 203, 196, 0.4);
+  pointer-events: none;
+  transition: left 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+              top 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+              width 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+              height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tab-indicator.sweep {
+  animation: tabIndicatorShift 0.8s ease;
+}
+
+@keyframes tabIndicatorShift {
+  from { background-position: 100% 50%; }
+  to   { background-position: 0% 50%; }
+}
+
+.tab-btn { z-index: 1; }
+
+.tab-btn.active {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab-indicator, .tab-indicator.sweep { transition: none; animation: none; }
+}
+
+
+/* ================================================================
+   LATAR BELAKANG HALAMAN: gradasi teal ke oranye yang transparan,
+   supaya tidak menyatu dengan latar band KPI yang lebih pekat
+   ================================================================ */
+body {
+  background-color: #FBF8EF;
+  background-image:
+    linear-gradient(315deg,
+      rgba(128, 203, 195, 0.482) 10%,
+      rgba(252, 250, 198, 0.824) 85%);
+  background-attachment: fixed;
+}
+
+/* Kartu tetap putih solid agar kontras dengan latar gradasi */
+.chart-card,
+.sidebar-nav,
+.navbar {
+  background-color: rgba(255, 255, 255, 0.94);
+}
+
+
+/* Kartu chart: putih tulang (off-white), tidak putih pekat */
+.chart-card {
+  background-color: rgba(255, 252, 244, 0.92);
 }

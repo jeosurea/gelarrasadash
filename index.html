@@ -103,7 +103,7 @@
       
       <!-- KPI Executive Summary Cards -->
       <div class="kpi-grid">
-        <div class="kpi-card index-orange" id="cardNationalPm25">
+        <div class="kpi-card index-orange" id="cardNationalPm25" title="Rata-rata konsentrasi PM2.5 seluruh stasiun AQMS (µg/m³). Baku mutu PP 22/2021: ≤55 µg/m³; pedoman WHO tahunan: ≤15 µg/m³.">
           <div class="kpi-card-header">
             <span class="kpi-header-label">PM2.5</span>
             <div class="kpi-trend" id="tagNationalPm25">35-55 Sensitif</div>
@@ -112,7 +112,7 @@
           <div class="kpi-label">Rata-rata Nasional PM2.5</div>
         </div>
 
-        <div class="kpi-card index-green" id="cardIkuAvg">
+        <div class="kpi-card index-green" id="cardIkuAvg" title="Rata-rata Indeks Kinerja Utama (IKU) nasional, skala 0–100. Target: ≥70 dianggap baik.">
           <div class="kpi-card-header">
             <span class="kpi-header-label">IKU</span>
             <div class="kpi-trend" id="tagIkuAvg">≥70 Baik (Target)</div>
@@ -121,7 +121,7 @@
           <div class="kpi-label">Rata-rata IKU Nasional (Target >70)</div>
         </div>
 
-        <div class="kpi-card index-green" id="cardPp22Compliance">
+        <div class="kpi-card index-green" id="cardPp22Compliance" title="Persentase pengukuran yang memenuhi baku mutu PP 22/2021 (PM2.5 ≤55 µg/m³).">
           <div class="kpi-card-header">
             <span class="kpi-header-label">PP 22/2021</span>
             <div class="kpi-trend" id="tagPp22Compliance">Patuh Tinggi (Baik)</div>
@@ -130,7 +130,7 @@
           <div class="kpi-label">% Kepatuhan PP 22/2021 (≤55 µg/m³)</div>
         </div>
 
-        <div class="kpi-card index-red" id="cardWhoCompliance">
+        <div class="kpi-card index-red" id="cardWhoCompliance" title="Persentase pengukuran tahunan yang memenuhi pedoman WHO (PM2.5 ≤15 µg/m³).">
           <div class="kpi-card-header">
             <span class="kpi-header-label">WHO</span>
             <div class="kpi-trend" id="tagWhoCompliance">Kritis</div>
@@ -203,7 +203,7 @@
           <div class="chart-card-header">
             <div>
               <div class="chart-title">Dinamika Tren Temporal & Siklus Musim (Hujan vs Karhutla Jul-Okt)</div>
-              <div class="chart-subtitle">Konsentrasi PM2.5 bulanan per pulau dibandingkan rata-rata nasional</div>
+              <div class="chart-subtitle" id="trendInsight">Konsentrasi PM2.5 bulanan per pulau dibandingkan rata-rata nasional</div>
             </div>
             <div style="font-size:0.75rem; color:#ef4444; font-weight:600; background:rgba(239,68,68,0.1); padding:4px 10px; border-radius:4px;">
               Puncak Lonjakan Polusi: Kemarau & Asap Gambut (Jul - Okt)
