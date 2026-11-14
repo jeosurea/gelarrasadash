@@ -684,7 +684,7 @@ function renderSensorReliabilityHeatmap() {
         <span class="status-badge-sm ${statusClass}">${stn.status}</span>
       </td>
       <td style="text-align:center;">
-        <span style="font-family:'JetBrains Mono'; font-weight:700; color:${avgColor}; font-size:0.75rem;">
+        <span style="font-family:'Brulia Text'; font-weight:700; color:${avgColor}; font-size:0.75rem;">
           ${stn.overall_completeness_pct}%
         </span>
       </td>`;
@@ -739,14 +739,14 @@ function renderRankingList() {
     html += `
       <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 12px; margin-bottom:6px; background:#f8f9fc; border:1px solid #e2e8f0; border-radius:8px; border-left:4px solid ${getAQIColor(stn.pm25_avg)};">
         <div style="display:flex; align-items:center; gap:8px;">
-          <span style="font-family:'JetBrains Mono'; font-size:0.75rem; color:#64748b; width:22px;">#${idx+1}</span>
+          <span style="font-family:'Brulia Text'; font-size:0.75rem; color:#64748b; width:22px;">#${idx+1}</span>
           <div>
             <div style="font-weight:600; font-size:0.8rem;">${stn.label} ${badge}</div>
             <div style="font-size:0.7rem; color:#94a3b8;">${stn.island} &bull; ${stn.site_type}</div>
           </div>
         </div>
         <div style="text-align:right;">
-          <div style="font-family:'JetBrains Mono'; font-weight:700; font-size:0.9rem; color:${getAQIColor(stn.pm25_avg)};">
+          <div style="font-family:'Brulia Text'; font-weight:700; font-size:0.9rem; color:${getAQIColor(stn.pm25_avg)};">
             ${stn.pm25_avg} <span style="font-size:0.7rem; font-weight:normal;">µg/m³</span>
           </div>
           <div style="font-size:0.65rem; color:${exceedsPP22 ? '#ef4444' : (exceedsWHO ? '#f59e0b' : '#10b981')}">
