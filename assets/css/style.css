@@ -544,8 +544,8 @@ body::before {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin: var(--gap-xl) 0 var(--gap-lg);
-  padding-bottom: var(--gap-md);
+  margin: 10px 0 10px;   
+  padding-bottom: 6px;   
   border-bottom: 1px solid #f1f5f9;
 }
 
@@ -1533,7 +1533,7 @@ body::before {
 .gradient-divider {
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
-  margin: var(--gap-xl) 0;
+  margin: 12px 0;
   opacity: 0.3;
 }
 
