@@ -815,7 +815,7 @@ body::before {
 .chart-grid.single { grid-template-columns: 1fr; }
 
 .chart-card {
-  background: var(--glass-bg);
+  background:#f8fafc;
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
   border: 1px solid var(--glass-border);
