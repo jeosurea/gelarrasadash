@@ -104,7 +104,11 @@ body {
   line-height: 1.6;
 }
 
-h1, h2, h3 {
+h1, h2, h3, h4,
+.navbar-title,
+.chart-title,
+.section-header h2,
+.tab-title {
   font-family: 'Brulia Display', sans-serif;
 }
 
@@ -299,7 +303,7 @@ body::before {
 
 /* Styling Logo Baru Awan & Matahari */
 .navbar-custom-logo {
-  height: 44px;              /* Atur tinggi logo */
+  height: 50px;              /* Atur tinggi logo */
   width: auto;
   object-fit: contain;
   cursor: pointer;
