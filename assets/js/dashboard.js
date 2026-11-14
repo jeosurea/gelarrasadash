@@ -439,7 +439,7 @@ function renderKPIs() {
 
   // 4. Evaluasi Kepatuhan WHO Annual (Pedoman Ketat 15 ug/m3)
   let whoClass = 'index-red';
-  let whoStatus = 'Kritis (Hanya 11.5%)';
+  let whoStatus = 'Kritis';
   if (whoVal >= 50) {
     whoClass = 'index-green';
     whoStatus = 'Tinggi (Baik)';
@@ -451,7 +451,7 @@ function renderKPIs() {
     whoStatus = 'Sensitif';
   } else {
     whoClass = 'index-red';
-    whoStatus = 'Kritis (Hanya 11.5%)';
+    whoStatus = 'Kritis';
   }
 
   // Tampilkan nilai ke elemen DOM
@@ -462,8 +462,8 @@ function renderKPIs() {
 
   if (elPm) elPm.innerHTML = `${pmVal} <span class="unit">µg/m³</span>`;
   if (elIku) elIku.innerHTML = `${ikuVal} <span class="unit">IKU</span>`;
-  if (elPp22) elPp22.innerHTML = `${pp22Val}%`;
-  if (elWho) elWho.innerHTML = `${whoVal}%`;
+  if (elPp22) elPp22.innerHTML = `${pp22Val}% <span class="unit">hari dalam setahun</span>`;
+  if (elWho) elWho.innerHTML = `${whoVal}% <span class="unit">hari dalam setahun</span>`;
 
   // Terapkan warna kartu, efek glow, dan badge tag
   const applyCardStyle = (cardId, tagId, statusClass, statusLabel) => {
