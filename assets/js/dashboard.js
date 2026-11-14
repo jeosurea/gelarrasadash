@@ -112,8 +112,8 @@ function setupSidebarToggle() {
     const isCollapsed = dashboardBody.classList.toggle('sidebar-collapsed');
     toggleBtn.classList.toggle('collapsed', isCollapsed);
     toggleBtn.title = isCollapsed
-      ? 'Klik logo AQ untuk memunculkan kembali menu navigasi'
-      : 'Klik logo AQ untuk menyembunyikan menu navigasi';
+      ? 'Klik logo untuk memunculkan kembali menu navigasi'
+      : 'Klik logo untuk menyembunyikan menu navigasi';
 
     // Resize maps and charts after slide transition
     setTimeout(() => {
