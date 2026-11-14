@@ -1,6 +1,5 @@
 /* ============================================================
-   AQMS DASHBOARD - Professional Stylesheet
-   Indonesia Air Quality Monitoring System Dashboard
+   DASHBOARD 
    ============================================================ */
 
 /* Brulia Display → untuk Heading */
@@ -296,6 +295,20 @@ body::before {
   background: var(--accent-primary);
   color: white;
   box-shadow: 0 0 12px rgba(59,130,246,0.3);
+}
+
+/* Styling Logo Baru Awan & Matahari */
+.navbar-custom-logo {
+  height: 44px;              /* Atur tinggi logo */
+  width: auto;
+  object-fit: contain;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  display: block;
+}
+
+.navbar-custom-logo:hover {
+  transform: scale(1.08);    /* Efek membesar sedikit saat disentuh kursor */
 }
 
 /* ================================================================
