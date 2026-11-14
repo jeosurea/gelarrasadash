@@ -112,6 +112,15 @@ h1, h2, h3, h4,
   font-family: 'Brulia Display', sans-serif;
 }
 
+*, *::before, *::after,
+.leaflet-container,
+.leaflet-control,
+.map-title-legend,
+.legend-item,
+.legend-strip {
+  font-family: 'Brulia Text', sans-serif;
+}
+
 /* Ambient background glow */
 body::before {
   content: '';
